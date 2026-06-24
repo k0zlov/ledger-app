@@ -1,7 +1,7 @@
 ---
 name: Feature / Requirement Implementation
 about: Create an issue to track a functional requirement
-title: "[FR-X.X] <Brief Description>"
+title: "[FR-X.X] Brief_Description"
 labels: ''
 assignees: k0zlov
 
@@ -12,14 +12,7 @@ assignees: k0zlov
 
 ## Acceptance Criteria
 <!-- Define what constitutes a successful implementation -->
-- [ ] Criterion 1
-- [ ] Criterion 2
-
-## Technical Implementation Notes
-<!-- Refer to the HLD for architecture rules -->
-- **Target Module:** `features/...`
-- **State Management:** BLoC 
-- **Storage/Database Needs:** Drift (SQLite) / Secure Storage
+- [ ] Criterion
 
 ## Dependencies
 <!-- Are there any blocking FRs? -->

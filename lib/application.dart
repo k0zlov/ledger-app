@@ -5,6 +5,12 @@ class Application extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const CupertinoApp();
+    return const CupertinoApp(
+      debugShowCheckedModeBanner: false,
+      home: CupertinoPageScaffold(
+        backgroundColor: CupertinoColors.systemRed,
+        child: SizedBox(),
+      ),
+    );
   }
 }

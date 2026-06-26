@@ -36,7 +36,7 @@ class AppStatusServiceImpl implements AppStatusService {
 
       bool isTrue(String? value) => value == 'true';
 
-      if (isTrue(onboardingFlag)) {
+      if (!isTrue(onboardingFlag)) {
         _setStatus(AppStatus.onboarding);
         return;
       }

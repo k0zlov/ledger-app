@@ -1,16 +1,16 @@
 import 'package:flutter/cupertino.dart';
+import 'package:go_router/go_router.dart';
 
 class Application extends StatelessWidget {
-  const Application({super.key});
+  const Application({required this.router, super.key});
+
+  final GoRouter router;
 
   @override
   Widget build(BuildContext context) {
-    return const CupertinoApp(
+    return CupertinoApp.router(
       debugShowCheckedModeBanner: false,
-      home: CupertinoPageScaffold(
-        backgroundColor: CupertinoColors.systemRed,
-        child: SizedBox(),
-      ),
+      routerConfig: router,
     );
   }
 }

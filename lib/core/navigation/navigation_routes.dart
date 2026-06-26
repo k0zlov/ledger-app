@@ -1,5 +1,13 @@
 enum RouteDefinition {
-  onboarding('/onboarding');
+  onboarding('/onboarding'),
+  accountsSetup('accounts-setup'),
+  settingsSetup('settings-setup'),
+  authSetup('auth-setup'),
+  dashboard('/dashboard'),
+  settings('/settings'),
+  transactions('transactions'),
+  analytics('analytics'),
+  accounts('accounts');
 
   const RouteDefinition(this.path);
 

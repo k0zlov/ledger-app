@@ -2,6 +2,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:ledger_app/core/database/database.dart';
 import 'package:ledger_app/core/navigation/app_status_service.dart';
+import 'package:ledger_app/core/navigation/navigation_service.dart';
 import 'package:ledger_app/core/secure_storage/secure_storage.dart';
 
 final GetIt getIt = GetIt.instance;
@@ -9,7 +10,7 @@ final GetIt getIt = GetIt.instance;
 Future<void> registerDependencies() async {
   _database();
   _secureStorage();
-  _services();
+  _navigation();
   await getIt.allReady(timeout: const Duration(seconds: 5));
 }
 
@@ -25,12 +26,14 @@ void _secureStorage() {
   );
 }
 
-void _services() {
-  getIt.registerSingletonAsync<AppStatusService>(() async {
-    final AppStatusService service = AppStatusServiceImpl(secureStorage: getIt());
+void _navigation() {
+  getIt
+    ..registerSingletonAsync<AppStatusService>(() async {
+      final AppStatusService service = AppStatusServiceImpl(secureStorage: getIt());
 
-    await service.initialize();
+      await service.initialize();
 
-    return service;
-  });
+      return service;
+    })
+    ..registerLazySingleton<NavigationService>(() => GoRouterNavigationService(router: getIt()));
 }

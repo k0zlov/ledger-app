@@ -1,14 +1,22 @@
-enum RouteName {
-  onboarding,
+enum RouteDefinition {
+  onboarding('/onboarding');
+
+  const RouteDefinition(this.path);
+
+  final String path;
 }
 
 sealed class NavigationRoute {
-  RouteName get name;
+  RouteDefinition get definition;
 
-  Map<String, dynamic> get parameters => {};
+  Map<String, String> get pathParameters => {};
+
+  Map<String, dynamic> get queryParameters => {};
+
+  Map<String, dynamic> get extra => {};
 }
 
 class OnboardingRoute extends NavigationRoute {
   @override
-  RouteName get name => RouteName.onboarding;
+  RouteDefinition get definition => RouteDefinition.onboarding;
 }

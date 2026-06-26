@@ -1,8 +1,10 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ledger_app/core/database/database.dart';
 import 'package:ledger_app/core/navigation/app_status_service.dart';
 import 'package:ledger_app/core/navigation/navigation_service.dart';
+import 'package:ledger_app/core/navigation/router.dart';
 import 'package:ledger_app/core/secure_storage/secure_storage.dart';
 
 final GetIt getIt = GetIt.instance;
@@ -35,5 +37,6 @@ void _navigation() {
 
       return service;
     })
+    ..registerLazySingleton<GoRouter>(() => createRouter(getIt()))
     ..registerLazySingleton<NavigationService>(() => GoRouterNavigationService(router: getIt()));
 }

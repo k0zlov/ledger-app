@@ -1,10 +1,17 @@
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ledger_app/application.dart';
+import 'package:ledger_app/core/navigation/navigation_service.dart';
 
 abstract class ScreenFactory {
-  static Widget renderApplication({required GoRouter router}) {
-    return Application(router: router);
+  static Widget renderApplication({
+    required GoRouter router,
+    required NavigationService navigationService,
+  }) {
+    return NavigationServiceProvider(
+      navigationService: navigationService,
+      child: Application(router: router),
+    );
   }
 
   static Widget renderOnboardingWrapper(Widget child) {
@@ -35,7 +42,9 @@ abstract class ScreenFactory {
     return const Placeholder();
   }
 
-  static Widget renderNavigationWrapper(StatefulNavigationShell navigationShell) {
+  static Widget renderNavigationWrapper(
+    StatefulNavigationShell navigationShell,
+  ) {
     return const Placeholder();
   }
 

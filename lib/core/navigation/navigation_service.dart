@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ledger_app/core/navigation/navigation_routes.dart';
 
@@ -50,4 +51,31 @@ class GoRouterNavigationService implements NavigationService {
       extra: route.extra,
     );
   }
+}
+
+class NavigationServiceProvider extends InheritedWidget {
+  const NavigationServiceProvider({
+    required this.navigationService,
+    required super.child,
+    super.key,
+  });
+
+  final NavigationService navigationService;
+
+  static NavigationService of(BuildContext context) {
+    final provider = context.dependOnInheritedWidgetOfExactType<NavigationServiceProvider>();
+    if (provider == null) {
+      throw StateError('No NavigationServiceProvider found in the widget tree.');
+    }
+    return provider.navigationService;
+  }
+
+  @override
+  bool updateShouldNotify(NavigationServiceProvider oldWidget) {
+    return navigationService != oldWidget.navigationService;
+  }
+}
+
+extension NavigationContextExtension on BuildContext {
+  NavigationService get navigator => NavigationServiceProvider.of(this);
 }

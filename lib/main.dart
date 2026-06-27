@@ -7,5 +7,10 @@ void main() async {
 
   await registerDependencies();
 
-  runApp(ScreenFactory.renderApplication(router: getIt()));
+  runApp(
+    ScreenFactory.renderApplication(
+      router: getIt(),
+      navigationService: getIt(),
+    ),
+  );
 }

@@ -3,6 +3,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 enum SecureStorageKey {
   onboardingComplete,
   securityEnabled,
+  securityPinCode,
 }
 
 abstract interface class SecureStorage {

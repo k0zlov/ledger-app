@@ -28,3 +28,18 @@ class OnboardingRoute extends NavigationRoute {
   @override
   RouteDefinition get definition => RouteDefinition.onboarding;
 }
+
+class AuthSetupRoute extends NavigationRoute {
+  @override
+  RouteDefinition get definition => RouteDefinition.authSetup;
+}
+
+class SettingsSetupRoute extends NavigationRoute {
+  @override
+  RouteDefinition get definition => RouteDefinition.settingsSetup;
+}
+
+class AccountsSetupRoute extends NavigationRoute {
+  @override
+  RouteDefinition get definition => RouteDefinition.accountsSetup;
+}

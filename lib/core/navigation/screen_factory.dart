@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:ledger_app/application.dart';
 import 'package:ledger_app/core/navigation/navigation_service.dart';
 import 'package:ledger_app/features/auth/view/cubit/auth_cubit.dart';
+import 'package:ledger_app/features/auth/view/screens/auth_setup_screen.dart';
+import 'package:ledger_app/features/onboarding/view/screens/onboarding_welcome_screen.dart';
 
 abstract class ScreenFactory {
   static Widget renderApplication({
@@ -20,8 +22,8 @@ abstract class ScreenFactory {
     );
   }
 
-  static Widget renderOnboardingWelcomingScreen() {
-    return const Placeholder();
+  static Widget renderOnboardingWelcomingScreen({required VoidCallback onGetStarted}) {
+    return OnboardingWelcomingScreen(onGetStarted: onGetStarted);
   }
 
   static Widget renderAccountsSetupScreen() {
@@ -32,8 +34,8 @@ abstract class ScreenFactory {
     return const Placeholder();
   }
 
-  static Widget renderAuthSetupScreen() {
-    return const Placeholder();
+  static Widget renderAuthSetupScreen({required VoidCallback onSetupComplete}) {
+    return AuthSetupScreen(onSetupComplete: onSetupComplete);
   }
 
   static Widget renderDashboardScreen() {

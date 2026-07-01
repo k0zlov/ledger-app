@@ -20,10 +20,6 @@ abstract class ScreenFactory {
     );
   }
 
-  static Widget renderOnboardingWrapper(Widget child) {
-    return child;
-  }
-
   static Widget renderOnboardingWelcomingScreen() {
     return const Placeholder();
   }

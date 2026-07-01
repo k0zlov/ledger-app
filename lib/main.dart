@@ -11,6 +11,7 @@ void main() async {
     ScreenFactory.renderApplication(
       router: getIt(),
       navigationService: getIt(),
+      authCubit: getIt(),
     ),
   );
 }

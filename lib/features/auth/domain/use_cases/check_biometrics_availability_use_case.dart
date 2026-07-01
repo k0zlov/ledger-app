@@ -4,7 +4,7 @@ import 'package:ledger_app/core/use_case/use_case.dart';
 import 'package:ledger_app/features/auth/domain/repositories/auth_repository.dart';
 
 class CheckBiometricsAvailabilityUseCase implements UseCase<bool, NoParams> {
-  const CheckBiometricsAvailabilityUseCase(this._repository);
+  const CheckBiometricsAvailabilityUseCase({required this._repository});
 
   final AuthRepository _repository;
 

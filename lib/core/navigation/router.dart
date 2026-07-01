@@ -1,6 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:ledger_app/core/navigation/app_status_service.dart';
 import 'package:ledger_app/core/navigation/navigation_routes.dart';
+import 'package:ledger_app/core/navigation/navigation_service.dart';
 import 'package:ledger_app/core/navigation/screen_factory.dart';
 
 GoRouter createRouter(AppStatusService appStatusService) {
@@ -28,12 +29,20 @@ GoRouter createRouter(AppStatusService appStatusService) {
       GoRoute(
         name: RouteDefinition.onboarding.name,
         path: RouteDefinition.onboarding.path,
-        builder: (context, state) => ScreenFactory.renderOnboardingWelcomingScreen(),
+        builder: (context, state) => ScreenFactory.renderOnboardingWelcomingScreen(
+          onGetStarted: () async {
+            await context.navigator.push(AuthSetupRoute());
+          },
+        ),
         routes: [
           GoRoute(
             name: RouteDefinition.authSetup.name,
             path: RouteDefinition.authSetup.path,
-            builder: (context, state) => ScreenFactory.renderAuthSetupScreen(),
+            builder: (context, state) => ScreenFactory.renderAuthSetupScreen(
+              onSetupComplete: () async {
+                await context.navigator.push(SettingsSetupRoute());
+              },
+            ),
           ),
           GoRoute(
             name: RouteDefinition.settingsSetup.name,

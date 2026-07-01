@@ -11,6 +11,8 @@ analyzer:
 
 linter:
   rules:
+    one_member_abstracts: false
+
     document_ignores: false
 
     unnecessary_ignore: false

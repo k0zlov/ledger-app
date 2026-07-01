@@ -66,7 +66,8 @@ class AppStatusServiceImpl implements AppStatusService {
   }
 
   @override
-  void completeOnboarding() {
+  Future<void> completeOnboarding() async {
+    await secureStorage.write(SecureStorageKey.onboardingComplete, value: 'true');
     _setStatus(AppStatus.ready);
   }
 

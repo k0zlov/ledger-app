@@ -25,30 +25,25 @@ GoRouter createRouter(AppStatusService appStatusService) {
       return null;
     },
     routes: [
-      ShellRoute(
-        builder: (context, state, child) => ScreenFactory.renderOnboardingWrapper(child),
+      GoRoute(
+        name: RouteDefinition.onboarding.name,
+        path: RouteDefinition.onboarding.path,
+        builder: (context, state) => ScreenFactory.renderOnboardingWelcomingScreen(),
         routes: [
           GoRoute(
-            name: RouteDefinition.onboarding.name,
-            path: RouteDefinition.onboarding.path,
-            builder: (context, state) => ScreenFactory.renderOnboardingWelcomingScreen(),
-            routes: [
-              GoRoute(
-                name: RouteDefinition.authSetup.name,
-                path: RouteDefinition.authSetup.path,
-                builder: (context, state) => ScreenFactory.renderAuthSetupScreen(),
-              ),
-              GoRoute(
-                name: RouteDefinition.settingsSetup.name,
-                path: RouteDefinition.settingsSetup.path,
-                builder: (context, state) => ScreenFactory.renderSettingsSetupScreen(),
-              ),
-              GoRoute(
-                name: RouteDefinition.accountsSetup.name,
-                path: RouteDefinition.accountsSetup.path,
-                builder: (context, state) => ScreenFactory.renderAccountsSetupScreen(),
-              ),
-            ],
+            name: RouteDefinition.authSetup.name,
+            path: RouteDefinition.authSetup.path,
+            builder: (context, state) => ScreenFactory.renderAuthSetupScreen(),
+          ),
+          GoRoute(
+            name: RouteDefinition.settingsSetup.name,
+            path: RouteDefinition.settingsSetup.path,
+            builder: (context, state) => ScreenFactory.renderSettingsSetupScreen(),
+          ),
+          GoRoute(
+            name: RouteDefinition.accountsSetup.name,
+            path: RouteDefinition.accountsSetup.path,
+            builder: (context, state) => ScreenFactory.renderAccountsSetupScreen(),
           ),
         ],
       ),

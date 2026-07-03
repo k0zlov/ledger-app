@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:ledger_app/core/localization/localization_build_context_x.dart';
 
 class AuthSetupBiometricStep extends StatelessWidget {
   const AuthSetupBiometricStep({
@@ -12,10 +13,12 @@ class AuthSetupBiometricStep extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
     return CupertinoPageScaffold(
-      navigationBar: const CupertinoNavigationBar(
+      navigationBar: CupertinoNavigationBar(
         automaticallyImplyLeading: false,
-        middle: Text('Biometrics'),
+        middle: Text(l10n.biometricsTitle),
       ),
       child: SafeArea(
         child: Center(
@@ -30,18 +33,18 @@ class AuthSetupBiometricStep extends StatelessWidget {
                   color: CupertinoColors.systemGrey,
                 ),
                 const SizedBox(height: 24),
-                const Text(
-                  'Enable Biometrics',
-                  style: TextStyle(
+                Text(
+                  l10n.enableBiometricsHeading,
+                  style: const TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
                   ),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 16),
-                const Text(
-                  'Use FaceID or TouchID to log in faster without typing your PIN.',
-                  style: TextStyle(
+                Text(
+                  l10n.biometricsDescription,
+                  style: const TextStyle(
                     fontSize: 16,
                     color: CupertinoColors.systemGrey,
                   ),
@@ -52,7 +55,7 @@ class AuthSetupBiometricStep extends StatelessWidget {
                   width: double.infinity,
                   child: CupertinoButton.filled(
                     onPressed: onEnable,
-                    child: const Text('Enable Biometrics'),
+                    child: Text(l10n.enableBiometricsButton),
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -60,7 +63,7 @@ class AuthSetupBiometricStep extends StatelessWidget {
                   width: double.infinity,
                   child: CupertinoButton(
                     onPressed: onSkip,
-                    child: const Text('Skip for now'),
+                    child: Text(l10n.skipForNowButton),
                   ),
                 ),
               ],

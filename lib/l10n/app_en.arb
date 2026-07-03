@@ -1,0 +1,23 @@
+{
+  "preferences": "Preferences",
+  "language": "Language",
+  "currency": "Currency",
+  "continueButton": "Continue",
+  "backButton": "Back",
+  "selectCurrency": "Select Currency",
+  "searchCurrencies": "Search currencies",
+  "welcomeTitle": "Welcome",
+  "welcomeHeading": "Welcome to Ledger",
+  "welcomeDescription": "The simplest way to track your expenses, manage your accounts, and secure your financial data.",
+  "getStartedButton": "Get Started",
+  "biometricsTitle": "Biometrics",
+  "enableBiometricsHeading": "Enable Biometrics",
+  "biometricsDescription": "Use FaceID or TouchID to log in faster without typing your PIN.",
+  "enableBiometricsButton": "Enable Biometrics",
+  "skipForNowButton": "Skip for now",
+  "securitySetupTitle": "Security Setup",
+  "secureYourLedgerHeading": "Secure your Ledger",
+  "setupPinDescription": "Would you like to set up a PIN code to protect your financial data?",
+  "setupPinButton": "Set Up PIN Code",
+  "skipButton": "Skip"
+}

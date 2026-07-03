@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:ledger_app/core/localization/localization_build_context_x.dart';
 
 class AuthSetupIntroStep extends StatelessWidget {
   const AuthSetupIntroStep({
@@ -12,9 +13,11 @@ class AuthSetupIntroStep extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
     return CupertinoPageScaffold(
-      navigationBar: const CupertinoNavigationBar(
-        middle: Text('Security Setup'),
+      navigationBar: CupertinoNavigationBar(
+        middle: Text(l10n.securitySetupTitle),
       ),
       child: SafeArea(
         child: Center(
@@ -29,18 +32,18 @@ class AuthSetupIntroStep extends StatelessWidget {
                   color: CupertinoColors.systemGrey,
                 ),
                 const SizedBox(height: 24),
-                const Text(
-                  'Secure your Ledger',
-                  style: TextStyle(
+                Text(
+                  l10n.secureYourLedgerHeading,
+                  style: const TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
                   ),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 16),
-                const Text(
-                  'Would you like to set up a PIN code to protect your financial data?',
-                  style: TextStyle(
+                Text(
+                  l10n.setupPinDescription,
+                  style: const TextStyle(
                     fontSize: 16,
                     color: CupertinoColors.systemGrey,
                   ),
@@ -51,7 +54,7 @@ class AuthSetupIntroStep extends StatelessWidget {
                   width: double.infinity,
                   child: CupertinoButton.filled(
                     onPressed: onSetupPin,
-                    child: const Text('Set Up PIN Code'),
+                    child: Text(l10n.setupPinButton),
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -59,7 +62,7 @@ class AuthSetupIntroStep extends StatelessWidget {
                   width: double.infinity,
                   child: CupertinoButton(
                     onPressed: onSkip,
-                    child: const Text('Skip'),
+                    child: Text(l10n.skipButton),
                   ),
                 ),
               ],

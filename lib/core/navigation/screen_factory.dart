@@ -11,12 +11,21 @@ import 'package:ledger_app/features/auth/view/screens/auth_setup_screen.dart';
 import 'package:ledger_app/features/onboarding/view/cubit/onboarding_cubit.dart';
 import 'package:ledger_app/features/onboarding/view/screens/onboarding_welcome_screen.dart';
 import 'package:ledger_app/features/onboarding/view/screens/onboarding_wrapper_screen.dart';
+import 'package:ledger_app/features/settings/view/cubit/settings_cubit.dart';
+import 'package:ledger_app/features/settings/view/screens/settings_setup_screen.dart';
 
 abstract class ScreenFactory {
   static Widget renderApplication() {
     return NavigationServiceProvider(
       navigationService: getIt(),
-      child: Application(router: getIt()),
+      child: BlocProvider(
+        create: (context) {
+          final SettingsCubit cubit = getIt<SettingsCubit>();
+          unawaited(cubit.initialize());
+          return cubit;
+        },
+        child: Application(router: getIt()),
+      ),
     );
   }
 
@@ -42,6 +51,12 @@ abstract class ScreenFactory {
     );
   }
 
+  static Widget renderSettingsSetupScreen() {
+    return _renderOnboardingWrapper(
+      builder: (onComplete) => SettingsSetupScreen(onSetupComplete: onComplete),
+    );
+  }
+
   static Widget renderAuthSetupScreen() {
     return BlocProvider<AuthCubit>(
       create: (context) {
@@ -56,10 +71,6 @@ abstract class ScreenFactory {
   }
 
   static Widget renderAccountsSetupScreen() {
-    return const Placeholder();
-  }
-
-  static Widget renderSettingsSetupScreen() {
     return const Placeholder();
   }
 

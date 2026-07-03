@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:ledger_app/core/localization/localization_build_context_x.dart';
 
 class OnboardingWelcomingScreen extends StatelessWidget {
   const OnboardingWelcomingScreen({
@@ -10,9 +11,11 @@ class OnboardingWelcomingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
     return CupertinoPageScaffold(
-      navigationBar: const CupertinoNavigationBar(
-        middle: Text('Welcome'),
+      navigationBar: CupertinoNavigationBar(
+        middle: Text(l10n.welcomeTitle),
       ),
       child: SafeArea(
         child: Center(
@@ -27,18 +30,18 @@ class OnboardingWelcomingScreen extends StatelessWidget {
                   color: CupertinoColors.systemGrey,
                 ),
                 const SizedBox(height: 24),
-                const Text(
-                  'Welcome to Ledger',
-                  style: TextStyle(
+                Text(
+                  l10n.welcomeHeading,
+                  style: const TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
                   ),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 16),
-                const Text(
-                  'The simplest way to track your expenses, manage your accounts, and secure your financial data.',
-                  style: TextStyle(
+                Text(
+                  l10n.welcomeDescription,
+                  style: const TextStyle(
                     fontSize: 16,
                     color: CupertinoColors.systemGrey,
                   ),
@@ -49,7 +52,7 @@ class OnboardingWelcomingScreen extends StatelessWidget {
                   width: double.infinity,
                   child: CupertinoButton.filled(
                     onPressed: onGetStarted,
-                    child: const Text('Get Started'),
+                    child: Text(l10n.getStartedButton),
                   ),
                 ),
               ],

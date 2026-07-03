@@ -16,6 +16,8 @@ enum RouteDefinition {
 }
 
 sealed class NavigationRoute {
+  const NavigationRoute();
+
   RouteDefinition get definition;
 
   Map<String, String> get pathParameters => {};

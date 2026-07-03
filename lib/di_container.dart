@@ -23,6 +23,12 @@ import 'package:ledger_app/features/onboarding/domain/use_cases/complete_onboard
 import 'package:ledger_app/features/onboarding/domain/use_cases/get_onboarding_progress_use_case.dart';
 import 'package:ledger_app/features/onboarding/domain/use_cases/set_onboarding_progress_use_case.dart';
 import 'package:ledger_app/features/onboarding/view/cubit/onboarding_cubit.dart';
+import 'package:ledger_app/features/settings/data/providers/settings_storage_provider.dart';
+import 'package:ledger_app/features/settings/data/repositories/settings_repository_impl.dart';
+import 'package:ledger_app/features/settings/domain/repositories/settings_repository.dart';
+import 'package:ledger_app/features/settings/domain/use_cases/get_app_settings_use_case.dart';
+import 'package:ledger_app/features/settings/domain/use_cases/save_app_settings_use_case.dart';
+import 'package:ledger_app/features/settings/view/cubit/settings_cubit.dart';
 import 'package:local_auth/local_auth.dart';
 
 final GetIt getIt = GetIt.instance;
@@ -74,6 +80,9 @@ void _providers() {
     ..registerLazySingleton<AuthBiometricProvider>(
       () => AuthBiometricProviderImpl(localAuth: getIt()),
     )
+    ..registerLazySingleton<SettingsStorageProvider>(
+      () => SettingsStorageProviderImpl(secureStorage: getIt()),
+    )
     ..registerLazySingleton<OnboardingStorageProvider>(
       () => OnboardingStorageProviderImpl(secureStorage: getIt()),
     );
@@ -99,6 +108,7 @@ void _repositories() {
       return repository;
     })
     ..registerLazySingleton<OnboardingRepository>(getIt.call<OnboardingRepositoryImpl>)
+    ..registerLazySingleton<SettingsRepository>(() => SettingsRepositoryImpl(storageProvider: getIt()))
     ..registerLazySingleton<OnboardingStatusContract>(getIt.call<OnboardingRepositoryImpl>);
 }
 
@@ -110,6 +120,8 @@ void _useCases() {
     ..registerLazySingleton(() => ToggleBiometricsUseCase(repository: getIt()))
     ..registerLazySingleton(() => SetOnboardingProgressUseCase(repository: getIt()))
     ..registerLazySingleton(() => GetOnboardingProgressUseCase(repository: getIt()))
+    ..registerLazySingleton(() => GetAppSettingsUseCase(repository: getIt()))
+    ..registerLazySingleton(() => SaveAppSettingsUseCase(repository: getIt()))
     ..registerLazySingleton(() => CompleteOnboardingUseCase(repository: getIt()));
 }
 
@@ -121,6 +133,12 @@ void _cubits() {
         getSecuritySettings: getIt(),
         toggleBiometrics: getIt(),
         checkBiometricAvailability: getIt(),
+      ),
+    )
+    ..registerFactory<SettingsCubit>(
+      () => SettingsCubit(
+        getAppSettings: getIt(),
+        saveAppSettings: getIt(),
       ),
     )
     ..registerFactory<OnboardingCubit>(

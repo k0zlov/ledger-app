@@ -1,73 +1,88 @@
+import 'dart:async';
+
+import 'package:bloc_presentation/bloc_presentation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fpdart/fpdart.dart';
+import 'package:ledger_app/core/failures/failures.dart';
 import 'package:ledger_app/core/use_case/use_case.dart';
-import 'package:ledger_app/features/auth/domain/use_cases/check_biometrics_availability_use_case.dart';
-import 'package:ledger_app/features/auth/domain/use_cases/enable_biometrics_use_case.dart';
-import 'package:ledger_app/features/auth/domain/use_cases/setup_pin_code_use_case.dart';
+import 'package:ledger_app/features/auth/domain/entities/security_settings.dart';
+import 'package:ledger_app/features/auth/domain/use_cases/check_biometric_availability_use_case.dart';
+import 'package:ledger_app/features/auth/domain/use_cases/get_security_settings_use_case.dart';
+import 'package:ledger_app/features/auth/domain/use_cases/set_pin_code_use_case.dart';
+import 'package:ledger_app/features/auth/domain/use_cases/toggle_biometrics_use_case.dart';
+import 'package:ledger_app/features/auth/view/cubit/auth_effect.dart';
 
 part 'auth_state.dart';
 
-class AuthCubit extends Cubit<AuthState> {
+class AuthCubit extends Cubit<AuthState> with BlocPresentationMixin<AuthState, AuthEffect> {
   AuthCubit({
-    required this._setupPinCode,
-    required this._checkBiometricsAvailability,
-    required this._enableBiometrics,
+    required this._setPinCode,
+    required this._getSecuritySettings,
+    required this._toggleBiometrics,
+    required this._checkBiometricAvailability,
   }) : super(const AuthState());
 
-  final SetupPinCodeUseCase _setupPinCode;
-  final CheckBiometricsAvailabilityUseCase _checkBiometricsAvailability;
-  final EnableBiometricsUseCase _enableBiometrics;
+  final SetPinCodeUseCase _setPinCode;
+  final GetSecuritySettingsUseCase _getSecuritySettings;
+  final ToggleBiometricsUseCase _toggleBiometrics;
+  final CheckBiometricAvailabilityUseCase _checkBiometricAvailability;
 
-  Future<void> checkBiometricsAvailability() async {
-    final result = await _checkBiometricsAvailability(NoParams());
+  Future<void> initialize() async {
+    final List<dynamic> results = await Future.wait([
+      _getSecuritySettings(NoParams()),
+      _checkBiometricAvailability(NoParams()),
+    ]);
+
+    final Either<Failure, SecuritySettings> settingsResult = results[0] as Either<Failure, SecuritySettings>;
+    final Either<Failure, bool> availabilityResult = results[1] as Either<Failure, bool>;
+
+    settingsResult.fold(
+      (failure) {},
+      (settings) => emit(state.copyWith(securitySettings: settings)),
+    );
+
+    availabilityResult.fold(
+      (failure) {},
+      (isAvailable) => emit(state.copyWith(isBiometricsAvailable: isAvailable)),
+    );
+  }
+
+  Future<void> setupPin(String pin) async {
+    final Either<Failure, SecuritySettings?> result = await _setPinCode(
+      SetPinCodeParams(
+        pin: pin,
+        currentSettings: state.securitySettings,
+      ),
+    );
 
     result.fold(
-      (failure) => emit(
-        state.copyWith(
-          status: AuthStatus.failure,
-        ),
-      ),
-      (isAvailable) => emit(
-        state.copyWith(
-          isBiometricsAvailable: isAvailable,
-        ),
-      ),
+      (failure) {
+        emitPresentation(PinSetupFailed());
+      },
+      (settings) {
+        emit(state.copyWith(securitySettings: settings));
+
+        emitPresentation(PinSetupSucceeded());
+      },
     );
   }
 
   Future<void> toggleBiometrics(String localizedReason) async {
-    final result = await _enableBiometrics(localizedReason);
-
-    result.fold(
-      (failure) => emit(
-        state.copyWith(
-          status: AuthStatus.failure,
-          isBiometricsEnabled: false,
-        ),
-      ),
-      (isAuthenticated) => emit(
-        state.copyWith(
-          isBiometricsEnabled: isAuthenticated,
-        ),
+    final Either<Failure, SecuritySettings> result = await _toggleBiometrics(
+      ToggleBiometricsParams(
+        reason: localizedReason,
+        currentSettings: state.securitySettings,
       ),
     );
-  }
-
-  Future<void> submitPin(String pin) async {
-    emit(state.copyWith(status: AuthStatus.loading));
-
-    final result = await _setupPinCode(pin);
 
     result.fold(
-      (failure) => emit(
-        state.copyWith(
-          status: AuthStatus.failure,
-        ),
-      ),
-      (_) => emit(
-        state.copyWith(
-          status: AuthStatus.success,
-        ),
-      ),
+      (failure) {
+        emitPresentation(BiometricFailed());
+      },
+      (settings) {
+        emit(state.copyWith(securitySettings: settings));
+        emitPresentation(BiometricSucceeded());
+      },
     );
   }
 }

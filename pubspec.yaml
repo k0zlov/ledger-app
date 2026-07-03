@@ -24,6 +24,8 @@ dependencies:
   collection: ^1.19.1
   path_provider: ^2.1.6
   local_auth: ^3.0.1
+  bloc_presentation: ^1.1.2+3
+  meta: ^1.18.0
 
 dev_dependencies:
   flutter_test:

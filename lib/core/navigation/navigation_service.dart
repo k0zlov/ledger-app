@@ -10,12 +10,22 @@ abstract interface class NavigationService {
   Future<T?> replace<T extends Object>(NavigationRoute route);
 
   void pop<T extends Object>([T? result]);
+
+  String? get currentRouteName;
 }
 
 class GoRouterNavigationService implements NavigationService {
   const GoRouterNavigationService({required this.router});
 
   final GoRouter router;
+
+  @override
+  String? get currentRouteName {
+    final matches = router.routerDelegate.currentConfiguration.matches;
+    if (matches.isEmpty) return null;
+
+    return router.state.name;
+  }
 
   @override
   void go(NavigationRoute route) {

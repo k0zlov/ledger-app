@@ -1,27 +1,21 @@
 part of 'auth_cubit.dart';
 
-enum AuthStatus { initial, loading, success, failure }
-
 class AuthState {
   const AuthState({
-    this.status = AuthStatus.initial,
     this.isBiometricsAvailable = false,
-    this.isBiometricsEnabled = false,
+    this.securitySettings = const SecuritySettings(),
   });
 
-  final AuthStatus status;
   final bool isBiometricsAvailable;
-  final bool isBiometricsEnabled;
+  final SecuritySettings securitySettings;
 
   AuthState copyWith({
-    AuthStatus? status,
     bool? isBiometricsAvailable,
-    bool? isBiometricsEnabled,
+    SecuritySettings? securitySettings,
   }) {
     return AuthState(
-      status: status ?? this.status,
       isBiometricsAvailable: isBiometricsAvailable ?? this.isBiometricsAvailable,
-      isBiometricsEnabled: isBiometricsEnabled ?? this.isBiometricsEnabled,
+      securitySettings: securitySettings ?? this.securitySettings,
     );
   }
 }

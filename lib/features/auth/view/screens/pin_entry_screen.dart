@@ -9,14 +9,16 @@ class PinEntryScreen extends StatefulWidget {
     required this.repeatCode,
     required this.onSubmit,
     this.onBack,
-    this.onBiometricsButton,
+    this.onBiometrics,
+    this.autoTriggerBiometrics = false,
     super.key,
   });
 
   final bool repeatCode;
   final FutureOr<bool> Function(String) onSubmit;
   final VoidCallback? onBack;
-  final FutureOr<bool> Function()? onBiometricsButton;
+  final FutureOr<bool> Function()? onBiometrics;
+  final bool autoTriggerBiometrics;
 
   @override
   State<PinEntryScreen> createState() => _PinEntryScreenState();
@@ -40,6 +42,14 @@ class _PinEntryScreenState extends State<PinEntryScreen> with SingleTickerProvid
       duration: const Duration(milliseconds: 400),
     );
     _shakeAnimation = Tween<double>(begin: 0, end: 1).animate(_shakeController);
+
+    if (widget.autoTriggerBiometrics && widget.onBiometrics != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          unawaited(_handleBiometrics());
+        }
+      });
+    }
   }
 
   @override
@@ -95,13 +105,13 @@ class _PinEntryScreenState extends State<PinEntryScreen> with SingleTickerProvid
   }
 
   Future<void> _handleBiometrics() async {
-    if (widget.onBiometricsButton == null || _isProcessing) return;
+    if (widget.onBiometrics == null || _isProcessing) return;
 
     setState(() {
       _isProcessing = true;
     });
 
-    final success = await widget.onBiometricsButton!();
+    final success = await widget.onBiometrics!();
 
     if (success) {
       _triggerSuccess();
@@ -190,7 +200,7 @@ class _PinEntryScreenState extends State<PinEntryScreen> with SingleTickerProvid
               PinPad(
                 onKeyPressed: _handleKeyPressed,
                 onBackspace: _handleBackspace,
-                onBiometricsButton: widget.onBiometricsButton != null ? _handleBiometrics : null,
+                onBiometricsButton: widget.onBiometrics != null ? _handleBiometrics : null,
               ),
             ],
           ),

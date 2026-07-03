@@ -1,61 +1,76 @@
+import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ledger_app/core/navigation/app_status_service.dart';
+import 'package:ledger_app/core/contracts/auth_state_contract.dart';
+import 'package:ledger_app/core/contracts/onboarding_status_contract.dart';
+import 'package:ledger_app/core/navigation/navigation_refresh_stream.dart';
 import 'package:ledger_app/core/navigation/navigation_routes.dart';
-import 'package:ledger_app/core/navigation/navigation_service.dart';
 import 'package:ledger_app/core/navigation/screen_factory.dart';
 
-GoRouter createRouter(AppStatusService appStatusService) {
+GoRouter createRouter({
+  required AuthStatusContract authStatus,
+  required OnboardingStatusContract onboardingStatus,
+}) {
   return GoRouter(
     initialLocation: '/',
-    refreshListenable: appStatusService.statusListenable,
+    refreshListenable: Listenable.merge([
+      NavigationRefreshStream(stream: authStatus.lockStateStream),
+      NavigationRefreshStream(stream: onboardingStatus.completeStream),
+    ]),
     redirect: (context, state) {
       final String currentLocation = state.matchedLocation;
-      final AppStatus currentAppStatus = appStatusService.currentStatus;
+
+      final bool isLocked = authStatus.isLocked;
+      final bool isOnboardingComplete = onboardingStatus.isOnboardingComplete;
 
       final String onboardingPath = RouteDefinition.onboarding.path;
       final bool isOnOnboarding = currentLocation.startsWith(onboardingPath);
 
-      if (currentAppStatus == .onboarding && !isOnOnboarding) {
-        return RouteDefinition.onboarding.path;
+      final String lockPath = RouteDefinition.lock.path;
+      final bool isOnLockScreen = currentLocation == lockPath;
+
+      if (!isOnboardingComplete) {
+        return isOnOnboarding ? null : onboardingPath;
       }
 
-      if (currentAppStatus == .ready && isOnOnboarding) {
-        return '/';
+      if (isLocked) {
+        return isOnLockScreen ? null : lockPath;
+      }
+
+      if (isOnOnboarding || isOnLockScreen) {
+        return RouteDefinition.dashboard.path;
       }
 
       return null;
     },
     routes: [
-      GoRoute(
-        name: RouteDefinition.onboarding.name,
-        path: RouteDefinition.onboarding.path,
-        builder: (context, state) => ScreenFactory.renderOnboardingWelcomingScreen(
-          onGetStarted: () async {
-            await context.navigator.push(AuthSetupRoute());
-          },
-        ),
+      ShellRoute(
+        builder: (context, state, child) => ScreenFactory.renderOnboardingShell(child),
         routes: [
           GoRoute(
-            name: RouteDefinition.authSetup.name,
-            path: RouteDefinition.authSetup.path,
-            builder: (context, state) => ScreenFactory.renderAuthSetupScreen(
-              onSetupComplete: () async {
-                await context.navigator.push(SettingsSetupRoute());
-              },
-            ),
-          ),
-          GoRoute(
-            name: RouteDefinition.settingsSetup.name,
-            path: RouteDefinition.settingsSetup.path,
-            builder: (context, state) => ScreenFactory.renderSettingsSetupScreen(),
-          ),
-          GoRoute(
-            name: RouteDefinition.accountsSetup.name,
-            path: RouteDefinition.accountsSetup.path,
-            builder: (context, state) => ScreenFactory.renderAccountsSetupScreen(),
+            name: RouteDefinition.onboarding.name,
+            path: RouteDefinition.onboarding.path,
+            builder: (context, state) => ScreenFactory.renderOnboardingWelcomingScreen(),
+            routes: [
+              GoRoute(
+                name: RouteDefinition.authSetup.name,
+                path: RouteDefinition.authSetup.path,
+                builder: (context, state) => ScreenFactory.renderAuthSetupScreen(),
+              ),
+              GoRoute(
+                name: RouteDefinition.settingsSetup.name,
+                path: RouteDefinition.settingsSetup.path,
+                builder: (context, state) => ScreenFactory.renderSettingsSetupScreen(),
+              ),
+              GoRoute(
+                name: RouteDefinition.accountsSetup.name,
+                path: RouteDefinition.accountsSetup.path,
+                builder: (context, state) => ScreenFactory.renderAccountsSetupScreen(),
+              ),
+            ],
           ),
         ],
       ),
+
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) => ScreenFactory.renderNavigationWrapper(navigationShell),
         branches: [

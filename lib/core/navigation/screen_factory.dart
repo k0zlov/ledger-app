@@ -1,29 +1,58 @@
+import 'dart:async';
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ledger_app/application.dart';
 import 'package:ledger_app/core/navigation/navigation_service.dart';
+import 'package:ledger_app/di_container.dart';
 import 'package:ledger_app/features/auth/view/cubit/auth_cubit.dart';
 import 'package:ledger_app/features/auth/view/screens/auth_setup_screen.dart';
+import 'package:ledger_app/features/onboarding/view/cubit/onboarding_cubit.dart';
 import 'package:ledger_app/features/onboarding/view/screens/onboarding_welcome_screen.dart';
+import 'package:ledger_app/features/onboarding/view/screens/onboarding_wrapper_screen.dart';
 
 abstract class ScreenFactory {
-  static Widget renderApplication({
-    required GoRouter router,
-    required NavigationService navigationService,
-    required AuthCubit authCubit,
-  }) {
+  static Widget renderApplication() {
     return NavigationServiceProvider(
-      navigationService: navigationService,
-      child: BlocProvider.value(
-        value: authCubit,
-        child: Application(router: router),
-      ),
+      navigationService: getIt(),
+      child: Application(router: getIt()),
     );
   }
 
-  static Widget renderOnboardingWelcomingScreen({required VoidCallback onGetStarted}) {
-    return OnboardingWelcomingScreen(onGetStarted: onGetStarted);
+  static Widget renderOnboardingShell(Widget child) {
+    return BlocProvider<OnboardingCubit>(
+      lazy: false,
+      create: (context) {
+        final OnboardingCubit cubit = getIt<OnboardingCubit>();
+        unawaited(cubit.initialize());
+        return cubit;
+      },
+      child: child,
+    );
+  }
+
+  static Widget _renderOnboardingWrapper({required OnboardingChildBuilder builder}) {
+    return OnboardingWrapperScreen(builder: builder);
+  }
+
+  static Widget renderOnboardingWelcomingScreen() {
+    return _renderOnboardingWrapper(
+      builder: (onComplete) => OnboardingWelcomingScreen(onGetStarted: onComplete),
+    );
+  }
+
+  static Widget renderAuthSetupScreen() {
+    return BlocProvider<AuthCubit>(
+      create: (context) {
+        final AuthCubit cubit = getIt();
+        unawaited(cubit.initialize());
+        return cubit;
+      },
+      child: _renderOnboardingWrapper(
+        builder: (onComplete) => AuthSetupScreen(onSetupComplete: onComplete),
+      ),
+    );
   }
 
   static Widget renderAccountsSetupScreen() {
@@ -32,10 +61,6 @@ abstract class ScreenFactory {
 
   static Widget renderSettingsSetupScreen() {
     return const Placeholder();
-  }
-
-  static Widget renderAuthSetupScreen({required VoidCallback onSetupComplete}) {
-    return AuthSetupScreen(onSetupComplete: onSetupComplete);
   }
 
   static Widget renderDashboardScreen() {

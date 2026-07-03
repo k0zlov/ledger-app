@@ -1,4 +1,5 @@
 enum RouteDefinition {
+  lock('/lock'),
   onboarding('/onboarding'),
   accountsSetup('accounts-setup'),
   settingsSetup('settings-setup'),

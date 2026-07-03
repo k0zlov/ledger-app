@@ -1,9 +1,15 @@
-abstract interface class AuthRepository {
-  Future<void> setupPinCode(String pin);
+import 'package:ledger_app/features/auth/domain/entities/security_settings.dart';
 
-  Future<bool> verifyPin(String pin);
+abstract interface class AuthRepository {
+  Future<SecuritySettings> getSecuritySettings();
+
+  Future<void> updateSecuritySettings(SecuritySettings settings);
+
+  Future<void> setPinCode(String pin);
+
+  Future<bool> authenticateWithPin(String pin);
 
   Future<bool> checkBiometricsAvailability();
 
-  Future<bool> enableBiometrics(String reason);
+  Future<bool> authenticateWithBiometrics(String reason);
 }

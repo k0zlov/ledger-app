@@ -5,6 +5,7 @@ enum SecureStorageKey {
   onboardingProgress,
   securitySettings,
   securityPinCode,
+  appSettings,
 }
 
 abstract interface class SecureStorage {

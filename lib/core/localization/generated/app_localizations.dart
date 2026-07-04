@@ -225,6 +225,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Skip'**
   String get skipButton;
+
+  /// No description provided for @accountsSetupTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Accounts Setup'**
+  String get accountsSetupTitle;
+
+  /// No description provided for @addAccountTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Account'**
+  String get addAccountTitle;
+
+  /// No description provided for @editAccountTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Account'**
+  String get editAccountTitle;
+
+  /// No description provided for @noAccountsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No accounts yet.'**
+  String get noAccountsYet;
+
+  /// No description provided for @accountNamePlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g., Chase Checking'**
+  String get accountNamePlaceholder;
+
+  /// No description provided for @accountTypeCash.
+  ///
+  /// In en, this message translates to:
+  /// **'Cash'**
+  String get accountTypeCash;
+
+  /// No description provided for @accountTypeBank.
+  ///
+  /// In en, this message translates to:
+  /// **'Bank'**
+  String get accountTypeBank;
+
+  /// No description provided for @accountTypeCredit.
+  ///
+  /// In en, this message translates to:
+  /// **'Credit'**
+  String get accountTypeCredit;
+
+  /// No description provided for @accountTypeInvestment.
+  ///
+  /// In en, this message translates to:
+  /// **'Invest'**
+  String get accountTypeInvestment;
+
+  /// No description provided for @cancelButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancelButton;
+
+  /// No description provided for @deleteButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get deleteButton;
+
+  /// No description provided for @saveButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get saveButton;
 }
 
 class _AppLocalizationsDelegate

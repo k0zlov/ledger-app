@@ -73,4 +73,40 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get skipButton => 'Skip';
+
+  @override
+  String get accountsSetupTitle => 'Accounts Setup';
+
+  @override
+  String get addAccountTitle => 'Add Account';
+
+  @override
+  String get editAccountTitle => 'Edit Account';
+
+  @override
+  String get noAccountsYet => 'No accounts yet.';
+
+  @override
+  String get accountNamePlaceholder => 'e.g., Chase Checking';
+
+  @override
+  String get accountTypeCash => 'Cash';
+
+  @override
+  String get accountTypeBank => 'Bank';
+
+  @override
+  String get accountTypeCredit => 'Credit';
+
+  @override
+  String get accountTypeInvestment => 'Invest';
+
+  @override
+  String get cancelButton => 'Cancel';
+
+  @override
+  String get deleteButton => 'Delete';
+
+  @override
+  String get saveButton => 'Save';
 }

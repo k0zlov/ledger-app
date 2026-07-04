@@ -19,5 +19,17 @@
   "secureYourLedgerHeading": "Secure your Ledger",
   "setupPinDescription": "Would you like to set up a PIN code to protect your financial data?",
   "setupPinButton": "Set Up PIN Code",
-  "skipButton": "Skip"
+  "skipButton": "Skip",
+  "accountsSetupTitle": "Accounts Setup",
+  "addAccountTitle": "Add Account",
+  "editAccountTitle": "Edit Account",
+  "noAccountsYet": "No accounts yet.",
+  "accountNamePlaceholder": "e.g., Chase Checking",
+  "accountTypeCash": "Cash",
+  "accountTypeBank": "Bank",
+  "accountTypeCredit": "Credit",
+  "accountTypeInvestment": "Invest",
+  "cancelButton": "Cancel",
+  "deleteButton": "Delete",
+  "saveButton": "Save"
 }

@@ -3,11 +3,15 @@ import 'package:drift_flutter/drift_flutter.dart';
 import 'package:ledger_app/core/database/tables/accounts.dart';
 import 'package:ledger_app/core/database/tables/categories.dart';
 import 'package:ledger_app/core/database/tables/transactions.dart';
+import 'package:ledger_app/core/database/views/account_balances_view.dart';
 import 'package:path_provider/path_provider.dart';
 
 part 'database.g.dart';
 
-@DriftDatabase(tables: [Accounts, Categories, Transactions])
+@DriftDatabase(
+  tables: [Accounts, Categories, Transactions],
+  views: [AccountBalancesView],
+)
 class Database extends _$Database {
   Database([QueryExecutor? executor]) : super(executor ?? _openConnection());
 

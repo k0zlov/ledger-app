@@ -4,9 +4,17 @@ import 'package:go_router/go_router.dart';
 import 'package:ledger_app/core/contracts/auth_state_contract.dart';
 import 'package:ledger_app/core/contracts/onboarding_status_contract.dart';
 import 'package:ledger_app/core/database/database.dart';
+import 'package:ledger_app/core/domain/repositories/account_repository.dart';
+import 'package:ledger_app/core/domain/use_cases/watch_accounts_use_case.dart';
 import 'package:ledger_app/core/navigation/navigation_service.dart';
 import 'package:ledger_app/core/navigation/router.dart';
 import 'package:ledger_app/core/secure_storage/secure_storage.dart';
+import 'package:ledger_app/features/accounts/data/providers/account_storage_provider.dart';
+import 'package:ledger_app/features/accounts/data/repositories/account_repository_impl.dart';
+import 'package:ledger_app/features/accounts/domain/use_cases/add_account_use_case.dart';
+import 'package:ledger_app/features/accounts/domain/use_cases/delete_account_use_case.dart';
+import 'package:ledger_app/features/accounts/domain/use_cases/update_account_use_case.dart';
+import 'package:ledger_app/features/accounts/view/cubit/accounts_cubit.dart';
 import 'package:ledger_app/features/auth/data/providers/auth_biometric_provider.dart';
 import 'package:ledger_app/features/auth/data/providers/auth_storage_provider.dart';
 import 'package:ledger_app/features/auth/data/repositories/auth_repository_impl.dart';
@@ -83,6 +91,9 @@ void _providers() {
     ..registerLazySingleton<SettingsStorageProvider>(
       () => SettingsStorageProviderImpl(secureStorage: getIt()),
     )
+    ..registerLazySingleton<AccountStorageProvider>(
+      () => AccountStorageProviderImpl(db: getIt()),
+    )
     ..registerLazySingleton<OnboardingStorageProvider>(
       () => OnboardingStorageProviderImpl(secureStorage: getIt()),
     );
@@ -109,6 +120,7 @@ void _repositories() {
     })
     ..registerLazySingleton<OnboardingRepository>(getIt.call<OnboardingRepositoryImpl>)
     ..registerLazySingleton<SettingsRepository>(() => SettingsRepositoryImpl(storageProvider: getIt()))
+    ..registerLazySingleton<AccountRepository>(() => AccountRepositoryImpl(storageProvider: getIt()))
     ..registerLazySingleton<OnboardingStatusContract>(getIt.call<OnboardingRepositoryImpl>);
 }
 
@@ -122,6 +134,10 @@ void _useCases() {
     ..registerLazySingleton(() => GetOnboardingProgressUseCase(repository: getIt()))
     ..registerLazySingleton(() => GetAppSettingsUseCase(repository: getIt()))
     ..registerLazySingleton(() => SaveAppSettingsUseCase(repository: getIt()))
+    ..registerLazySingleton(() => WatchAccountsUseCase(repository: getIt()))
+    ..registerLazySingleton(() => AddAccountUseCase(repository: getIt()))
+    ..registerLazySingleton(() => DeleteAccountUseCase(repository: getIt()))
+    ..registerLazySingleton(() => UpdateAccountUseCase(repository: getIt()))
     ..registerLazySingleton(() => CompleteOnboardingUseCase(repository: getIt()));
 }
 
@@ -139,6 +155,14 @@ void _cubits() {
       () => SettingsCubit(
         getAppSettings: getIt(),
         saveAppSettings: getIt(),
+      ),
+    )
+    ..registerFactory<AccountsCubit>(
+      () => AccountsCubit(
+        watchAccounts: getIt(),
+        addAccount: getIt(),
+        deleteAccount: getIt(),
+        updateAccount: getIt(),
       ),
     )
     ..registerFactory<OnboardingCubit>(

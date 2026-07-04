@@ -97,6 +97,7 @@ class _AuthSetupScreenState extends State<AuthSetupScreen> {
                 key: const ValueKey('biometrics'),
                 onEnable: _handleBiometricEnable,
                 onSkip: widget.onSetupComplete,
+                onBack: () => _pushStep(_AuthSetupStep.pin),
               );
           }
         }(),

@@ -3,6 +3,7 @@ import 'package:ledger_app/core/localization/localization_build_context_x.dart';
 
 class AuthSetupBiometricStep extends StatelessWidget {
   const AuthSetupBiometricStep({
+    required this.onBack,
     required this.onEnable,
     required this.onSkip,
     super.key,
@@ -10,6 +11,7 @@ class AuthSetupBiometricStep extends StatelessWidget {
 
   final VoidCallback onEnable;
   final VoidCallback onSkip;
+  final VoidCallback onBack;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +19,11 @@ class AuthSetupBiometricStep extends StatelessWidget {
 
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
-        automaticallyImplyLeading: false,
+        leading: CupertinoButton(
+          padding: EdgeInsets.zero,
+          onPressed: onBack,
+          child: const Icon(CupertinoIcons.back),
+        ),
         middle: Text(l10n.biometricsTitle),
       ),
       child: SafeArea(

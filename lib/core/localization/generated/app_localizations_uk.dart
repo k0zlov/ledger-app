@@ -73,4 +73,40 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get skipButton => 'Пропустити';
+
+  @override
+  String get accountsSetupTitle => 'Налаштування рахунків';
+
+  @override
+  String get addAccountTitle => 'Додати рахунок';
+
+  @override
+  String get editAccountTitle => 'Редагувати рахунок';
+
+  @override
+  String get noAccountsYet => 'Поки немає рахунків.';
+
+  @override
+  String get accountNamePlaceholder => 'напр., Мій рахунок';
+
+  @override
+  String get accountTypeCash => 'Готівка';
+
+  @override
+  String get accountTypeBank => 'Банк';
+
+  @override
+  String get accountTypeCredit => 'Кредит';
+
+  @override
+  String get accountTypeInvestment => 'Інвест';
+
+  @override
+  String get cancelButton => 'Скасувати';
+
+  @override
+  String get deleteButton => 'Видалити';
+
+  @override
+  String get saveButton => 'Зберегти';
 }

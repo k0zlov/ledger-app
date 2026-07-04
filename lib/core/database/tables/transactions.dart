@@ -4,7 +4,7 @@ import 'package:ledger_app/core/database/tables/categories.dart';
 
 enum TransactionType { expense, income }
 
-@DataClassName('TransactionRow')
+@DataClassName('TransactionModel')
 class Transactions extends Table {
   TextColumn get id => text()();
 

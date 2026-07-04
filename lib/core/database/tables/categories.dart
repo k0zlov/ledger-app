@@ -6,7 +6,7 @@ enum CategoryType {
   income,
 }
 
-@DataClassName('CategoryRow')
+@DataClassName('CategoryModel')
 class Categories extends Table {
   TextColumn get id => text()();
 

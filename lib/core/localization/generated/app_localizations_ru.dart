@@ -73,4 +73,40 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get skipButton => 'Пропустить';
+
+  @override
+  String get accountsSetupTitle => 'Настройка счетов';
+
+  @override
+  String get addAccountTitle => 'Добавить счет';
+
+  @override
+  String get editAccountTitle => 'Редактировать счет';
+
+  @override
+  String get noAccountsYet => 'Пока нет счетов.';
+
+  @override
+  String get accountNamePlaceholder => 'напр., Мой счет';
+
+  @override
+  String get accountTypeCash => 'Наличные';
+
+  @override
+  String get accountTypeBank => 'Банк';
+
+  @override
+  String get accountTypeCredit => 'Кредит';
+
+  @override
+  String get accountTypeInvestment => 'Инвест';
+
+  @override
+  String get cancelButton => 'Отмена';
+
+  @override
+  String get deleteButton => 'Удалить';
+
+  @override
+  String get saveButton => 'Сохранить';
 }

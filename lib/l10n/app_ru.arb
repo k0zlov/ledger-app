@@ -20,5 +20,17 @@
   "secureYourLedgerHeading": "Защитите свой Ledger",
   "setupPinDescription": "Хотите установить PIN-код для защиты ваших финансовых данных?",
   "setupPinButton": "Установить PIN-код",
-  "skipButton": "Пропустить"
+  "skipButton": "Пропустить",
+  "accountsSetupTitle": "Настройка счетов",
+  "addAccountTitle": "Добавить счет",
+  "editAccountTitle": "Редактировать счет",
+  "noAccountsYet": "Пока нет счетов.",
+  "accountNamePlaceholder": "напр., Мой счет",
+  "accountTypeCash": "Наличные",
+  "accountTypeBank": "Банк",
+  "accountTypeCredit": "Кредит",
+  "accountTypeInvestment": "Инвест",
+  "cancelButton": "Отмена",
+  "deleteButton": "Удалить",
+  "saveButton": "Сохранить"
 }

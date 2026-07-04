@@ -28,7 +28,25 @@ class $AccountsTable extends Accounts
     requiredDuringInsert: true,
   );
   @override
-  List<GeneratedColumn> get $columns => [id, name];
+  late final GeneratedColumnWithTypeConverter<AccountType, String> type =
+      GeneratedColumn<String>(
+        'type',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<AccountType>($AccountsTable.$convertertype);
+  static const VerificationMeta _colorMeta = const VerificationMeta('color');
+  @override
+  late final GeneratedColumn<int> color = GeneratedColumn<int>(
+    'color',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [id, name, type, color];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -54,6 +72,14 @@ class $AccountsTable extends Accounts
     } else if (isInserting) {
       context.missing(_nameMeta);
     }
+    if (data.containsKey('color')) {
+      context.handle(
+        _colorMeta,
+        color.isAcceptableOrUnknown(data['color']!, _colorMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_colorMeta);
+    }
     return context;
   }
 
@@ -71,6 +97,16 @@ class $AccountsTable extends Accounts
         DriftSqlType.string,
         data['${effectivePrefix}name'],
       )!,
+      type: $AccountsTable.$convertertype.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}type'],
+        )!,
+      ),
+      color: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}color'],
+      )!,
     );
   }
 
@@ -78,22 +114,41 @@ class $AccountsTable extends Accounts
   $AccountsTable createAlias(String alias) {
     return $AccountsTable(attachedDatabase, alias);
   }
+
+  static JsonTypeConverter2<AccountType, String, String> $convertertype =
+      const EnumNameConverter<AccountType>(AccountType.values);
 }
 
 class AccountRow extends DataClass implements Insertable<AccountRow> {
   final String id;
   final String name;
-  const AccountRow({required this.id, required this.name});
+  final AccountType type;
+  final int color;
+  const AccountRow({
+    required this.id,
+    required this.name,
+    required this.type,
+    required this.color,
+  });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<String>(id);
     map['name'] = Variable<String>(name);
+    {
+      map['type'] = Variable<String>($AccountsTable.$convertertype.toSql(type));
+    }
+    map['color'] = Variable<int>(color);
     return map;
   }
 
   AccountsCompanion toCompanion(bool nullToAbsent) {
-    return AccountsCompanion(id: Value(id), name: Value(name));
+    return AccountsCompanion(
+      id: Value(id),
+      name: Value(name),
+      type: Value(type),
+      color: Value(color),
+    );
   }
 
   factory AccountRow.fromJson(
@@ -104,6 +159,10 @@ class AccountRow extends DataClass implements Insertable<AccountRow> {
     return AccountRow(
       id: serializer.fromJson<String>(json['id']),
       name: serializer.fromJson<String>(json['name']),
+      type: $AccountsTable.$convertertype.fromJson(
+        serializer.fromJson<String>(json['type']),
+      ),
+      color: serializer.fromJson<int>(json['color']),
     );
   }
   @override
@@ -112,15 +171,30 @@ class AccountRow extends DataClass implements Insertable<AccountRow> {
     return <String, dynamic>{
       'id': serializer.toJson<String>(id),
       'name': serializer.toJson<String>(name),
+      'type': serializer.toJson<String>(
+        $AccountsTable.$convertertype.toJson(type),
+      ),
+      'color': serializer.toJson<int>(color),
     };
   }
 
-  AccountRow copyWith({String? id, String? name}) =>
-      AccountRow(id: id ?? this.id, name: name ?? this.name);
+  AccountRow copyWith({
+    String? id,
+    String? name,
+    AccountType? type,
+    int? color,
+  }) => AccountRow(
+    id: id ?? this.id,
+    name: name ?? this.name,
+    type: type ?? this.type,
+    color: color ?? this.color,
+  );
   AccountRow copyWithCompanion(AccountsCompanion data) {
     return AccountRow(
       id: data.id.present ? data.id.value : this.id,
       name: data.name.present ? data.name.value : this.name,
+      type: data.type.present ? data.type.value : this.type,
+      color: data.color.present ? data.color.value : this.color,
     );
   }
 
@@ -128,42 +202,60 @@ class AccountRow extends DataClass implements Insertable<AccountRow> {
   String toString() {
     return (StringBuffer('AccountRow(')
           ..write('id: $id, ')
-          ..write('name: $name')
+          ..write('name: $name, ')
+          ..write('type: $type, ')
+          ..write('color: $color')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, name);
+  int get hashCode => Object.hash(id, name, type, color);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is AccountRow && other.id == this.id && other.name == this.name);
+      (other is AccountRow &&
+          other.id == this.id &&
+          other.name == this.name &&
+          other.type == this.type &&
+          other.color == this.color);
 }
 
 class AccountsCompanion extends UpdateCompanion<AccountRow> {
   final Value<String> id;
   final Value<String> name;
+  final Value<AccountType> type;
+  final Value<int> color;
   final Value<int> rowid;
   const AccountsCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
+    this.type = const Value.absent(),
+    this.color = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   AccountsCompanion.insert({
     required String id,
     required String name,
+    required AccountType type,
+    required int color,
     this.rowid = const Value.absent(),
   }) : id = Value(id),
-       name = Value(name);
+       name = Value(name),
+       type = Value(type),
+       color = Value(color);
   static Insertable<AccountRow> custom({
     Expression<String>? id,
     Expression<String>? name,
+    Expression<String>? type,
+    Expression<int>? color,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (name != null) 'name': name,
+      if (type != null) 'type': type,
+      if (color != null) 'color': color,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -171,11 +263,15 @@ class AccountsCompanion extends UpdateCompanion<AccountRow> {
   AccountsCompanion copyWith({
     Value<String>? id,
     Value<String>? name,
+    Value<AccountType>? type,
+    Value<int>? color,
     Value<int>? rowid,
   }) {
     return AccountsCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
+      type: type ?? this.type,
+      color: color ?? this.color,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -189,6 +285,14 @@ class AccountsCompanion extends UpdateCompanion<AccountRow> {
     if (name.present) {
       map['name'] = Variable<String>(name.value);
     }
+    if (type.present) {
+      map['type'] = Variable<String>(
+        $AccountsTable.$convertertype.toSql(type.value),
+      );
+    }
+    if (color.present) {
+      map['color'] = Variable<int>(color.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -200,6 +304,8 @@ class AccountsCompanion extends UpdateCompanion<AccountRow> {
     return (StringBuffer('AccountsCompanion(')
           ..write('id: $id, ')
           ..write('name: $name, ')
+          ..write('type: $type, ')
+          ..write('color: $color, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -207,7 +313,7 @@ class AccountsCompanion extends UpdateCompanion<AccountRow> {
 }
 
 class $CategoriesTable extends Categories
-    with TableInfo<$CategoriesTable, CategoryRow> {
+    with TableInfo<$CategoriesTable, CategoryModel> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -259,7 +365,7 @@ class $CategoriesTable extends Categories
   static const String $name = 'categories';
   @override
   VerificationContext validateIntegrity(
-    Insertable<CategoryRow> instance, {
+    Insertable<CategoryModel> instance, {
     bool isInserting = false,
   }) {
     final context = VerificationContext();
@@ -291,9 +397,9 @@ class $CategoriesTable extends Categories
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  CategoryRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+  CategoryModel map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return CategoryRow(
+    return CategoryModel(
       id: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}id'],
@@ -324,12 +430,12 @@ class $CategoriesTable extends Categories
       const EnumNameConverter<CategoryType>(CategoryType.values);
 }
 
-class CategoryRow extends DataClass implements Insertable<CategoryRow> {
+class CategoryModel extends DataClass implements Insertable<CategoryModel> {
   final String id;
   final String name;
   final CategoryType type;
   final String colorHex;
-  const CategoryRow({
+  const CategoryModel({
     required this.id,
     required this.name,
     required this.type,
@@ -358,12 +464,12 @@ class CategoryRow extends DataClass implements Insertable<CategoryRow> {
     );
   }
 
-  factory CategoryRow.fromJson(
+  factory CategoryModel.fromJson(
     Map<String, dynamic> json, {
     ValueSerializer? serializer,
   }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return CategoryRow(
+    return CategoryModel(
       id: serializer.fromJson<String>(json['id']),
       name: serializer.fromJson<String>(json['name']),
       type: $CategoriesTable.$convertertype.fromJson(
@@ -385,19 +491,19 @@ class CategoryRow extends DataClass implements Insertable<CategoryRow> {
     };
   }
 
-  CategoryRow copyWith({
+  CategoryModel copyWith({
     String? id,
     String? name,
     CategoryType? type,
     String? colorHex,
-  }) => CategoryRow(
+  }) => CategoryModel(
     id: id ?? this.id,
     name: name ?? this.name,
     type: type ?? this.type,
     colorHex: colorHex ?? this.colorHex,
   );
-  CategoryRow copyWithCompanion(CategoriesCompanion data) {
-    return CategoryRow(
+  CategoryModel copyWithCompanion(CategoriesCompanion data) {
+    return CategoryModel(
       id: data.id.present ? data.id.value : this.id,
       name: data.name.present ? data.name.value : this.name,
       type: data.type.present ? data.type.value : this.type,
@@ -407,7 +513,7 @@ class CategoryRow extends DataClass implements Insertable<CategoryRow> {
 
   @override
   String toString() {
-    return (StringBuffer('CategoryRow(')
+    return (StringBuffer('CategoryModel(')
           ..write('id: $id, ')
           ..write('name: $name, ')
           ..write('type: $type, ')
@@ -421,14 +527,14 @@ class CategoryRow extends DataClass implements Insertable<CategoryRow> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is CategoryRow &&
+      (other is CategoryModel &&
           other.id == this.id &&
           other.name == this.name &&
           other.type == this.type &&
           other.colorHex == this.colorHex);
 }
 
-class CategoriesCompanion extends UpdateCompanion<CategoryRow> {
+class CategoriesCompanion extends UpdateCompanion<CategoryModel> {
   final Value<String> id;
   final Value<String> name;
   final Value<CategoryType> type;
@@ -451,7 +557,7 @@ class CategoriesCompanion extends UpdateCompanion<CategoryRow> {
        name = Value(name),
        type = Value(type),
        colorHex = Value(colorHex);
-  static Insertable<CategoryRow> custom({
+  static Insertable<CategoryModel> custom({
     Expression<String>? id,
     Expression<String>? name,
     Expression<String>? type,
@@ -520,7 +626,7 @@ class CategoriesCompanion extends UpdateCompanion<CategoryRow> {
 }
 
 class $TransactionsTable extends Transactions
-    with TableInfo<$TransactionsTable, TransactionRow> {
+    with TableInfo<$TransactionsTable, TransactionModel> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -619,7 +725,7 @@ class $TransactionsTable extends Transactions
   static const String $name = 'transactions';
   @override
   VerificationContext validateIntegrity(
-    Insertable<TransactionRow> instance, {
+    Insertable<TransactionModel> instance, {
     bool isInserting = false,
   }) {
     final context = VerificationContext();
@@ -673,9 +779,9 @@ class $TransactionsTable extends Transactions
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  TransactionRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+  TransactionModel map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return TransactionRow(
+    return TransactionModel(
       id: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}id'],
@@ -718,7 +824,8 @@ class $TransactionsTable extends Transactions
       const EnumNameConverter<TransactionType>(TransactionType.values);
 }
 
-class TransactionRow extends DataClass implements Insertable<TransactionRow> {
+class TransactionModel extends DataClass
+    implements Insertable<TransactionModel> {
   final String id;
   final String? comment;
   final int amount;
@@ -726,7 +833,7 @@ class TransactionRow extends DataClass implements Insertable<TransactionRow> {
   final TransactionType type;
   final String accountId;
   final String categoryId;
-  const TransactionRow({
+  const TransactionModel({
     required this.id,
     this.comment,
     required this.amount,
@@ -768,12 +875,12 @@ class TransactionRow extends DataClass implements Insertable<TransactionRow> {
     );
   }
 
-  factory TransactionRow.fromJson(
+  factory TransactionModel.fromJson(
     Map<String, dynamic> json, {
     ValueSerializer? serializer,
   }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return TransactionRow(
+    return TransactionModel(
       id: serializer.fromJson<String>(json['id']),
       comment: serializer.fromJson<String?>(json['comment']),
       amount: serializer.fromJson<int>(json['amount']),
@@ -801,7 +908,7 @@ class TransactionRow extends DataClass implements Insertable<TransactionRow> {
     };
   }
 
-  TransactionRow copyWith({
+  TransactionModel copyWith({
     String? id,
     Value<String?> comment = const Value.absent(),
     int? amount,
@@ -809,7 +916,7 @@ class TransactionRow extends DataClass implements Insertable<TransactionRow> {
     TransactionType? type,
     String? accountId,
     String? categoryId,
-  }) => TransactionRow(
+  }) => TransactionModel(
     id: id ?? this.id,
     comment: comment.present ? comment.value : this.comment,
     amount: amount ?? this.amount,
@@ -818,8 +925,8 @@ class TransactionRow extends DataClass implements Insertable<TransactionRow> {
     accountId: accountId ?? this.accountId,
     categoryId: categoryId ?? this.categoryId,
   );
-  TransactionRow copyWithCompanion(TransactionsCompanion data) {
-    return TransactionRow(
+  TransactionModel copyWithCompanion(TransactionsCompanion data) {
+    return TransactionModel(
       id: data.id.present ? data.id.value : this.id,
       comment: data.comment.present ? data.comment.value : this.comment,
       amount: data.amount.present ? data.amount.value : this.amount,
@@ -834,7 +941,7 @@ class TransactionRow extends DataClass implements Insertable<TransactionRow> {
 
   @override
   String toString() {
-    return (StringBuffer('TransactionRow(')
+    return (StringBuffer('TransactionModel(')
           ..write('id: $id, ')
           ..write('comment: $comment, ')
           ..write('amount: $amount, ')
@@ -852,7 +959,7 @@ class TransactionRow extends DataClass implements Insertable<TransactionRow> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is TransactionRow &&
+      (other is TransactionModel &&
           other.id == this.id &&
           other.comment == this.comment &&
           other.amount == this.amount &&
@@ -862,7 +969,7 @@ class TransactionRow extends DataClass implements Insertable<TransactionRow> {
           other.categoryId == this.categoryId);
 }
 
-class TransactionsCompanion extends UpdateCompanion<TransactionRow> {
+class TransactionsCompanion extends UpdateCompanion<TransactionModel> {
   final Value<String> id;
   final Value<String?> comment;
   final Value<int> amount;
@@ -896,7 +1003,7 @@ class TransactionsCompanion extends UpdateCompanion<TransactionRow> {
        type = Value(type),
        accountId = Value(accountId),
        categoryId = Value(categoryId);
-  static Insertable<TransactionRow> custom({
+  static Insertable<TransactionModel> custom({
     Expression<String>? id,
     Expression<String>? comment,
     Expression<int>? amount,
@@ -988,12 +1095,205 @@ class TransactionsCompanion extends UpdateCompanion<TransactionRow> {
   }
 }
 
+class AccountBalancesViewData extends DataClass {
+  final String id;
+  final String name;
+  final AccountType type;
+  final int color;
+  final int? balance;
+  const AccountBalancesViewData({
+    required this.id,
+    required this.name,
+    required this.type,
+    required this.color,
+    this.balance,
+  });
+  factory AccountBalancesViewData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return AccountBalancesViewData(
+      id: serializer.fromJson<String>(json['id']),
+      name: serializer.fromJson<String>(json['name']),
+      type: $AccountsTable.$convertertype.fromJson(
+        serializer.fromJson<String>(json['type']),
+      ),
+      color: serializer.fromJson<int>(json['color']),
+      balance: serializer.fromJson<int?>(json['balance']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'name': serializer.toJson<String>(name),
+      'type': serializer.toJson<String>(
+        $AccountsTable.$convertertype.toJson(type),
+      ),
+      'color': serializer.toJson<int>(color),
+      'balance': serializer.toJson<int?>(balance),
+    };
+  }
+
+  AccountBalancesViewData copyWith({
+    String? id,
+    String? name,
+    AccountType? type,
+    int? color,
+    Value<int?> balance = const Value.absent(),
+  }) => AccountBalancesViewData(
+    id: id ?? this.id,
+    name: name ?? this.name,
+    type: type ?? this.type,
+    color: color ?? this.color,
+    balance: balance.present ? balance.value : this.balance,
+  );
+  @override
+  String toString() {
+    return (StringBuffer('AccountBalancesViewData(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('type: $type, ')
+          ..write('color: $color, ')
+          ..write('balance: $balance')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, name, type, color, balance);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is AccountBalancesViewData &&
+          other.id == this.id &&
+          other.name == this.name &&
+          other.type == this.type &&
+          other.color == this.color &&
+          other.balance == this.balance);
+}
+
+class $AccountBalancesViewView
+    extends ViewInfo<$AccountBalancesViewView, AccountBalancesViewData>
+    implements HasResultSet {
+  final String? _alias;
+  @override
+  final _$Database attachedDatabase;
+  $AccountBalancesViewView(this.attachedDatabase, [this._alias]);
+  $AccountsTable get accounts => attachedDatabase.accounts.createAlias('t0');
+  $TransactionsTable get transactions =>
+      attachedDatabase.transactions.createAlias('t1');
+  @override
+  List<GeneratedColumn> get $columns => [id, name, type, color, balance];
+  @override
+  String get aliasedName => _alias ?? entityName;
+  @override
+  String get entityName => 'account_balances_view';
+  @override
+  Map<SqlDialect, String>? get createViewStatements => null;
+  @override
+  $AccountBalancesViewView get asDslTable => this;
+  @override
+  AccountBalancesViewData map(
+    Map<String, dynamic> data, {
+    String? tablePrefix,
+  }) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return AccountBalancesViewData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      type: $AccountsTable.$convertertype.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}type'],
+        )!,
+      ),
+      color: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}color'],
+      )!,
+      balance: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}balance'],
+      ),
+    );
+  }
+
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    generatedAs: GeneratedAs(accounts.id, false),
+    type: DriftSqlType.string,
+  );
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    generatedAs: GeneratedAs(accounts.name, false),
+    type: DriftSqlType.string,
+  );
+  late final GeneratedColumnWithTypeConverter<AccountType, String> type =
+      GeneratedColumn<String>(
+        'type',
+        aliasedName,
+        false,
+        generatedAs: GeneratedAs(accounts.type, false),
+        type: DriftSqlType.string,
+      ).withConverter<AccountType>($AccountsTable.$convertertype);
+  late final GeneratedColumn<int> color = GeneratedColumn<int>(
+    'color',
+    aliasedName,
+    false,
+    generatedAs: GeneratedAs(accounts.color, false),
+    type: DriftSqlType.int,
+  );
+  late final GeneratedColumn<int> balance = GeneratedColumn<int>(
+    'balance',
+    aliasedName,
+    true,
+    generatedAs: GeneratedAs(
+      coalesce([
+        ArithmeticAggregates(transactions.amount).sum(),
+        const Constant(0),
+      ]),
+      false,
+    ),
+    type: DriftSqlType.int,
+  );
+  @override
+  $AccountBalancesViewView createAlias(String alias) {
+    return $AccountBalancesViewView(attachedDatabase, alias);
+  }
+
+  @override
+  Query? get query =>
+      (attachedDatabase.selectOnly(accounts)..addColumns($columns)).join([
+        leftOuterJoin(
+          transactions,
+          transactions.accountId.equalsExp(accounts.id),
+        ),
+      ])..groupBy([accounts.id]);
+  @override
+  Set<String> get readTables => const {'accounts', 'transactions'};
+}
+
 abstract class _$Database extends GeneratedDatabase {
   _$Database(QueryExecutor e) : super(e);
   $DatabaseManager get managers => $DatabaseManager(this);
   late final $AccountsTable accounts = $AccountsTable(this);
   late final $CategoriesTable categories = $CategoriesTable(this);
   late final $TransactionsTable transactions = $TransactionsTable(this);
+  late final $AccountBalancesViewView accountBalancesView =
+      $AccountBalancesViewView(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -1002,6 +1302,7 @@ abstract class _$Database extends GeneratedDatabase {
     accounts,
     categories,
     transactions,
+    accountBalancesView,
   ];
   @override
   StreamQueryUpdateRules get streamUpdateRules => const StreamQueryUpdateRules([
@@ -1019,12 +1320,16 @@ typedef $$AccountsTableCreateCompanionBuilder =
     AccountsCompanion Function({
       required String id,
       required String name,
+      required AccountType type,
+      required int color,
       Value<int> rowid,
     });
 typedef $$AccountsTableUpdateCompanionBuilder =
     AccountsCompanion Function({
       Value<String> id,
       Value<String> name,
+      Value<AccountType> type,
+      Value<int> color,
       Value<int> rowid,
     });
 
@@ -1032,7 +1337,7 @@ final class $$AccountsTableReferences
     extends BaseReferences<_$Database, $AccountsTable, AccountRow> {
   $$AccountsTableReferences(super.$_db, super.$_table, super.$_typedResult);
 
-  static MultiTypedResultKey<$TransactionsTable, List<TransactionRow>>
+  static MultiTypedResultKey<$TransactionsTable, List<TransactionModel>>
   _transactionsRefsTable(_$Database db) => MultiTypedResultKey.fromTable(
     db.transactions,
     aliasName: 'accounts__id__transactions__account_id',
@@ -1067,6 +1372,17 @@ class $$AccountsTableFilterComposer
 
   ColumnFilters<String> get name => $composableBuilder(
     column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<AccountType, AccountType, String> get type =>
+      $composableBuilder(
+        column: $table.type,
+        builder: (column) => ColumnWithTypeConverterFilters(column),
+      );
+
+  ColumnFilters<int> get color => $composableBuilder(
+    column: $table.color,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -1114,6 +1430,16 @@ class $$AccountsTableOrderingComposer
     column: $table.name,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<String> get type => $composableBuilder(
+    column: $table.type,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get color => $composableBuilder(
+    column: $table.color,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$AccountsTableAnnotationComposer
@@ -1130,6 +1456,12 @@ class $$AccountsTableAnnotationComposer
 
   GeneratedColumn<String> get name =>
       $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<AccountType, String> get type =>
+      $composableBuilder(column: $table.type, builder: (column) => column);
+
+  GeneratedColumn<int> get color =>
+      $composableBuilder(column: $table.color, builder: (column) => column);
 
   Expression<T> transactionsRefs<T extends Object>(
     Expression<T> Function($$TransactionsTableAnnotationComposer a) f,
@@ -1187,14 +1519,30 @@ class $$AccountsTableTableManager
               ({
                 Value<String> id = const Value.absent(),
                 Value<String> name = const Value.absent(),
+                Value<AccountType> type = const Value.absent(),
+                Value<int> color = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
-              }) => AccountsCompanion(id: id, name: name, rowid: rowid),
+              }) => AccountsCompanion(
+                id: id,
+                name: name,
+                type: type,
+                color: color,
+                rowid: rowid,
+              ),
           createCompanionCallback:
               ({
                 required String id,
                 required String name,
+                required AccountType type,
+                required int color,
                 Value<int> rowid = const Value.absent(),
-              }) => AccountsCompanion.insert(id: id, name: name, rowid: rowid),
+              }) => AccountsCompanion.insert(
+                id: id,
+                name: name,
+                type: type,
+                color: color,
+                rowid: rowid,
+              ),
           withReferenceMapper: (p0) => p0
               .map(
                 (e) => (
@@ -1214,7 +1562,7 @@ class $$AccountsTableTableManager
                     await $_getPrefetchedData<
                       AccountRow,
                       $AccountsTable,
-                      TransactionRow
+                      TransactionModel
                     >(
                       currentTable: table,
                       referencedTable: $$AccountsTableReferences
@@ -1268,10 +1616,10 @@ typedef $$CategoriesTableUpdateCompanionBuilder =
     });
 
 final class $$CategoriesTableReferences
-    extends BaseReferences<_$Database, $CategoriesTable, CategoryRow> {
+    extends BaseReferences<_$Database, $CategoriesTable, CategoryModel> {
   $$CategoriesTableReferences(super.$_db, super.$_table, super.$_typedResult);
 
-  static MultiTypedResultKey<$TransactionsTable, List<TransactionRow>>
+  static MultiTypedResultKey<$TransactionsTable, List<TransactionModel>>
   _transactionsRefsTable(_$Database db) => MultiTypedResultKey.fromTable(
     db.transactions,
     aliasName: 'categories__id__transactions__category_id',
@@ -1428,14 +1776,14 @@ class $$CategoriesTableTableManager
         RootTableManager<
           _$Database,
           $CategoriesTable,
-          CategoryRow,
+          CategoryModel,
           $$CategoriesTableFilterComposer,
           $$CategoriesTableOrderingComposer,
           $$CategoriesTableAnnotationComposer,
           $$CategoriesTableCreateCompanionBuilder,
           $$CategoriesTableUpdateCompanionBuilder,
-          (CategoryRow, $$CategoriesTableReferences),
-          CategoryRow,
+          (CategoryModel, $$CategoriesTableReferences),
+          CategoryModel,
           PrefetchHooks Function({bool transactionsRefs})
         > {
   $$CategoriesTableTableManager(_$Database db, $CategoriesTable table)
@@ -1494,9 +1842,9 @@ class $$CategoriesTableTableManager
                 return [
                   if (transactionsRefs)
                     await $_getPrefetchedData<
-                      CategoryRow,
+                      CategoryModel,
                       $CategoriesTable,
-                      TransactionRow
+                      TransactionModel
                     >(
                       currentTable: table,
                       referencedTable: $$CategoriesTableReferences
@@ -1523,14 +1871,14 @@ typedef $$CategoriesTableProcessedTableManager =
     ProcessedTableManager<
       _$Database,
       $CategoriesTable,
-      CategoryRow,
+      CategoryModel,
       $$CategoriesTableFilterComposer,
       $$CategoriesTableOrderingComposer,
       $$CategoriesTableAnnotationComposer,
       $$CategoriesTableCreateCompanionBuilder,
       $$CategoriesTableUpdateCompanionBuilder,
-      (CategoryRow, $$CategoriesTableReferences),
-      CategoryRow,
+      (CategoryModel, $$CategoriesTableReferences),
+      CategoryModel,
       PrefetchHooks Function({bool transactionsRefs})
     >;
 typedef $$TransactionsTableCreateCompanionBuilder =
@@ -1557,7 +1905,7 @@ typedef $$TransactionsTableUpdateCompanionBuilder =
     });
 
 final class $$TransactionsTableReferences
-    extends BaseReferences<_$Database, $TransactionsTable, TransactionRow> {
+    extends BaseReferences<_$Database, $TransactionsTable, TransactionModel> {
   $$TransactionsTableReferences(super.$_db, super.$_table, super.$_typedResult);
 
   static $AccountsTable _accountIdTable(_$Database db) =>
@@ -1834,14 +2182,14 @@ class $$TransactionsTableTableManager
         RootTableManager<
           _$Database,
           $TransactionsTable,
-          TransactionRow,
+          TransactionModel,
           $$TransactionsTableFilterComposer,
           $$TransactionsTableOrderingComposer,
           $$TransactionsTableAnnotationComposer,
           $$TransactionsTableCreateCompanionBuilder,
           $$TransactionsTableUpdateCompanionBuilder,
-          (TransactionRow, $$TransactionsTableReferences),
-          TransactionRow,
+          (TransactionModel, $$TransactionsTableReferences),
+          TransactionModel,
           PrefetchHooks Function({bool accountId, bool categoryId})
         > {
   $$TransactionsTableTableManager(_$Database db, $TransactionsTable table)
@@ -1965,14 +2313,14 @@ typedef $$TransactionsTableProcessedTableManager =
     ProcessedTableManager<
       _$Database,
       $TransactionsTable,
-      TransactionRow,
+      TransactionModel,
       $$TransactionsTableFilterComposer,
       $$TransactionsTableOrderingComposer,
       $$TransactionsTableAnnotationComposer,
       $$TransactionsTableCreateCompanionBuilder,
       $$TransactionsTableUpdateCompanionBuilder,
-      (TransactionRow, $$TransactionsTableReferences),
-      TransactionRow,
+      (TransactionModel, $$TransactionsTableReferences),
+      TransactionModel,
       PrefetchHooks Function({bool accountId, bool categoryId})
     >;
 

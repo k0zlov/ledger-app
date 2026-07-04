@@ -6,6 +6,8 @@ import 'package:go_router/go_router.dart';
 import 'package:ledger_app/application.dart';
 import 'package:ledger_app/core/navigation/navigation_service.dart';
 import 'package:ledger_app/di_container.dart';
+import 'package:ledger_app/features/accounts/view/cubit/accounts_cubit.dart';
+import 'package:ledger_app/features/accounts/view/screens/accounts_setup_screen.dart';
 import 'package:ledger_app/features/auth/view/cubit/auth_cubit.dart';
 import 'package:ledger_app/features/auth/view/screens/auth_setup_screen.dart';
 import 'package:ledger_app/features/onboarding/view/cubit/onboarding_cubit.dart';
@@ -19,6 +21,7 @@ abstract class ScreenFactory {
     return NavigationServiceProvider(
       navigationService: getIt(),
       child: BlocProvider(
+        lazy: false,
         create: (context) {
           final SettingsCubit cubit = getIt<SettingsCubit>();
           unawaited(cubit.initialize());
@@ -59,6 +62,7 @@ abstract class ScreenFactory {
 
   static Widget renderAuthSetupScreen() {
     return BlocProvider<AuthCubit>(
+      lazy: false,
       create: (context) {
         final AuthCubit cubit = getIt();
         unawaited(cubit.initialize());
@@ -71,7 +75,17 @@ abstract class ScreenFactory {
   }
 
   static Widget renderAccountsSetupScreen() {
-    return const Placeholder();
+    return BlocProvider(
+      lazy: false,
+      create: (context) {
+        final AccountsCubit cubit = getIt();
+        unawaited(cubit.initialize());
+        return cubit;
+      },
+      child: _renderOnboardingWrapper(
+        builder: (onComplete) => AccountsSetupScreen(onSetupComplete: onComplete),
+      ),
+    );
   }
 
   static Widget renderDashboardScreen() {

@@ -9,6 +9,7 @@ import 'package:ledger_app/di_container.dart';
 import 'package:ledger_app/features/accounts/view/cubit/accounts_cubit.dart';
 import 'package:ledger_app/features/accounts/view/screens/accounts_setup_screen.dart';
 import 'package:ledger_app/features/auth/view/cubit/auth_cubit.dart';
+import 'package:ledger_app/features/auth/view/screens/auth_lock_screen.dart';
 import 'package:ledger_app/features/auth/view/screens/auth_setup_screen.dart';
 import 'package:ledger_app/features/categories/view/cubit/categories_cubit.dart';
 import 'package:ledger_app/features/categories/view/screens/categories_setup_screen.dart';
@@ -115,6 +116,18 @@ abstract class ScreenFactory {
       child: _renderOnboardingWrapper(
         builder: (onComplete) => TransactionsSetupScreen(onSetupComplete: onComplete),
       ),
+    );
+  }
+
+  static Widget renderAuthLockScreen() {
+    return BlocProvider(
+      lazy: false,
+      create: (context) {
+        final AuthCubit cubit = getIt();
+        unawaited(cubit.initialize());
+        return cubit;
+      },
+      child: const AuthLockScreen(),
     );
   }
 

@@ -8,7 +8,7 @@ void main() async {
 
   await registerDependencies();
 
-  await getIt<SecureStorage>().deleteAll();
+  // await getIt<SecureStorage>().deleteAll();
 
   runApp(ScreenFactory.renderApplication());
 }

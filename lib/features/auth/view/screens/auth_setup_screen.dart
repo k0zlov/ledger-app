@@ -51,11 +51,11 @@ class _AuthSetupScreenState extends State<AuthSetupScreen> {
     return BlocPresentationListener<AuthCubit, AuthEffect>(
       listener: (context, effect) {
         switch (effect) {
-          case PinSetupFailed():
+          case PinFailed():
             if (_pinCompleter?.isCompleted == false) {
               _pinCompleter?.complete(false);
             }
-          case PinSetupSucceeded():
+          case PinSucceeded():
             if (_pinCompleter?.isCompleted == false) {
               _pinCompleter?.complete(true);
             }

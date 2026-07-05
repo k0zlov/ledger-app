@@ -25,7 +25,7 @@ GoRouter createRouter({
       final String onboardingPath = RouteDefinition.onboarding.path;
       final bool isOnOnboarding = currentLocation.startsWith(onboardingPath);
 
-      final String lockPath = RouteDefinition.lock.path;
+      final String lockPath = RouteDefinition.authLock.path;
       final bool isOnLockScreen = currentLocation == lockPath;
 
       if (!isOnboardingComplete) {
@@ -43,6 +43,12 @@ GoRouter createRouter({
       return null;
     },
     routes: [
+      GoRoute(
+        name: RouteDefinition.authLock.name,
+        path: RouteDefinition.authLock.path,
+        builder: (context, state) => ScreenFactory.renderAuthLockScreen(),
+      ),
+
       ShellRoute(
         builder: (context, state, child) => ScreenFactory.renderOnboardingShell(child),
         routes: [

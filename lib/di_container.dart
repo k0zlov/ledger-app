@@ -23,6 +23,8 @@ import 'package:ledger_app/features/auth/data/providers/auth_biometric_provider.
 import 'package:ledger_app/features/auth/data/providers/auth_storage_provider.dart';
 import 'package:ledger_app/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:ledger_app/features/auth/domain/repositories/auth_repository.dart';
+import 'package:ledger_app/features/auth/domain/use_cases/authenticate_with_biometrics_use_case.dart';
+import 'package:ledger_app/features/auth/domain/use_cases/authenticate_with_pin_use_case.dart';
 import 'package:ledger_app/features/auth/domain/use_cases/check_biometric_availability_use_case.dart';
 import 'package:ledger_app/features/auth/domain/use_cases/get_security_settings_use_case.dart';
 import 'package:ledger_app/features/auth/domain/use_cases/set_pin_code_use_case.dart';
@@ -170,6 +172,8 @@ void _useCases() {
     ..registerLazySingleton(() => UpdateTransactionUseCase(repository: getIt()))
     ..registerLazySingleton(() => DeleteTransactionUseCase(repository: getIt()))
     ..registerLazySingleton(() => WatchTransactionsUseCase(repository: getIt()))
+    ..registerLazySingleton(() => AuthenticateWithPinUseCase(repository: getIt()))
+    ..registerLazySingleton(() => AuthenticateWithBiometricsUseCase(repository: getIt()))
     ..registerLazySingleton(() => CompleteOnboardingUseCase(repository: getIt()));
 }
 
@@ -181,6 +185,8 @@ void _cubits() {
         getSecuritySettings: getIt(),
         toggleBiometrics: getIt(),
         checkBiometricAvailability: getIt(),
+        authenticateWithBiometrics: getIt(),
+        authenticateWithPin: getIt(),
       ),
     )
     ..registerFactory<SettingsCubit>(

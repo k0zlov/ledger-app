@@ -1,0 +1,21 @@
+import 'package:fpdart/fpdart.dart';
+import 'package:ledger_app/core/failures/failures.dart';
+import 'package:ledger_app/core/use_case/use_case.dart';
+import 'package:ledger_app/features/auth/domain/repositories/auth_repository.dart';
+
+
+class AuthenticateWithBiometricsUseCase implements UseCase<bool, String> {
+  const AuthenticateWithBiometricsUseCase({required this.repository});
+
+  final AuthRepository repository;
+
+  @override
+  Future<Either<Failure, bool>> call(String params) async {
+    try {
+      final isSuccess = await repository.authenticateWithBiometrics(params);
+      return Right(isSuccess);
+    } catch (e) {
+      return const Left(CacheFailure(errorMessage: 'Failed to authenticate with biometrics'));
+    }
+  }
+}

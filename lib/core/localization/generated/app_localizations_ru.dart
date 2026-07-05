@@ -109,4 +109,28 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get saveButton => 'Сохранить';
+
+  @override
+  String get categoriesSetupTitle => 'Настройка категорий';
+
+  @override
+  String get addCategoryTitle => 'Добавить категорию';
+
+  @override
+  String get editCategoryTitle => 'Редактировать категорию';
+
+  @override
+  String get noCategoriesYet => 'Пока нет категорий.';
+
+  @override
+  String get categoryNamePlaceholder => 'напр., Продукты, Зарплата';
+
+  @override
+  String get categoryTypeExpense => 'Расход';
+
+  @override
+  String get categoryTypeIncome => 'Доход';
+
+  @override
+  String get categoryTypeAny => 'Любая';
 }

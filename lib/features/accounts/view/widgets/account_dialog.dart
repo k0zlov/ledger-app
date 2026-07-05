@@ -1,10 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:ledger_app/core/domain/entities/account.dart';
 import 'package:ledger_app/core/localization/localization_build_context_x.dart';
+import 'package:ledger_app/core/navigation/navigation_service.dart';
 
 class AccountDialog extends StatefulWidget {
   const AccountDialog({
     required this.title,
+    required this.onSave,
+    this.onDelete,
     this.initialName,
     this.initialType,
     this.initialColor,
@@ -12,6 +15,8 @@ class AccountDialog extends StatefulWidget {
   });
 
   final String title;
+  final void Function(String name, AccountType type, int color) onSave;
+  final VoidCallback? onDelete;
   final String? initialName;
   final AccountType? initialType;
   final int? initialColor;
@@ -82,13 +87,16 @@ class _AccountDialogState extends State<AccountDialog> {
       ),
       actions: [
         CupertinoDialogAction(
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => context.navigator.pop(),
           child: Text(l10n.cancelButton),
         ),
         if (isEditing)
           CupertinoDialogAction(
             isDestructiveAction: true,
-            onPressed: () => Navigator.pop(context, {'action': 'delete'}),
+            onPressed: () {
+              widget.onDelete?.call();
+              context.navigator.pop();
+            },
             child: Text(l10n.deleteButton),
           ),
         CupertinoDialogAction(
@@ -96,15 +104,8 @@ class _AccountDialogState extends State<AccountDialog> {
           onPressed: () {
             final name = _nameController.text.trim();
             if (name.length >= 2) {
-              Navigator.pop(
-                context,
-                {
-                  'action': 'save',
-                  'name': name,
-                  'type': _selectedType,
-                  'color': _selectedColor,
-                },
-              );
+              widget.onSave(name, _selectedType, _selectedColor);
+              context.navigator.pop();
             }
           },
           child: Text(l10n.saveButton),

@@ -32,5 +32,13 @@
   "accountTypeInvestment": "Інвест",
   "cancelButton": "Скасувати",
   "deleteButton": "Видалити",
-  "saveButton": "Зберегти"
+  "saveButton": "Зберегти",
+  "categoriesSetupTitle": "Налаштування категорий",
+  "addCategoryTitle": "Додати категорію",
+  "editCategoryTitle": "Редагувати категорію",
+  "noCategoriesYet": "Поки немає категорій.",
+  "categoryNamePlaceholder": "напр., Продукти, Зарплата",
+  "categoryTypeExpense": "Витрати",
+  "categoryTypeIncome": "Дохід",
+  "categoryTypeAny": "Будь-яка"
 }

@@ -28,6 +28,8 @@ class OnboardingWrapperScreen extends StatelessWidget {
       await cubit.updateProgress(hasCompletedSecurity: true);
     } else if (currentRouteName == RouteDefinition.accountsSetup.name) {
       await cubit.updateProgress(hasCompletedAccounts: true);
+    } else if (currentRouteName == RouteDefinition.categoriesSetup.name) {
+      await cubit.updateProgress(hasCompletedCategories: true);
     }
 
     if (!context.mounted) return;
@@ -40,6 +42,8 @@ class OnboardingWrapperScreen extends StatelessWidget {
       unawaited(context.navigator.push(AuthSetupRoute()));
     } else if (!progress.hasCompletedAccounts) {
       unawaited(context.navigator.push(AccountsSetupRoute()));
+    } else if (!progress.hasCompletedCategories) {
+      unawaited(context.navigator.push(CategoriesSetupRoute()));
     } else {
       await cubit.completeOnboarding();
     }

@@ -1,5 +1,6 @@
 import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
+import 'package:ledger_app/core/database/default_data/default_categories.dart';
 import 'package:ledger_app/core/database/tables/accounts.dart';
 import 'package:ledger_app/core/database/tables/categories.dart';
 import 'package:ledger_app/core/database/tables/transactions.dart';
@@ -17,6 +18,19 @@ class Database extends _$Database {
 
   @override
   int get schemaVersion => 1;
+
+  @override
+  MigrationStrategy get migration {
+    return MigrationStrategy(
+      onCreate: (m) async {
+        await m.createAll();
+
+        await batch((batch) {
+          batch.insertAll(categories, getDefaultCategories());
+        });
+      },
+    );
+  }
 
   static QueryExecutor _openConnection() {
     return driftDatabase(

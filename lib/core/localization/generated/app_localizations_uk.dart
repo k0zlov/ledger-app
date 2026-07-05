@@ -109,4 +109,28 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get saveButton => 'Зберегти';
+
+  @override
+  String get categoriesSetupTitle => 'Налаштування категорий';
+
+  @override
+  String get addCategoryTitle => 'Додати категорію';
+
+  @override
+  String get editCategoryTitle => 'Редагувати категорію';
+
+  @override
+  String get noCategoriesYet => 'Поки немає категорій.';
+
+  @override
+  String get categoryNamePlaceholder => 'напр., Продукти, Зарплата';
+
+  @override
+  String get categoryTypeExpense => 'Витрати';
+
+  @override
+  String get categoryTypeIncome => 'Дохід';
+
+  @override
+  String get categoryTypeAny => 'Будь-яка';
 }

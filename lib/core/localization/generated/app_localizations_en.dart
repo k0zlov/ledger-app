@@ -109,4 +109,28 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get saveButton => 'Save';
+
+  @override
+  String get categoriesSetupTitle => 'Categories Setup';
+
+  @override
+  String get addCategoryTitle => 'Add Category';
+
+  @override
+  String get editCategoryTitle => 'Edit Category';
+
+  @override
+  String get noCategoriesYet => 'No categories yet.';
+
+  @override
+  String get categoryNamePlaceholder => 'e.g., Groceries, Salary';
+
+  @override
+  String get categoryTypeExpense => 'Expense';
+
+  @override
+  String get categoryTypeIncome => 'Income';
+
+  @override
+  String get categoryTypeAny => 'Any';
 }

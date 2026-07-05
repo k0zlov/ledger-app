@@ -5,7 +5,9 @@ import 'package:ledger_app/core/contracts/auth_state_contract.dart';
 import 'package:ledger_app/core/contracts/onboarding_status_contract.dart';
 import 'package:ledger_app/core/database/database.dart';
 import 'package:ledger_app/core/domain/repositories/account_repository.dart';
+import 'package:ledger_app/core/domain/repositories/category_repository.dart';
 import 'package:ledger_app/core/domain/use_cases/watch_accounts_use_case.dart';
+import 'package:ledger_app/core/domain/use_cases/watch_categories_use_case.dart';
 import 'package:ledger_app/core/navigation/navigation_service.dart';
 import 'package:ledger_app/core/navigation/router.dart';
 import 'package:ledger_app/core/secure_storage/secure_storage.dart';
@@ -24,6 +26,12 @@ import 'package:ledger_app/features/auth/domain/use_cases/get_security_settings_
 import 'package:ledger_app/features/auth/domain/use_cases/set_pin_code_use_case.dart';
 import 'package:ledger_app/features/auth/domain/use_cases/toggle_biometrics_use_case.dart';
 import 'package:ledger_app/features/auth/view/cubit/auth_cubit.dart';
+import 'package:ledger_app/features/categories/data/providers/category_storage_provider.dart';
+import 'package:ledger_app/features/categories/data/repositories/category_repository_impl.dart';
+import 'package:ledger_app/features/categories/domain/use_cases/create_category_use_case.dart';
+import 'package:ledger_app/features/categories/domain/use_cases/delete_category_use_case.dart';
+import 'package:ledger_app/features/categories/domain/use_cases/update_category_use_case.dart';
+import 'package:ledger_app/features/categories/view/cubit/categories_cubit.dart';
 import 'package:ledger_app/features/onboarding/data/providers/onboarding_storage_provider.dart';
 import 'package:ledger_app/features/onboarding/data/repositories/onboarding_repository_impl.dart';
 import 'package:ledger_app/features/onboarding/domain/repositories/onboarding_repository.dart';
@@ -94,6 +102,9 @@ void _providers() {
     ..registerLazySingleton<AccountStorageProvider>(
       () => AccountStorageProviderImpl(db: getIt()),
     )
+    ..registerLazySingleton<CategoryStorageProvider>(
+      () => CategoryStorageProviderImpl(db: getIt()),
+    )
     ..registerLazySingleton<OnboardingStorageProvider>(
       () => OnboardingStorageProviderImpl(secureStorage: getIt()),
     );
@@ -121,6 +132,7 @@ void _repositories() {
     ..registerLazySingleton<OnboardingRepository>(getIt.call<OnboardingRepositoryImpl>)
     ..registerLazySingleton<SettingsRepository>(() => SettingsRepositoryImpl(storageProvider: getIt()))
     ..registerLazySingleton<AccountRepository>(() => AccountRepositoryImpl(storageProvider: getIt()))
+    ..registerLazySingleton<CategoryRepository>(() => CategoryRepositoryImpl(storageProvider: getIt()))
     ..registerLazySingleton<OnboardingStatusContract>(getIt.call<OnboardingRepositoryImpl>);
 }
 
@@ -138,6 +150,10 @@ void _useCases() {
     ..registerLazySingleton(() => AddAccountUseCase(repository: getIt()))
     ..registerLazySingleton(() => DeleteAccountUseCase(repository: getIt()))
     ..registerLazySingleton(() => UpdateAccountUseCase(repository: getIt()))
+    ..registerLazySingleton(() => CreateCategoryUseCase(repository: getIt()))
+    ..registerLazySingleton(() => DeleteCategoryUseCase(repository: getIt()))
+    ..registerLazySingleton(() => UpdateCategoryUseCase(repository: getIt()))
+    ..registerLazySingleton(() => WatchCategoriesUseCase(repository: getIt()))
     ..registerLazySingleton(() => CompleteOnboardingUseCase(repository: getIt()));
 }
 
@@ -163,6 +179,14 @@ void _cubits() {
         addAccount: getIt(),
         deleteAccount: getIt(),
         updateAccount: getIt(),
+      ),
+    )
+    ..registerFactory<CategoriesCubit>(
+      () => CategoriesCubit(
+        watchCategories: getIt(),
+        createCategory: getIt(),
+        deleteCategory: getIt(),
+        updateCategory: getIt(),
       ),
     )
     ..registerFactory<OnboardingCubit>(

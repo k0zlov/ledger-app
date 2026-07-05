@@ -31,5 +31,13 @@
   "accountTypeInvestment": "Invest",
   "cancelButton": "Cancel",
   "deleteButton": "Delete",
-  "saveButton": "Save"
+  "saveButton": "Save",
+  "categoriesSetupTitle": "Categories Setup",
+  "addCategoryTitle": "Add Category",
+  "editCategoryTitle": "Edit Category",
+  "noCategoriesYet": "No categories yet.",
+  "categoryNamePlaceholder": "e.g., Groceries, Salary",
+  "categoryTypeExpense": "Expense",
+  "categoryTypeIncome": "Income",
+  "categoryTypeAny": "Any"
 }

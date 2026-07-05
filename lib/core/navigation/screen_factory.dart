@@ -10,6 +10,8 @@ import 'package:ledger_app/features/accounts/view/cubit/accounts_cubit.dart';
 import 'package:ledger_app/features/accounts/view/screens/accounts_setup_screen.dart';
 import 'package:ledger_app/features/auth/view/cubit/auth_cubit.dart';
 import 'package:ledger_app/features/auth/view/screens/auth_setup_screen.dart';
+import 'package:ledger_app/features/categories/view/cubit/categories_cubit.dart';
+import 'package:ledger_app/features/categories/view/screens/categories_setup_screen.dart';
 import 'package:ledger_app/features/onboarding/view/cubit/onboarding_cubit.dart';
 import 'package:ledger_app/features/onboarding/view/screens/onboarding_welcome_screen.dart';
 import 'package:ledger_app/features/onboarding/view/screens/onboarding_wrapper_screen.dart';
@@ -84,6 +86,19 @@ abstract class ScreenFactory {
       },
       child: _renderOnboardingWrapper(
         builder: (onComplete) => AccountsSetupScreen(onSetupComplete: onComplete),
+      ),
+    );
+  }
+
+  static Widget renderCategoriesSetupScreen() {
+    return BlocProvider(
+      create: (context) {
+        final CategoriesCubit cubit = getIt();
+        unawaited(cubit.initialize());
+        return cubit;
+      },
+      child: _renderOnboardingWrapper(
+        builder: (onComplete) => CategoriesSetupScreen(onSetupComplete: onComplete),
       ),
     );
   }

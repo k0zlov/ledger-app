@@ -55,7 +55,9 @@ class CategoriesSetupScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final categories = context.select<CategoriesCubit, List<Category>>((c) => c.state.categories);
+    final categories = context.select<CategoriesCubit, List<Category>>(
+      (c) => c.state.categories.where((cat) => !cat.isTechnical).toList(),
+    );
 
     return CupertinoPageScaffold(
       backgroundColor: CupertinoColors.systemGroupedBackground,
@@ -74,13 +76,25 @@ class CategoriesSetupScreen extends StatelessWidget {
               child: categories.isEmpty
                   ? Center(child: Text(l10n.noCategoriesYet))
                   : SingleChildScrollView(
-                      child: CupertinoListSection.insetGrouped(
-                        children: categories.map((category) {
-                          return CategoryListTile(
-                            category: category,
-                            onTap: () => _showCategoryDialog(context, category),
-                          );
-                        }).toList(),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(20, 24, 20, 8),
+                            child: Text(
+                              l10n.categoriesSetupDescription,
+                              style: const TextStyle(color: CupertinoColors.systemGrey),
+                            ),
+                          ),
+                          CupertinoListSection.insetGrouped(
+                            children: categories.map((category) {
+                              return CategoryListTile(
+                                category: category,
+                                onTap: () => _showCategoryDialog(context, category),
+                              );
+                            }).toList(),
+                          ),
+                        ],
                       ),
                     ),
             ),

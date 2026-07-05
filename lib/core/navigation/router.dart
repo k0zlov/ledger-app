@@ -71,6 +71,11 @@ GoRouter createRouter({
                 path: RouteDefinition.categoriesSetup.path,
                 builder: (context, state) => ScreenFactory.renderCategoriesSetupScreen(),
               ),
+              GoRoute(
+                name: RouteDefinition.transactionsSetup.name,
+                path: RouteDefinition.transactionsSetup.path,
+                builder: (context, state) => ScreenFactory.renderTransactionsSetupScreen(),
+              ),
             ],
           ),
         ],

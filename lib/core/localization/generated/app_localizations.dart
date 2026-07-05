@@ -345,6 +345,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Any'**
   String get categoryTypeAny;
+
+  /// No description provided for @initialBalancesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Initial Balances'**
+  String get initialBalancesTitle;
+
+  /// No description provided for @initialBalancesDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Set the current balance for your accounts so your ledger starts out accurate.'**
+  String get initialBalancesDescription;
+
+  /// No description provided for @initialBalanceNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Initial Balance'**
+  String get initialBalanceNote;
+
+  /// No description provided for @accountsSetupDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Add your bank accounts, credit cards, and cash wallets to keep track of your balances.'**
+  String get accountsSetupDescription;
+
+  /// No description provided for @categoriesSetupDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Create categories for your expenses and income to help organize and analyze your transactions.'**
+  String get categoriesSetupDescription;
 }
 
 class _AppLocalizationsDelegate

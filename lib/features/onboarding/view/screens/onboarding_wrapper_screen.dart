@@ -19,33 +19,37 @@ class OnboardingWrapperScreen extends StatelessWidget {
 
   Future<void> _handleStepComplete(BuildContext context) async {
     final OnboardingCubit cubit = context.read<OnboardingCubit>();
-
     final String? currentRouteName = context.navigator.currentRouteName;
-
-    if (currentRouteName == RouteDefinition.settingsSetup.name) {
-      await cubit.updateProgress(hasCompletedSettings: true);
-    } else if (currentRouteName == RouteDefinition.authSetup.name) {
-      await cubit.updateProgress(hasCompletedSecurity: true);
-    } else if (currentRouteName == RouteDefinition.accountsSetup.name) {
-      await cubit.updateProgress(hasCompletedAccounts: true);
-    } else if (currentRouteName == RouteDefinition.categoriesSetup.name) {
-      await cubit.updateProgress(hasCompletedCategories: true);
-    }
-
-    if (!context.mounted) return;
 
     final OnboardingProgress progress = cubit.state.progress;
 
-    if (!progress.hasCompletedSettings) {
-      unawaited(context.navigator.push(SettingsSetupRoute()));
-    } else if (!progress.hasCompletedSecurity) {
-      unawaited(context.navigator.push(AuthSetupRoute()));
-    } else if (!progress.hasCompletedAccounts) {
-      unawaited(context.navigator.push(AccountsSetupRoute()));
-    } else if (!progress.hasCompletedCategories) {
-      unawaited(context.navigator.push(CategoriesSetupRoute()));
-    } else {
-      await cubit.completeOnboarding();
+    switch (currentRouteName) {
+      case final name when name == RouteDefinition.onboarding.name:
+        unawaited(context.navigator.push(SettingsSetupRoute()));
+
+      case final name when name == RouteDefinition.settingsSetup.name:
+        await cubit.updateProgress(progress.copyWith(hasCompletedSettings: true));
+        if (!context.mounted) return;
+        unawaited(context.navigator.push(AuthSetupRoute()));
+
+      case final name when name == RouteDefinition.authSetup.name:
+        await cubit.updateProgress(progress.copyWith(hasCompletedSecurity: true));
+        if (!context.mounted) return;
+        unawaited(context.navigator.push(AccountsSetupRoute()));
+
+      case final name when name == RouteDefinition.accountsSetup.name:
+        await cubit.updateProgress(progress.copyWith(hasCompletedAccounts: true));
+        if (!context.mounted) return;
+        unawaited(context.navigator.push(CategoriesSetupRoute()));
+
+      case final name when name == RouteDefinition.categoriesSetup.name:
+        await cubit.updateProgress(progress.copyWith(hasCompletedCategories: true));
+        if (!context.mounted) return;
+        unawaited(context.navigator.push(TransactionsSetupRoute()));
+
+      case final name when name == RouteDefinition.transactionsSetup.name:
+        await cubit.updateProgress(progress.copyWith(hasCompletedTransactions: true));
+        await cubit.completeOnboarding();
     }
   }
 

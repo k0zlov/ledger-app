@@ -14,6 +14,7 @@ class Category {
     required this.color,
     required this.icon,
     required this.type,
+    this.isTechnical = false,
   });
 
   final String id;
@@ -21,6 +22,7 @@ class Category {
   final int color;
   final int icon;
   final CategoryType type;
+  final bool isTechnical;
 
   Category copyWith({
     String? id,
@@ -28,6 +30,7 @@ class Category {
     int? color,
     int? icon,
     CategoryType? type,
+    bool? isTechnical,
   }) {
     return Category(
       id: id ?? this.id,
@@ -35,6 +38,7 @@ class Category {
       color: color ?? this.color,
       icon: icon ?? this.icon,
       type: type ?? this.type,
+      isTechnical: isTechnical ?? this.isTechnical,
     );
   }
 
@@ -47,8 +51,9 @@ class Category {
           name == other.name &&
           color == other.color &&
           icon == other.icon &&
-          type == other.type;
+          type == other.type &&
+          isTechnical == other.isTechnical;
 
   @override
-  int get hashCode => Object.hash(id, name, color, icon, type);
+  int get hashCode => Object.hash(id, name, color, icon, type, isTechnical);
 }

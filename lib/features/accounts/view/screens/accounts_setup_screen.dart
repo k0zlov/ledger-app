@@ -71,13 +71,25 @@ class AccountsSetupScreen extends StatelessWidget {
               child: accounts.isEmpty
                   ? Center(child: Text(l10n.noAccountsYet))
                   : SingleChildScrollView(
-                      child: CupertinoListSection.insetGrouped(
-                        children: accounts.map((account) {
-                          return AccountListTile(
-                            account: account,
-                            onTap: () => _showAccountDialog(context, account),
-                          );
-                        }).toList(),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(20, 24, 20, 8),
+                            child: Text(
+                              l10n.accountsSetupDescription,
+                              style: const TextStyle(color: CupertinoColors.systemGrey),
+                            ),
+                          ),
+                          CupertinoListSection.insetGrouped(
+                            children: accounts.map((account) {
+                              return AccountListTile(
+                                account: account,
+                                onTap: () => _showAccountDialog(context, account),
+                              );
+                            }).toList(),
+                          ),
+                        ],
                       ),
                     ),
             ),

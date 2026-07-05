@@ -37,19 +37,9 @@ class OnboardingCubit extends Cubit<OnboardingState> {
     );
   }
 
-  Future<void> updateProgress({
-    bool? hasCompletedSecurity,
-    bool? hasCompletedSettings,
-    bool? hasCompletedAccounts,
-    bool? hasCompletedCategories,
-  }) async {
-    final OnboardingProgress newProgress = state.progress.copyWith(
-      hasCompletedSecurity: hasCompletedSecurity,
-      hasCompletedAccounts: hasCompletedAccounts,
-      hasCompletedSettings: hasCompletedSettings,
-      hasCompletedCategories: hasCompletedCategories,
-    );
-
+  Future<void> updateProgress(
+    OnboardingProgress newProgress,
+  ) async {
     if (state.progress == newProgress) return;
 
     final result = await _setOnboardingProgress(newProgress);

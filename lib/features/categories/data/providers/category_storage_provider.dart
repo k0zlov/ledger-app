@@ -34,6 +34,7 @@ class CategoryStorageProviderImpl implements CategoryStorageProvider {
               color: row.color,
               icon: row.icon,
               type: row.type,
+              isTechnical: row.isTechnical,
             ),
           )
           .toList();
@@ -52,6 +53,7 @@ class CategoryStorageProviderImpl implements CategoryStorageProvider {
       color: row.color,
       icon: row.icon,
       type: row.type,
+      isTechnical: row.isTechnical,
     );
   }
 

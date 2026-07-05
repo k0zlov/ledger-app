@@ -39,5 +39,10 @@
   "categoryNamePlaceholder": "e.g., Groceries, Salary",
   "categoryTypeExpense": "Expense",
   "categoryTypeIncome": "Income",
-  "categoryTypeAny": "Any"
+  "categoryTypeAny": "Any",
+  "initialBalancesTitle": "Initial Balances",
+  "initialBalancesDescription": "Set the current balance for your accounts so your ledger starts out accurate.",
+  "initialBalanceNote": "Initial Balance",
+  "accountsSetupDescription": "Add your bank accounts, credit cards, and cash wallets to keep track of your balances.",
+  "categoriesSetupDescription": "Create categories for your expenses and income to help organize and analyze your transactions."
 }

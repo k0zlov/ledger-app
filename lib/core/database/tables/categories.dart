@@ -14,6 +14,8 @@ class Categories extends Table {
 
   IntColumn get icon => integer()();
 
+  BoolColumn get isTechnical => boolean().withDefault(const Constant(false))();
+
   @override
   Set<Column> get primaryKey => {id};
 }

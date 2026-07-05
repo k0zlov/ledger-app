@@ -133,4 +133,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get categoryTypeAny => 'Any';
+
+  @override
+  String get initialBalancesTitle => 'Initial Balances';
+
+  @override
+  String get initialBalancesDescription =>
+      'Set the current balance for your accounts so your ledger starts out accurate.';
+
+  @override
+  String get initialBalanceNote => 'Initial Balance';
+
+  @override
+  String get accountsSetupDescription =>
+      'Add your bank accounts, credit cards, and cash wallets to keep track of your balances.';
+
+  @override
+  String get categoriesSetupDescription =>
+      'Create categories for your expenses and income to help organize and analyze your transactions.';
 }

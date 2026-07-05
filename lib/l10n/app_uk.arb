@@ -40,5 +40,10 @@
   "categoryNamePlaceholder": "напр., Продукти, Зарплата",
   "categoryTypeExpense": "Витрати",
   "categoryTypeIncome": "Дохід",
-  "categoryTypeAny": "Будь-яка"
+  "categoryTypeAny": "Будь-яка",
+  "initialBalancesTitle": "Початкові баланси",
+  "initialBalancesDescription": "Встановіть поточний баланс для ваших рахунків, щоб облік був точним із самого початку.",
+  "initialBalanceNote": "Початковий баланс",
+  "accountsSetupDescription": "Додайте свої банківські рахунки, кредитні картки та гаманці з готівкою, щоб відстежувати їхній баланс.",
+  "categoriesSetupDescription": "Створіть категорії для ваших витрат і доходів, щоб впорядкувати та аналізувати свої транзакції."
 }

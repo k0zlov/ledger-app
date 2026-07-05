@@ -1,6 +1,6 @@
-import 'package:ledger_app/features/settings/data/models/app_settings_model.dart';
+import 'package:ledger_app/core/data/models/app_settings_model.dart';
 import 'package:ledger_app/features/settings/data/providers/settings_storage_provider.dart';
-import 'package:ledger_app/features/settings/domain/entities/app_settings.dart';
+import 'package:ledger_app/core/domain/entities/app_settings.dart';
 import 'package:ledger_app/features/settings/domain/repositories/settings_repository.dart';
 
 class SettingsRepositoryImpl implements SettingsRepository {

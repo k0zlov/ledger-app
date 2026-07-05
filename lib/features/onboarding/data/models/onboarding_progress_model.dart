@@ -6,6 +6,7 @@ class OnboardingProgressModel {
     this.hasCompletedSettings,
     this.hasCompletedAccounts,
     this.hasCompletedCategories,
+    this.hasCompletedTransactions,
   });
 
   factory OnboardingProgressModel.fromJson(Map<String, dynamic> map) {
@@ -14,6 +15,7 @@ class OnboardingProgressModel {
       hasCompletedSettings: map['hasCompletedSettings'] as String?,
       hasCompletedAccounts: map['hasCompletedAccounts'] as String?,
       hasCompletedCategories: map['hasCompletedCategories'] as String?,
+      hasCompletedTransactions: map['hasCompletedTransactions'] as String?,
     );
   }
 
@@ -23,6 +25,7 @@ class OnboardingProgressModel {
       hasCompletedSettings: entity.hasCompletedSettings.toString(),
       hasCompletedAccounts: entity.hasCompletedAccounts.toString(),
       hasCompletedCategories: entity.hasCompletedCategories.toString(),
+      hasCompletedTransactions: entity.hasCompletedTransactions.toString(),
     );
   }
 
@@ -30,6 +33,7 @@ class OnboardingProgressModel {
   final String? hasCompletedSettings;
   final String? hasCompletedAccounts;
   final String? hasCompletedCategories;
+  final String? hasCompletedTransactions;
 
   OnboardingProgress toEntity() {
     return OnboardingProgress(
@@ -37,6 +41,7 @@ class OnboardingProgressModel {
       hasCompletedSettings: hasCompletedSettings == 'true',
       hasCompletedAccounts: hasCompletedAccounts == 'true',
       hasCompletedCategories: hasCompletedCategories == 'true',
+      hasCompletedTransactions: hasCompletedTransactions == 'true',
     );
   }
 
@@ -46,6 +51,7 @@ class OnboardingProgressModel {
       'hasCompletedSettings': hasCompletedSettings,
       'hasCompletedAccounts': hasCompletedAccounts,
       'hasCompletedCategories': hasCompletedCategories,
+      'hasCompletedTransactions': hasCompletedTransactions,
     };
   }
 }

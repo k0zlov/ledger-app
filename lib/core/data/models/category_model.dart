@@ -9,6 +9,7 @@ class CategoryModel {
     required this.color,
     required this.icon,
     required this.type,
+    required this.isTechnical,
   });
 
   factory CategoryModel.fromEntity(Category entity) {
@@ -18,6 +19,7 @@ class CategoryModel {
       color: entity.color,
       icon: entity.icon,
       type: entity.type,
+      isTechnical: entity.isTechnical,
     );
   }
 
@@ -26,6 +28,7 @@ class CategoryModel {
   final int color;
   final int icon;
   final CategoryType type;
+  final bool isTechnical;
 
   Category toEntity() {
     return Category(
@@ -34,6 +37,7 @@ class CategoryModel {
       color: color,
       icon: icon,
       type: type,
+      isTechnical: isTechnical,
     );
   }
 
@@ -44,6 +48,7 @@ class CategoryModel {
       color: Value(color),
       icon: Value(icon),
       type: Value(type),
+      isTechnical: Value(isTechnical),
     );
   }
 }

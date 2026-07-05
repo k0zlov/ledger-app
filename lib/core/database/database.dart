@@ -5,13 +5,14 @@ import 'package:ledger_app/core/database/tables/accounts.dart';
 import 'package:ledger_app/core/database/tables/categories.dart';
 import 'package:ledger_app/core/database/tables/transactions.dart';
 import 'package:ledger_app/core/database/views/account_balances_view.dart';
+import 'package:ledger_app/core/database/views/transactions_with_details_view.dart';
 import 'package:path_provider/path_provider.dart';
 
 part 'database.g.dart';
 
 @DriftDatabase(
   tables: [Accounts, Categories, Transactions],
-  views: [AccountBalancesView],
+  views: [AccountBalancesView, TransactionsWithDetailsView],
 )
 class Database extends _$Database {
   Database([QueryExecutor? executor]) : super(executor ?? _openConnection());

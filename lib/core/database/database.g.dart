@@ -363,8 +363,30 @@ class $CategoriesTable extends Categories
     type: DriftSqlType.int,
     requiredDuringInsert: true,
   );
+  static const VerificationMeta _isTechnicalMeta = const VerificationMeta(
+    'isTechnical',
+  );
   @override
-  List<GeneratedColumn> get $columns => [id, name, type, color, icon];
+  late final GeneratedColumn<bool> isTechnical = GeneratedColumn<bool>(
+    'is_technical',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("is_technical" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    name,
+    type,
+    color,
+    icon,
+    isTechnical,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -406,6 +428,15 @@ class $CategoriesTable extends Categories
     } else if (isInserting) {
       context.missing(_iconMeta);
     }
+    if (data.containsKey('is_technical')) {
+      context.handle(
+        _isTechnicalMeta,
+        isTechnical.isAcceptableOrUnknown(
+          data['is_technical']!,
+          _isTechnicalMeta,
+        ),
+      );
+    }
     return context;
   }
 
@@ -437,6 +468,10 @@ class $CategoriesTable extends Categories
         DriftSqlType.int,
         data['${effectivePrefix}icon'],
       )!,
+      isTechnical: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}is_technical'],
+      )!,
     );
   }
 
@@ -455,12 +490,14 @@ class CategoryRow extends DataClass implements Insertable<CategoryRow> {
   final CategoryType type;
   final int color;
   final int icon;
+  final bool isTechnical;
   const CategoryRow({
     required this.id,
     required this.name,
     required this.type,
     required this.color,
     required this.icon,
+    required this.isTechnical,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -474,6 +511,7 @@ class CategoryRow extends DataClass implements Insertable<CategoryRow> {
     }
     map['color'] = Variable<int>(color);
     map['icon'] = Variable<int>(icon);
+    map['is_technical'] = Variable<bool>(isTechnical);
     return map;
   }
 
@@ -484,6 +522,7 @@ class CategoryRow extends DataClass implements Insertable<CategoryRow> {
       type: Value(type),
       color: Value(color),
       icon: Value(icon),
+      isTechnical: Value(isTechnical),
     );
   }
 
@@ -500,6 +539,7 @@ class CategoryRow extends DataClass implements Insertable<CategoryRow> {
       ),
       color: serializer.fromJson<int>(json['color']),
       icon: serializer.fromJson<int>(json['icon']),
+      isTechnical: serializer.fromJson<bool>(json['isTechnical']),
     );
   }
   @override
@@ -513,6 +553,7 @@ class CategoryRow extends DataClass implements Insertable<CategoryRow> {
       ),
       'color': serializer.toJson<int>(color),
       'icon': serializer.toJson<int>(icon),
+      'isTechnical': serializer.toJson<bool>(isTechnical),
     };
   }
 
@@ -522,12 +563,14 @@ class CategoryRow extends DataClass implements Insertable<CategoryRow> {
     CategoryType? type,
     int? color,
     int? icon,
+    bool? isTechnical,
   }) => CategoryRow(
     id: id ?? this.id,
     name: name ?? this.name,
     type: type ?? this.type,
     color: color ?? this.color,
     icon: icon ?? this.icon,
+    isTechnical: isTechnical ?? this.isTechnical,
   );
   CategoryRow copyWithCompanion(CategoriesCompanion data) {
     return CategoryRow(
@@ -536,6 +579,9 @@ class CategoryRow extends DataClass implements Insertable<CategoryRow> {
       type: data.type.present ? data.type.value : this.type,
       color: data.color.present ? data.color.value : this.color,
       icon: data.icon.present ? data.icon.value : this.icon,
+      isTechnical: data.isTechnical.present
+          ? data.isTechnical.value
+          : this.isTechnical,
     );
   }
 
@@ -546,13 +592,14 @@ class CategoryRow extends DataClass implements Insertable<CategoryRow> {
           ..write('name: $name, ')
           ..write('type: $type, ')
           ..write('color: $color, ')
-          ..write('icon: $icon')
+          ..write('icon: $icon, ')
+          ..write('isTechnical: $isTechnical')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, name, type, color, icon);
+  int get hashCode => Object.hash(id, name, type, color, icon, isTechnical);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -561,7 +608,8 @@ class CategoryRow extends DataClass implements Insertable<CategoryRow> {
           other.name == this.name &&
           other.type == this.type &&
           other.color == this.color &&
-          other.icon == this.icon);
+          other.icon == this.icon &&
+          other.isTechnical == this.isTechnical);
 }
 
 class CategoriesCompanion extends UpdateCompanion<CategoryRow> {
@@ -570,6 +618,7 @@ class CategoriesCompanion extends UpdateCompanion<CategoryRow> {
   final Value<CategoryType> type;
   final Value<int> color;
   final Value<int> icon;
+  final Value<bool> isTechnical;
   final Value<int> rowid;
   const CategoriesCompanion({
     this.id = const Value.absent(),
@@ -577,6 +626,7 @@ class CategoriesCompanion extends UpdateCompanion<CategoryRow> {
     this.type = const Value.absent(),
     this.color = const Value.absent(),
     this.icon = const Value.absent(),
+    this.isTechnical = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   CategoriesCompanion.insert({
@@ -585,6 +635,7 @@ class CategoriesCompanion extends UpdateCompanion<CategoryRow> {
     required CategoryType type,
     required int color,
     required int icon,
+    this.isTechnical = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        name = Value(name),
@@ -597,6 +648,7 @@ class CategoriesCompanion extends UpdateCompanion<CategoryRow> {
     Expression<String>? type,
     Expression<int>? color,
     Expression<int>? icon,
+    Expression<bool>? isTechnical,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -605,6 +657,7 @@ class CategoriesCompanion extends UpdateCompanion<CategoryRow> {
       if (type != null) 'type': type,
       if (color != null) 'color': color,
       if (icon != null) 'icon': icon,
+      if (isTechnical != null) 'is_technical': isTechnical,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -615,6 +668,7 @@ class CategoriesCompanion extends UpdateCompanion<CategoryRow> {
     Value<CategoryType>? type,
     Value<int>? color,
     Value<int>? icon,
+    Value<bool>? isTechnical,
     Value<int>? rowid,
   }) {
     return CategoriesCompanion(
@@ -623,6 +677,7 @@ class CategoriesCompanion extends UpdateCompanion<CategoryRow> {
       type: type ?? this.type,
       color: color ?? this.color,
       icon: icon ?? this.icon,
+      isTechnical: isTechnical ?? this.isTechnical,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -647,6 +702,9 @@ class CategoriesCompanion extends UpdateCompanion<CategoryRow> {
     if (icon.present) {
       map['icon'] = Variable<int>(icon.value);
     }
+    if (isTechnical.present) {
+      map['is_technical'] = Variable<bool>(isTechnical.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -661,6 +719,7 @@ class CategoriesCompanion extends UpdateCompanion<CategoryRow> {
           ..write('type: $type, ')
           ..write('color: $color, ')
           ..write('icon: $icon, ')
+          ..write('isTechnical: $isTechnical, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -668,7 +727,7 @@ class CategoriesCompanion extends UpdateCompanion<CategoryRow> {
 }
 
 class $TransactionsTable extends Transactions
-    with TableInfo<$TransactionsTable, TransactionModel> {
+    with TableInfo<$TransactionsTable, TransactionRow> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -682,12 +741,10 @@ class $TransactionsTable extends Transactions
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _commentMeta = const VerificationMeta(
-    'comment',
-  );
+  static const VerificationMeta _noteMeta = const VerificationMeta('note');
   @override
-  late final GeneratedColumn<String> comment = GeneratedColumn<String>(
-    'comment',
+  late final GeneratedColumn<String> note = GeneratedColumn<String>(
+    'note',
     aliasedName,
     true,
     type: DriftSqlType.string,
@@ -713,15 +770,6 @@ class $TransactionsTable extends Transactions
     type: DriftSqlType.int,
     requiredDuringInsert: true,
   );
-  @override
-  late final GeneratedColumnWithTypeConverter<TransactionType, String> type =
-      GeneratedColumn<String>(
-        'type',
-        aliasedName,
-        false,
-        type: DriftSqlType.string,
-        requiredDuringInsert: true,
-      ).withConverter<TransactionType>($TransactionsTable.$convertertype);
   static const VerificationMeta _accountIdMeta = const VerificationMeta(
     'accountId',
   );
@@ -753,10 +801,9 @@ class $TransactionsTable extends Transactions
   @override
   List<GeneratedColumn> get $columns => [
     id,
-    comment,
+    note,
     amount,
     timestamp,
-    type,
     accountId,
     categoryId,
   ];
@@ -767,7 +814,7 @@ class $TransactionsTable extends Transactions
   static const String $name = 'transactions';
   @override
   VerificationContext validateIntegrity(
-    Insertable<TransactionModel> instance, {
+    Insertable<TransactionRow> instance, {
     bool isInserting = false,
   }) {
     final context = VerificationContext();
@@ -777,10 +824,10 @@ class $TransactionsTable extends Transactions
     } else if (isInserting) {
       context.missing(_idMeta);
     }
-    if (data.containsKey('comment')) {
+    if (data.containsKey('note')) {
       context.handle(
-        _commentMeta,
-        comment.isAcceptableOrUnknown(data['comment']!, _commentMeta),
+        _noteMeta,
+        note.isAcceptableOrUnknown(data['note']!, _noteMeta),
       );
     }
     if (data.containsKey('amount')) {
@@ -821,16 +868,16 @@ class $TransactionsTable extends Transactions
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  TransactionModel map(Map<String, dynamic> data, {String? tablePrefix}) {
+  TransactionRow map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return TransactionModel(
+    return TransactionRow(
       id: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}id'],
       )!,
-      comment: attachedDatabase.typeMapping.read(
+      note: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
-        data['${effectivePrefix}comment'],
+        data['${effectivePrefix}note'],
       ),
       amount: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
@@ -840,12 +887,6 @@ class $TransactionsTable extends Transactions
         DriftSqlType.int,
         data['${effectivePrefix}timestamp'],
       )!,
-      type: $TransactionsTable.$convertertype.fromSql(
-        attachedDatabase.typeMapping.read(
-          DriftSqlType.string,
-          data['${effectivePrefix}type'],
-        )!,
-      ),
       accountId: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}account_id'],
@@ -861,26 +902,20 @@ class $TransactionsTable extends Transactions
   $TransactionsTable createAlias(String alias) {
     return $TransactionsTable(attachedDatabase, alias);
   }
-
-  static JsonTypeConverter2<TransactionType, String, String> $convertertype =
-      const EnumNameConverter<TransactionType>(TransactionType.values);
 }
 
-class TransactionModel extends DataClass
-    implements Insertable<TransactionModel> {
+class TransactionRow extends DataClass implements Insertable<TransactionRow> {
   final String id;
-  final String? comment;
+  final String? note;
   final int amount;
   final int timestamp;
-  final TransactionType type;
   final String accountId;
   final String categoryId;
-  const TransactionModel({
+  const TransactionRow({
     required this.id,
-    this.comment,
+    this.note,
     required this.amount,
     required this.timestamp,
-    required this.type,
     required this.accountId,
     required this.categoryId,
   });
@@ -888,16 +923,11 @@ class TransactionModel extends DataClass
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<String>(id);
-    if (!nullToAbsent || comment != null) {
-      map['comment'] = Variable<String>(comment);
+    if (!nullToAbsent || note != null) {
+      map['note'] = Variable<String>(note);
     }
     map['amount'] = Variable<int>(amount);
     map['timestamp'] = Variable<int>(timestamp);
-    {
-      map['type'] = Variable<String>(
-        $TransactionsTable.$convertertype.toSql(type),
-      );
-    }
     map['account_id'] = Variable<String>(accountId);
     map['category_id'] = Variable<String>(categoryId);
     return map;
@@ -906,30 +936,24 @@ class TransactionModel extends DataClass
   TransactionsCompanion toCompanion(bool nullToAbsent) {
     return TransactionsCompanion(
       id: Value(id),
-      comment: comment == null && nullToAbsent
-          ? const Value.absent()
-          : Value(comment),
+      note: note == null && nullToAbsent ? const Value.absent() : Value(note),
       amount: Value(amount),
       timestamp: Value(timestamp),
-      type: Value(type),
       accountId: Value(accountId),
       categoryId: Value(categoryId),
     );
   }
 
-  factory TransactionModel.fromJson(
+  factory TransactionRow.fromJson(
     Map<String, dynamic> json, {
     ValueSerializer? serializer,
   }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return TransactionModel(
+    return TransactionRow(
       id: serializer.fromJson<String>(json['id']),
-      comment: serializer.fromJson<String?>(json['comment']),
+      note: serializer.fromJson<String?>(json['note']),
       amount: serializer.fromJson<int>(json['amount']),
       timestamp: serializer.fromJson<int>(json['timestamp']),
-      type: $TransactionsTable.$convertertype.fromJson(
-        serializer.fromJson<String>(json['type']),
-      ),
       accountId: serializer.fromJson<String>(json['accountId']),
       categoryId: serializer.fromJson<String>(json['categoryId']),
     );
@@ -939,41 +963,35 @@ class TransactionModel extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<String>(id),
-      'comment': serializer.toJson<String?>(comment),
+      'note': serializer.toJson<String?>(note),
       'amount': serializer.toJson<int>(amount),
       'timestamp': serializer.toJson<int>(timestamp),
-      'type': serializer.toJson<String>(
-        $TransactionsTable.$convertertype.toJson(type),
-      ),
       'accountId': serializer.toJson<String>(accountId),
       'categoryId': serializer.toJson<String>(categoryId),
     };
   }
 
-  TransactionModel copyWith({
+  TransactionRow copyWith({
     String? id,
-    Value<String?> comment = const Value.absent(),
+    Value<String?> note = const Value.absent(),
     int? amount,
     int? timestamp,
-    TransactionType? type,
     String? accountId,
     String? categoryId,
-  }) => TransactionModel(
+  }) => TransactionRow(
     id: id ?? this.id,
-    comment: comment.present ? comment.value : this.comment,
+    note: note.present ? note.value : this.note,
     amount: amount ?? this.amount,
     timestamp: timestamp ?? this.timestamp,
-    type: type ?? this.type,
     accountId: accountId ?? this.accountId,
     categoryId: categoryId ?? this.categoryId,
   );
-  TransactionModel copyWithCompanion(TransactionsCompanion data) {
-    return TransactionModel(
+  TransactionRow copyWithCompanion(TransactionsCompanion data) {
+    return TransactionRow(
       id: data.id.present ? data.id.value : this.id,
-      comment: data.comment.present ? data.comment.value : this.comment,
+      note: data.note.present ? data.note.value : this.note,
       amount: data.amount.present ? data.amount.value : this.amount,
       timestamp: data.timestamp.present ? data.timestamp.value : this.timestamp,
-      type: data.type.present ? data.type.value : this.type,
       accountId: data.accountId.present ? data.accountId.value : this.accountId,
       categoryId: data.categoryId.present
           ? data.categoryId.value
@@ -983,12 +1001,11 @@ class TransactionModel extends DataClass
 
   @override
   String toString() {
-    return (StringBuffer('TransactionModel(')
+    return (StringBuffer('TransactionRow(')
           ..write('id: $id, ')
-          ..write('comment: $comment, ')
+          ..write('note: $note, ')
           ..write('amount: $amount, ')
           ..write('timestamp: $timestamp, ')
-          ..write('type: $type, ')
           ..write('accountId: $accountId, ')
           ..write('categoryId: $categoryId')
           ..write(')'))
@@ -997,70 +1014,63 @@ class TransactionModel extends DataClass
 
   @override
   int get hashCode =>
-      Object.hash(id, comment, amount, timestamp, type, accountId, categoryId);
+      Object.hash(id, note, amount, timestamp, accountId, categoryId);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is TransactionModel &&
+      (other is TransactionRow &&
           other.id == this.id &&
-          other.comment == this.comment &&
+          other.note == this.note &&
           other.amount == this.amount &&
           other.timestamp == this.timestamp &&
-          other.type == this.type &&
           other.accountId == this.accountId &&
           other.categoryId == this.categoryId);
 }
 
-class TransactionsCompanion extends UpdateCompanion<TransactionModel> {
+class TransactionsCompanion extends UpdateCompanion<TransactionRow> {
   final Value<String> id;
-  final Value<String?> comment;
+  final Value<String?> note;
   final Value<int> amount;
   final Value<int> timestamp;
-  final Value<TransactionType> type;
   final Value<String> accountId;
   final Value<String> categoryId;
   final Value<int> rowid;
   const TransactionsCompanion({
     this.id = const Value.absent(),
-    this.comment = const Value.absent(),
+    this.note = const Value.absent(),
     this.amount = const Value.absent(),
     this.timestamp = const Value.absent(),
-    this.type = const Value.absent(),
     this.accountId = const Value.absent(),
     this.categoryId = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   TransactionsCompanion.insert({
     required String id,
-    this.comment = const Value.absent(),
+    this.note = const Value.absent(),
     required int amount,
     required int timestamp,
-    required TransactionType type,
     required String accountId,
     required String categoryId,
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        amount = Value(amount),
        timestamp = Value(timestamp),
-       type = Value(type),
        accountId = Value(accountId),
        categoryId = Value(categoryId);
-  static Insertable<TransactionModel> custom({
+  static Insertable<TransactionRow> custom({
     Expression<String>? id,
-    Expression<String>? comment,
+    Expression<String>? note,
     Expression<int>? amount,
     Expression<int>? timestamp,
-    Expression<String>? type,
     Expression<String>? accountId,
     Expression<String>? categoryId,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
-      if (comment != null) 'comment': comment,
+      if (note != null) 'note': note,
       if (amount != null) 'amount': amount,
       if (timestamp != null) 'timestamp': timestamp,
-      if (type != null) 'type': type,
       if (accountId != null) 'account_id': accountId,
       if (categoryId != null) 'category_id': categoryId,
       if (rowid != null) 'rowid': rowid,
@@ -1069,20 +1079,18 @@ class TransactionsCompanion extends UpdateCompanion<TransactionModel> {
 
   TransactionsCompanion copyWith({
     Value<String>? id,
-    Value<String?>? comment,
+    Value<String?>? note,
     Value<int>? amount,
     Value<int>? timestamp,
-    Value<TransactionType>? type,
     Value<String>? accountId,
     Value<String>? categoryId,
     Value<int>? rowid,
   }) {
     return TransactionsCompanion(
       id: id ?? this.id,
-      comment: comment ?? this.comment,
+      note: note ?? this.note,
       amount: amount ?? this.amount,
       timestamp: timestamp ?? this.timestamp,
-      type: type ?? this.type,
       accountId: accountId ?? this.accountId,
       categoryId: categoryId ?? this.categoryId,
       rowid: rowid ?? this.rowid,
@@ -1095,19 +1103,14 @@ class TransactionsCompanion extends UpdateCompanion<TransactionModel> {
     if (id.present) {
       map['id'] = Variable<String>(id.value);
     }
-    if (comment.present) {
-      map['comment'] = Variable<String>(comment.value);
+    if (note.present) {
+      map['note'] = Variable<String>(note.value);
     }
     if (amount.present) {
       map['amount'] = Variable<int>(amount.value);
     }
     if (timestamp.present) {
       map['timestamp'] = Variable<int>(timestamp.value);
-    }
-    if (type.present) {
-      map['type'] = Variable<String>(
-        $TransactionsTable.$convertertype.toSql(type.value),
-      );
     }
     if (accountId.present) {
       map['account_id'] = Variable<String>(accountId.value);
@@ -1125,10 +1128,9 @@ class TransactionsCompanion extends UpdateCompanion<TransactionModel> {
   String toString() {
     return (StringBuffer('TransactionsCompanion(')
           ..write('id: $id, ')
-          ..write('comment: $comment, ')
+          ..write('note: $note, ')
           ..write('amount: $amount, ')
           ..write('timestamp: $timestamp, ')
-          ..write('type: $type, ')
           ..write('accountId: $accountId, ')
           ..write('categoryId: $categoryId, ')
           ..write('rowid: $rowid')
@@ -1328,6 +1330,412 @@ class $AccountBalancesViewView
   Set<String> get readTables => const {'accounts', 'transactions'};
 }
 
+class TransactionsWithDetailsViewData extends DataClass {
+  final String id;
+  final int amount;
+  final int timestamp;
+  final String? note;
+  final String accountId;
+  final String categoryId;
+  final String accountName;
+  final int accountColor;
+  final AccountType accountType;
+  final String categoryName;
+  final int categoryColor;
+  final int categoryIcon;
+  final CategoryType categoryType;
+  final bool categoryIsTechnical;
+  const TransactionsWithDetailsViewData({
+    required this.id,
+    required this.amount,
+    required this.timestamp,
+    this.note,
+    required this.accountId,
+    required this.categoryId,
+    required this.accountName,
+    required this.accountColor,
+    required this.accountType,
+    required this.categoryName,
+    required this.categoryColor,
+    required this.categoryIcon,
+    required this.categoryType,
+    required this.categoryIsTechnical,
+  });
+  factory TransactionsWithDetailsViewData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return TransactionsWithDetailsViewData(
+      id: serializer.fromJson<String>(json['id']),
+      amount: serializer.fromJson<int>(json['amount']),
+      timestamp: serializer.fromJson<int>(json['timestamp']),
+      note: serializer.fromJson<String?>(json['note']),
+      accountId: serializer.fromJson<String>(json['accountId']),
+      categoryId: serializer.fromJson<String>(json['categoryId']),
+      accountName: serializer.fromJson<String>(json['accountName']),
+      accountColor: serializer.fromJson<int>(json['accountColor']),
+      accountType: $AccountsTable.$convertertype.fromJson(
+        serializer.fromJson<String>(json['accountType']),
+      ),
+      categoryName: serializer.fromJson<String>(json['categoryName']),
+      categoryColor: serializer.fromJson<int>(json['categoryColor']),
+      categoryIcon: serializer.fromJson<int>(json['categoryIcon']),
+      categoryType: $CategoriesTable.$convertertype.fromJson(
+        serializer.fromJson<String>(json['categoryType']),
+      ),
+      categoryIsTechnical: serializer.fromJson<bool>(
+        json['categoryIsTechnical'],
+      ),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'amount': serializer.toJson<int>(amount),
+      'timestamp': serializer.toJson<int>(timestamp),
+      'note': serializer.toJson<String?>(note),
+      'accountId': serializer.toJson<String>(accountId),
+      'categoryId': serializer.toJson<String>(categoryId),
+      'accountName': serializer.toJson<String>(accountName),
+      'accountColor': serializer.toJson<int>(accountColor),
+      'accountType': serializer.toJson<String>(
+        $AccountsTable.$convertertype.toJson(accountType),
+      ),
+      'categoryName': serializer.toJson<String>(categoryName),
+      'categoryColor': serializer.toJson<int>(categoryColor),
+      'categoryIcon': serializer.toJson<int>(categoryIcon),
+      'categoryType': serializer.toJson<String>(
+        $CategoriesTable.$convertertype.toJson(categoryType),
+      ),
+      'categoryIsTechnical': serializer.toJson<bool>(categoryIsTechnical),
+    };
+  }
+
+  TransactionsWithDetailsViewData copyWith({
+    String? id,
+    int? amount,
+    int? timestamp,
+    Value<String?> note = const Value.absent(),
+    String? accountId,
+    String? categoryId,
+    String? accountName,
+    int? accountColor,
+    AccountType? accountType,
+    String? categoryName,
+    int? categoryColor,
+    int? categoryIcon,
+    CategoryType? categoryType,
+    bool? categoryIsTechnical,
+  }) => TransactionsWithDetailsViewData(
+    id: id ?? this.id,
+    amount: amount ?? this.amount,
+    timestamp: timestamp ?? this.timestamp,
+    note: note.present ? note.value : this.note,
+    accountId: accountId ?? this.accountId,
+    categoryId: categoryId ?? this.categoryId,
+    accountName: accountName ?? this.accountName,
+    accountColor: accountColor ?? this.accountColor,
+    accountType: accountType ?? this.accountType,
+    categoryName: categoryName ?? this.categoryName,
+    categoryColor: categoryColor ?? this.categoryColor,
+    categoryIcon: categoryIcon ?? this.categoryIcon,
+    categoryType: categoryType ?? this.categoryType,
+    categoryIsTechnical: categoryIsTechnical ?? this.categoryIsTechnical,
+  );
+  @override
+  String toString() {
+    return (StringBuffer('TransactionsWithDetailsViewData(')
+          ..write('id: $id, ')
+          ..write('amount: $amount, ')
+          ..write('timestamp: $timestamp, ')
+          ..write('note: $note, ')
+          ..write('accountId: $accountId, ')
+          ..write('categoryId: $categoryId, ')
+          ..write('accountName: $accountName, ')
+          ..write('accountColor: $accountColor, ')
+          ..write('accountType: $accountType, ')
+          ..write('categoryName: $categoryName, ')
+          ..write('categoryColor: $categoryColor, ')
+          ..write('categoryIcon: $categoryIcon, ')
+          ..write('categoryType: $categoryType, ')
+          ..write('categoryIsTechnical: $categoryIsTechnical')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    amount,
+    timestamp,
+    note,
+    accountId,
+    categoryId,
+    accountName,
+    accountColor,
+    accountType,
+    categoryName,
+    categoryColor,
+    categoryIcon,
+    categoryType,
+    categoryIsTechnical,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is TransactionsWithDetailsViewData &&
+          other.id == this.id &&
+          other.amount == this.amount &&
+          other.timestamp == this.timestamp &&
+          other.note == this.note &&
+          other.accountId == this.accountId &&
+          other.categoryId == this.categoryId &&
+          other.accountName == this.accountName &&
+          other.accountColor == this.accountColor &&
+          other.accountType == this.accountType &&
+          other.categoryName == this.categoryName &&
+          other.categoryColor == this.categoryColor &&
+          other.categoryIcon == this.categoryIcon &&
+          other.categoryType == this.categoryType &&
+          other.categoryIsTechnical == this.categoryIsTechnical);
+}
+
+class $TransactionsWithDetailsViewView
+    extends
+        ViewInfo<
+          $TransactionsWithDetailsViewView,
+          TransactionsWithDetailsViewData
+        >
+    implements HasResultSet {
+  final String? _alias;
+  @override
+  final _$Database attachedDatabase;
+  $TransactionsWithDetailsViewView(this.attachedDatabase, [this._alias]);
+  $TransactionsTable get transactions =>
+      attachedDatabase.transactions.createAlias('t0');
+  $AccountsTable get accounts => attachedDatabase.accounts.createAlias('t1');
+  $CategoriesTable get categories =>
+      attachedDatabase.categories.createAlias('t2');
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    amount,
+    timestamp,
+    note,
+    accountId,
+    categoryId,
+    accountName,
+    accountColor,
+    accountType,
+    categoryName,
+    categoryColor,
+    categoryIcon,
+    categoryType,
+    categoryIsTechnical,
+  ];
+  @override
+  String get aliasedName => _alias ?? entityName;
+  @override
+  String get entityName => 'transactions_with_details_view';
+  @override
+  Map<SqlDialect, String>? get createViewStatements => null;
+  @override
+  $TransactionsWithDetailsViewView get asDslTable => this;
+  @override
+  TransactionsWithDetailsViewData map(
+    Map<String, dynamic> data, {
+    String? tablePrefix,
+  }) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return TransactionsWithDetailsViewData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      amount: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}amount'],
+      )!,
+      timestamp: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}timestamp'],
+      )!,
+      note: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}note'],
+      ),
+      accountId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}account_id'],
+      )!,
+      categoryId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}category_id'],
+      )!,
+      accountName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}account_name'],
+      )!,
+      accountColor: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}account_color'],
+      )!,
+      accountType: $AccountsTable.$convertertype.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}account_type'],
+        )!,
+      ),
+      categoryName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}category_name'],
+      )!,
+      categoryColor: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}category_color'],
+      )!,
+      categoryIcon: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}category_icon'],
+      )!,
+      categoryType: $CategoriesTable.$convertertype.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}category_type'],
+        )!,
+      ),
+      categoryIsTechnical: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}category_is_technical'],
+      )!,
+    );
+  }
+
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    generatedAs: GeneratedAs(transactions.id, false),
+    type: DriftSqlType.string,
+  );
+  late final GeneratedColumn<int> amount = GeneratedColumn<int>(
+    'amount',
+    aliasedName,
+    false,
+    generatedAs: GeneratedAs(transactions.amount, false),
+    type: DriftSqlType.int,
+  );
+  late final GeneratedColumn<int> timestamp = GeneratedColumn<int>(
+    'timestamp',
+    aliasedName,
+    false,
+    generatedAs: GeneratedAs(transactions.timestamp, false),
+    type: DriftSqlType.int,
+  );
+  late final GeneratedColumn<String> note = GeneratedColumn<String>(
+    'note',
+    aliasedName,
+    true,
+    generatedAs: GeneratedAs(transactions.note, false),
+    type: DriftSqlType.string,
+  );
+  late final GeneratedColumn<String> accountId = GeneratedColumn<String>(
+    'account_id',
+    aliasedName,
+    false,
+    generatedAs: GeneratedAs(transactions.accountId, false),
+    type: DriftSqlType.string,
+  );
+  late final GeneratedColumn<String> categoryId = GeneratedColumn<String>(
+    'category_id',
+    aliasedName,
+    false,
+    generatedAs: GeneratedAs(transactions.categoryId, false),
+    type: DriftSqlType.string,
+  );
+  late final GeneratedColumn<String> accountName = GeneratedColumn<String>(
+    'account_name',
+    aliasedName,
+    false,
+    generatedAs: GeneratedAs(accounts.name, false),
+    type: DriftSqlType.string,
+  );
+  late final GeneratedColumn<int> accountColor = GeneratedColumn<int>(
+    'account_color',
+    aliasedName,
+    false,
+    generatedAs: GeneratedAs(accounts.color, false),
+    type: DriftSqlType.int,
+  );
+  late final GeneratedColumnWithTypeConverter<AccountType, String> accountType =
+      GeneratedColumn<String>(
+        'account_type',
+        aliasedName,
+        false,
+        generatedAs: GeneratedAs(accounts.type, false),
+        type: DriftSqlType.string,
+      ).withConverter<AccountType>($AccountsTable.$convertertype);
+  late final GeneratedColumn<String> categoryName = GeneratedColumn<String>(
+    'category_name',
+    aliasedName,
+    false,
+    generatedAs: GeneratedAs(categories.name, false),
+    type: DriftSqlType.string,
+  );
+  late final GeneratedColumn<int> categoryColor = GeneratedColumn<int>(
+    'category_color',
+    aliasedName,
+    false,
+    generatedAs: GeneratedAs(categories.color, false),
+    type: DriftSqlType.int,
+  );
+  late final GeneratedColumn<int> categoryIcon = GeneratedColumn<int>(
+    'category_icon',
+    aliasedName,
+    false,
+    generatedAs: GeneratedAs(categories.icon, false),
+    type: DriftSqlType.int,
+  );
+  late final GeneratedColumnWithTypeConverter<CategoryType, String>
+  categoryType = GeneratedColumn<String>(
+    'category_type',
+    aliasedName,
+    false,
+    generatedAs: GeneratedAs(categories.type, false),
+    type: DriftSqlType.string,
+  ).withConverter<CategoryType>($CategoriesTable.$convertertype);
+  late final GeneratedColumn<bool> categoryIsTechnical = GeneratedColumn<bool>(
+    'category_is_technical',
+    aliasedName,
+    false,
+    generatedAs: GeneratedAs(categories.isTechnical, false),
+    type: DriftSqlType.bool,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("category_is_technical" IN (0, 1))',
+    ),
+  );
+  @override
+  $TransactionsWithDetailsViewView createAlias(String alias) {
+    return $TransactionsWithDetailsViewView(attachedDatabase, alias);
+  }
+
+  @override
+  Query? get query =>
+      (attachedDatabase.selectOnly(transactions)..addColumns($columns)).join([
+        innerJoin(accounts, accounts.id.equalsExp(transactions.accountId)),
+        innerJoin(categories, categories.id.equalsExp(transactions.categoryId)),
+      ]);
+  @override
+  Set<String> get readTables => const {
+    'transactions',
+    'accounts',
+    'categories',
+  };
+}
+
 abstract class _$Database extends GeneratedDatabase {
   _$Database(QueryExecutor e) : super(e);
   $DatabaseManager get managers => $DatabaseManager(this);
@@ -1336,6 +1744,8 @@ abstract class _$Database extends GeneratedDatabase {
   late final $TransactionsTable transactions = $TransactionsTable(this);
   late final $AccountBalancesViewView accountBalancesView =
       $AccountBalancesViewView(this);
+  late final $TransactionsWithDetailsViewView transactionsWithDetailsView =
+      $TransactionsWithDetailsViewView(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -1345,6 +1755,7 @@ abstract class _$Database extends GeneratedDatabase {
     categories,
     transactions,
     accountBalancesView,
+    transactionsWithDetailsView,
   ];
   @override
   StreamQueryUpdateRules get streamUpdateRules => const StreamQueryUpdateRules([
@@ -1379,7 +1790,7 @@ final class $$AccountsTableReferences
     extends BaseReferences<_$Database, $AccountsTable, AccountRow> {
   $$AccountsTableReferences(super.$_db, super.$_table, super.$_typedResult);
 
-  static MultiTypedResultKey<$TransactionsTable, List<TransactionModel>>
+  static MultiTypedResultKey<$TransactionsTable, List<TransactionRow>>
   _transactionsRefsTable(_$Database db) => MultiTypedResultKey.fromTable(
     db.transactions,
     aliasName: 'accounts__id__transactions__account_id',
@@ -1604,7 +2015,7 @@ class $$AccountsTableTableManager
                     await $_getPrefetchedData<
                       AccountRow,
                       $AccountsTable,
-                      TransactionModel
+                      TransactionRow
                     >(
                       currentTable: table,
                       referencedTable: $$AccountsTableReferences
@@ -1647,6 +2058,7 @@ typedef $$CategoriesTableCreateCompanionBuilder =
       required CategoryType type,
       required int color,
       required int icon,
+      Value<bool> isTechnical,
       Value<int> rowid,
     });
 typedef $$CategoriesTableUpdateCompanionBuilder =
@@ -1656,6 +2068,7 @@ typedef $$CategoriesTableUpdateCompanionBuilder =
       Value<CategoryType> type,
       Value<int> color,
       Value<int> icon,
+      Value<bool> isTechnical,
       Value<int> rowid,
     });
 
@@ -1663,7 +2076,7 @@ final class $$CategoriesTableReferences
     extends BaseReferences<_$Database, $CategoriesTable, CategoryRow> {
   $$CategoriesTableReferences(super.$_db, super.$_table, super.$_typedResult);
 
-  static MultiTypedResultKey<$TransactionsTable, List<TransactionModel>>
+  static MultiTypedResultKey<$TransactionsTable, List<TransactionRow>>
   _transactionsRefsTable(_$Database db) => MultiTypedResultKey.fromTable(
     db.transactions,
     aliasName: 'categories__id__transactions__category_id',
@@ -1714,6 +2127,11 @@ class $$CategoriesTableFilterComposer
 
   ColumnFilters<int> get icon => $composableBuilder(
     column: $table.icon,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get isTechnical => $composableBuilder(
+    column: $table.isTechnical,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -1776,6 +2194,11 @@ class $$CategoriesTableOrderingComposer
     column: $table.icon,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<bool> get isTechnical => $composableBuilder(
+    column: $table.isTechnical,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$CategoriesTableAnnotationComposer
@@ -1801,6 +2224,11 @@ class $$CategoriesTableAnnotationComposer
 
   GeneratedColumn<int> get icon =>
       $composableBuilder(column: $table.icon, builder: (column) => column);
+
+  GeneratedColumn<bool> get isTechnical => $composableBuilder(
+    column: $table.isTechnical,
+    builder: (column) => column,
+  );
 
   Expression<T> transactionsRefs<T extends Object>(
     Expression<T> Function($$TransactionsTableAnnotationComposer a) f,
@@ -1861,6 +2289,7 @@ class $$CategoriesTableTableManager
                 Value<CategoryType> type = const Value.absent(),
                 Value<int> color = const Value.absent(),
                 Value<int> icon = const Value.absent(),
+                Value<bool> isTechnical = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => CategoriesCompanion(
                 id: id,
@@ -1868,6 +2297,7 @@ class $$CategoriesTableTableManager
                 type: type,
                 color: color,
                 icon: icon,
+                isTechnical: isTechnical,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -1877,6 +2307,7 @@ class $$CategoriesTableTableManager
                 required CategoryType type,
                 required int color,
                 required int icon,
+                Value<bool> isTechnical = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => CategoriesCompanion.insert(
                 id: id,
@@ -1884,6 +2315,7 @@ class $$CategoriesTableTableManager
                 type: type,
                 color: color,
                 icon: icon,
+                isTechnical: isTechnical,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
@@ -1905,7 +2337,7 @@ class $$CategoriesTableTableManager
                     await $_getPrefetchedData<
                       CategoryRow,
                       $CategoriesTable,
-                      TransactionModel
+                      TransactionRow
                     >(
                       currentTable: table,
                       referencedTable: $$CategoriesTableReferences
@@ -1945,10 +2377,9 @@ typedef $$CategoriesTableProcessedTableManager =
 typedef $$TransactionsTableCreateCompanionBuilder =
     TransactionsCompanion Function({
       required String id,
-      Value<String?> comment,
+      Value<String?> note,
       required int amount,
       required int timestamp,
-      required TransactionType type,
       required String accountId,
       required String categoryId,
       Value<int> rowid,
@@ -1956,17 +2387,16 @@ typedef $$TransactionsTableCreateCompanionBuilder =
 typedef $$TransactionsTableUpdateCompanionBuilder =
     TransactionsCompanion Function({
       Value<String> id,
-      Value<String?> comment,
+      Value<String?> note,
       Value<int> amount,
       Value<int> timestamp,
-      Value<TransactionType> type,
       Value<String> accountId,
       Value<String> categoryId,
       Value<int> rowid,
     });
 
 final class $$TransactionsTableReferences
-    extends BaseReferences<_$Database, $TransactionsTable, TransactionModel> {
+    extends BaseReferences<_$Database, $TransactionsTable, TransactionRow> {
   $$TransactionsTableReferences(super.$_db, super.$_table, super.$_typedResult);
 
   static $AccountsTable _accountIdTable(_$Database db) =>
@@ -2018,8 +2448,8 @@ class $$TransactionsTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<String> get comment => $composableBuilder(
-    column: $table.comment,
+  ColumnFilters<String> get note => $composableBuilder(
+    column: $table.note,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -2031,12 +2461,6 @@ class $$TransactionsTableFilterComposer
   ColumnFilters<int> get timestamp => $composableBuilder(
     column: $table.timestamp,
     builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnWithTypeConverterFilters<TransactionType, TransactionType, String>
-  get type => $composableBuilder(
-    column: $table.type,
-    builder: (column) => ColumnWithTypeConverterFilters(column),
   );
 
   $$AccountsTableFilterComposer get accountId {
@@ -2100,8 +2524,8 @@ class $$TransactionsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get comment => $composableBuilder(
-    column: $table.comment,
+  ColumnOrderings<String> get note => $composableBuilder(
+    column: $table.note,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -2112,11 +2536,6 @@ class $$TransactionsTableOrderingComposer
 
   ColumnOrderings<int> get timestamp => $composableBuilder(
     column: $table.timestamp,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get type => $composableBuilder(
-    column: $table.type,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -2179,17 +2598,14 @@ class $$TransactionsTableAnnotationComposer
   GeneratedColumn<String> get id =>
       $composableBuilder(column: $table.id, builder: (column) => column);
 
-  GeneratedColumn<String> get comment =>
-      $composableBuilder(column: $table.comment, builder: (column) => column);
+  GeneratedColumn<String> get note =>
+      $composableBuilder(column: $table.note, builder: (column) => column);
 
   GeneratedColumn<int> get amount =>
       $composableBuilder(column: $table.amount, builder: (column) => column);
 
   GeneratedColumn<int> get timestamp =>
       $composableBuilder(column: $table.timestamp, builder: (column) => column);
-
-  GeneratedColumnWithTypeConverter<TransactionType, String> get type =>
-      $composableBuilder(column: $table.type, builder: (column) => column);
 
   $$AccountsTableAnnotationComposer get accountId {
     final $$AccountsTableAnnotationComposer composer = $composerBuilder(
@@ -2243,14 +2659,14 @@ class $$TransactionsTableTableManager
         RootTableManager<
           _$Database,
           $TransactionsTable,
-          TransactionModel,
+          TransactionRow,
           $$TransactionsTableFilterComposer,
           $$TransactionsTableOrderingComposer,
           $$TransactionsTableAnnotationComposer,
           $$TransactionsTableCreateCompanionBuilder,
           $$TransactionsTableUpdateCompanionBuilder,
-          (TransactionModel, $$TransactionsTableReferences),
-          TransactionModel,
+          (TransactionRow, $$TransactionsTableReferences),
+          TransactionRow,
           PrefetchHooks Function({bool accountId, bool categoryId})
         > {
   $$TransactionsTableTableManager(_$Database db, $TransactionsTable table)
@@ -2267,19 +2683,17 @@ class $$TransactionsTableTableManager
           updateCompanionCallback:
               ({
                 Value<String> id = const Value.absent(),
-                Value<String?> comment = const Value.absent(),
+                Value<String?> note = const Value.absent(),
                 Value<int> amount = const Value.absent(),
                 Value<int> timestamp = const Value.absent(),
-                Value<TransactionType> type = const Value.absent(),
                 Value<String> accountId = const Value.absent(),
                 Value<String> categoryId = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => TransactionsCompanion(
                 id: id,
-                comment: comment,
+                note: note,
                 amount: amount,
                 timestamp: timestamp,
-                type: type,
                 accountId: accountId,
                 categoryId: categoryId,
                 rowid: rowid,
@@ -2287,19 +2701,17 @@ class $$TransactionsTableTableManager
           createCompanionCallback:
               ({
                 required String id,
-                Value<String?> comment = const Value.absent(),
+                Value<String?> note = const Value.absent(),
                 required int amount,
                 required int timestamp,
-                required TransactionType type,
                 required String accountId,
                 required String categoryId,
                 Value<int> rowid = const Value.absent(),
               }) => TransactionsCompanion.insert(
                 id: id,
-                comment: comment,
+                note: note,
                 amount: amount,
                 timestamp: timestamp,
-                type: type,
                 accountId: accountId,
                 categoryId: categoryId,
                 rowid: rowid,
@@ -2374,14 +2786,14 @@ typedef $$TransactionsTableProcessedTableManager =
     ProcessedTableManager<
       _$Database,
       $TransactionsTable,
-      TransactionModel,
+      TransactionRow,
       $$TransactionsTableFilterComposer,
       $$TransactionsTableOrderingComposer,
       $$TransactionsTableAnnotationComposer,
       $$TransactionsTableCreateCompanionBuilder,
       $$TransactionsTableUpdateCompanionBuilder,
-      (TransactionModel, $$TransactionsTableReferences),
-      TransactionModel,
+      (TransactionRow, $$TransactionsTableReferences),
+      TransactionRow,
       PrefetchHooks Function({bool accountId, bool categoryId})
     >;
 

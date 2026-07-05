@@ -133,4 +133,22 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get categoryTypeAny => 'Будь-яка';
+
+  @override
+  String get initialBalancesTitle => 'Початкові баланси';
+
+  @override
+  String get initialBalancesDescription =>
+      'Встановіть поточний баланс для ваших рахунків, щоб облік був точним із самого початку.';
+
+  @override
+  String get initialBalanceNote => 'Початковий баланс';
+
+  @override
+  String get accountsSetupDescription =>
+      'Додайте свої банківські рахунки, кредитні картки та гаманці з готівкою, щоб відстежувати їхній баланс.';
+
+  @override
+  String get categoriesSetupDescription =>
+      'Створіть категорії для ваших витрат і доходів, щоб впорядкувати та аналізувати свої транзакції.';
 }

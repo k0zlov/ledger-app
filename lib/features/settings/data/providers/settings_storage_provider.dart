@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:ledger_app/core/secure_storage/secure_storage.dart';
-import 'package:ledger_app/features/settings/data/models/app_settings_model.dart';
+import 'package:ledger_app/core/data/models/app_settings_model.dart';
 
 abstract interface class SettingsStorageProvider {
   Future<void> saveAppSettings(AppSettingsModel model);

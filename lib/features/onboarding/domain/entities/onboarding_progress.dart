@@ -7,24 +7,28 @@ class OnboardingProgress {
     this.hasCompletedSettings = false,
     this.hasCompletedAccounts = false,
     this.hasCompletedCategories = false,
+    this.hasCompletedTransactions = false,
   });
 
   final bool hasCompletedSecurity;
   final bool hasCompletedSettings;
   final bool hasCompletedAccounts;
   final bool hasCompletedCategories;
+  final bool hasCompletedTransactions;
 
   OnboardingProgress copyWith({
     bool? hasCompletedSecurity,
     bool? hasCompletedSettings,
     bool? hasCompletedAccounts,
     bool? hasCompletedCategories,
+    bool? hasCompletedTransactions,
   }) {
     return OnboardingProgress(
       hasCompletedSecurity: hasCompletedSecurity ?? this.hasCompletedSecurity,
       hasCompletedSettings: hasCompletedSettings ?? this.hasCompletedSettings,
       hasCompletedAccounts: hasCompletedAccounts ?? this.hasCompletedAccounts,
       hasCompletedCategories: hasCompletedCategories ?? this.hasCompletedCategories,
+      hasCompletedTransactions: hasCompletedTransactions ?? this.hasCompletedTransactions,
     );
   }
 
@@ -36,7 +40,8 @@ class OnboardingProgress {
           hasCompletedSecurity == other.hasCompletedSecurity &&
           hasCompletedSettings == other.hasCompletedSettings &&
           hasCompletedAccounts == other.hasCompletedAccounts &&
-          hasCompletedCategories == other.hasCompletedCategories;
+          hasCompletedCategories == other.hasCompletedCategories &&
+          hasCompletedTransactions == other.hasCompletedTransactions;
 
   @override
   int get hashCode => Object.hash(
@@ -44,5 +49,6 @@ class OnboardingProgress {
     hasCompletedSettings,
     hasCompletedAccounts,
     hasCompletedCategories,
+    hasCompletedTransactions,
   );
 }

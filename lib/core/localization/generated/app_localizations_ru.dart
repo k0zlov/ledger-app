@@ -133,4 +133,22 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get categoryTypeAny => 'Любая';
+
+  @override
+  String get initialBalancesTitle => 'Начальные балансы';
+
+  @override
+  String get initialBalancesDescription =>
+      'Установите текущий баланс для ваших счетов, чтобы учет был точным с самого начала.';
+
+  @override
+  String get initialBalanceNote => 'Начальный баланс';
+
+  @override
+  String get accountsSetupDescription =>
+      'Добавьте свои банковские счета, кредитные карты и кошельки с наличными, чтобы отслеживать их баланс.';
+
+  @override
+  String get categoriesSetupDescription =>
+      'Создайте категории для ваших расходов и доходов, чтобы упорядочить и анализировать свои транзакции.';
 }

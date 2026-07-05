@@ -52,19 +52,24 @@ GoRouter createRouter({
             builder: (context, state) => ScreenFactory.renderOnboardingWelcomingScreen(),
             routes: [
               GoRoute(
-                name: RouteDefinition.authSetup.name,
-                path: RouteDefinition.authSetup.path,
-                builder: (context, state) => ScreenFactory.renderAuthSetupScreen(),
-              ),
-              GoRoute(
                 name: RouteDefinition.settingsSetup.name,
                 path: RouteDefinition.settingsSetup.path,
                 builder: (context, state) => ScreenFactory.renderSettingsSetupScreen(),
               ),
               GoRoute(
+                name: RouteDefinition.authSetup.name,
+                path: RouteDefinition.authSetup.path,
+                builder: (context, state) => ScreenFactory.renderAuthSetupScreen(),
+              ),
+              GoRoute(
                 name: RouteDefinition.accountsSetup.name,
                 path: RouteDefinition.accountsSetup.path,
                 builder: (context, state) => ScreenFactory.renderAccountsSetupScreen(),
+              ),
+              GoRoute(
+                name: RouteDefinition.categoriesSetup.name,
+                path: RouteDefinition.categoriesSetup.path,
+                builder: (context, state) => ScreenFactory.renderCategoriesSetupScreen(),
               ),
             ],
           ),

@@ -41,11 +41,13 @@ class OnboardingCubit extends Cubit<OnboardingState> {
     bool? hasCompletedSecurity,
     bool? hasCompletedSettings,
     bool? hasCompletedAccounts,
+    bool? hasCompletedCategories,
   }) async {
     final OnboardingProgress newProgress = state.progress.copyWith(
       hasCompletedSecurity: hasCompletedSecurity,
       hasCompletedAccounts: hasCompletedAccounts,
       hasCompletedSettings: hasCompletedSettings,
+      hasCompletedCategories: hasCompletedCategories,
     );
 
     if (state.progress == newProgress) return;

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:ledger_app/core/domain/entities/account.dart';
+import 'package:ledger_app/core/localization/localization_build_context_x.dart';
 
 class AccountListTile extends StatelessWidget {
   const AccountListTile({
@@ -24,6 +25,20 @@ class AccountListTile extends StatelessWidget {
     }
   }
 
+  String _getLocalizedType(BuildContext context, AccountType type) {
+    final l10n = context.l10n;
+    switch (type) {
+      case AccountType.cash:
+        return l10n.accountTypeCash;
+      case AccountType.bank:
+        return l10n.accountTypeBank;
+      case AccountType.credit:
+        return l10n.accountTypeCredit;
+      case AccountType.investment:
+        return l10n.accountTypeInvestment;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return CupertinoListTile(
@@ -32,7 +47,7 @@ class AccountListTile extends StatelessWidget {
         _icon,
         color: Color(account.color),
       ),
-      additionalInfo: Text(account.type.name.toUpperCase()),
+      additionalInfo: Text(_getLocalizedType(context, account.type).toUpperCase()),
       onTap: onTap,
     );
   }

@@ -3,6 +3,7 @@ enum RouteDefinition {
   onboarding('/onboarding'),
   accountsSetup('accounts-setup'),
   settingsSetup('settings-setup'),
+  categoriesSetup('categories-setup'),
   authSetup('auth-setup'),
   dashboard('/dashboard'),
   settings('/settings'),
@@ -45,4 +46,9 @@ class SettingsSetupRoute extends NavigationRoute {
 class AccountsSetupRoute extends NavigationRoute {
   @override
   RouteDefinition get definition => RouteDefinition.accountsSetup;
+}
+
+class CategoriesSetupRoute extends NavigationRoute {
+  @override
+  RouteDefinition get definition => RouteDefinition.categoriesSetup;
 }

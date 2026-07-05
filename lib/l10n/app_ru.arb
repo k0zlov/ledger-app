@@ -32,5 +32,13 @@
   "accountTypeInvestment": "Инвест",
   "cancelButton": "Отмена",
   "deleteButton": "Удалить",
-  "saveButton": "Сохранить"
+  "saveButton": "Сохранить",
+  "categoriesSetupTitle": "Настройка категорий",
+  "addCategoryTitle": "Добавить категорию",
+  "editCategoryTitle": "Редактировать категорию",
+  "noCategoriesYet": "Пока нет категорий.",
+  "categoryNamePlaceholder": "напр., Продукты, Зарплата",
+  "categoryTypeExpense": "Расход",
+  "categoryTypeIncome": "Доход",
+  "categoryTypeAny": "Любая"
 }

@@ -313,7 +313,7 @@ class AccountsCompanion extends UpdateCompanion<AccountRow> {
 }
 
 class $CategoriesTable extends Categories
-    with TableInfo<$CategoriesTable, CategoryModel> {
+    with TableInfo<$CategoriesTable, CategoryRow> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -345,19 +345,26 @@ class $CategoriesTable extends Categories
         type: DriftSqlType.string,
         requiredDuringInsert: true,
       ).withConverter<CategoryType>($CategoriesTable.$convertertype);
-  static const VerificationMeta _colorHexMeta = const VerificationMeta(
-    'colorHex',
-  );
+  static const VerificationMeta _colorMeta = const VerificationMeta('color');
   @override
-  late final GeneratedColumn<String> colorHex = GeneratedColumn<String>(
-    'color_hex',
+  late final GeneratedColumn<int> color = GeneratedColumn<int>(
+    'color',
     aliasedName,
     false,
-    type: DriftSqlType.string,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _iconMeta = const VerificationMeta('icon');
+  @override
+  late final GeneratedColumn<int> icon = GeneratedColumn<int>(
+    'icon',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
     requiredDuringInsert: true,
   );
   @override
-  List<GeneratedColumn> get $columns => [id, name, type, colorHex];
+  List<GeneratedColumn> get $columns => [id, name, type, color, icon];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -365,7 +372,7 @@ class $CategoriesTable extends Categories
   static const String $name = 'categories';
   @override
   VerificationContext validateIntegrity(
-    Insertable<CategoryModel> instance, {
+    Insertable<CategoryRow> instance, {
     bool isInserting = false,
   }) {
     final context = VerificationContext();
@@ -383,13 +390,21 @@ class $CategoriesTable extends Categories
     } else if (isInserting) {
       context.missing(_nameMeta);
     }
-    if (data.containsKey('color_hex')) {
+    if (data.containsKey('color')) {
       context.handle(
-        _colorHexMeta,
-        colorHex.isAcceptableOrUnknown(data['color_hex']!, _colorHexMeta),
+        _colorMeta,
+        color.isAcceptableOrUnknown(data['color']!, _colorMeta),
       );
     } else if (isInserting) {
-      context.missing(_colorHexMeta);
+      context.missing(_colorMeta);
+    }
+    if (data.containsKey('icon')) {
+      context.handle(
+        _iconMeta,
+        icon.isAcceptableOrUnknown(data['icon']!, _iconMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_iconMeta);
     }
     return context;
   }
@@ -397,9 +412,9 @@ class $CategoriesTable extends Categories
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  CategoryModel map(Map<String, dynamic> data, {String? tablePrefix}) {
+  CategoryRow map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return CategoryModel(
+    return CategoryRow(
       id: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}id'],
@@ -414,9 +429,13 @@ class $CategoriesTable extends Categories
           data['${effectivePrefix}type'],
         )!,
       ),
-      colorHex: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}color_hex'],
+      color: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}color'],
+      )!,
+      icon: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}icon'],
       )!,
     );
   }
@@ -430,16 +449,18 @@ class $CategoriesTable extends Categories
       const EnumNameConverter<CategoryType>(CategoryType.values);
 }
 
-class CategoryModel extends DataClass implements Insertable<CategoryModel> {
+class CategoryRow extends DataClass implements Insertable<CategoryRow> {
   final String id;
   final String name;
   final CategoryType type;
-  final String colorHex;
-  const CategoryModel({
+  final int color;
+  final int icon;
+  const CategoryRow({
     required this.id,
     required this.name,
     required this.type,
-    required this.colorHex,
+    required this.color,
+    required this.icon,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -451,7 +472,8 @@ class CategoryModel extends DataClass implements Insertable<CategoryModel> {
         $CategoriesTable.$convertertype.toSql(type),
       );
     }
-    map['color_hex'] = Variable<String>(colorHex);
+    map['color'] = Variable<int>(color);
+    map['icon'] = Variable<int>(icon);
     return map;
   }
 
@@ -460,22 +482,24 @@ class CategoryModel extends DataClass implements Insertable<CategoryModel> {
       id: Value(id),
       name: Value(name),
       type: Value(type),
-      colorHex: Value(colorHex),
+      color: Value(color),
+      icon: Value(icon),
     );
   }
 
-  factory CategoryModel.fromJson(
+  factory CategoryRow.fromJson(
     Map<String, dynamic> json, {
     ValueSerializer? serializer,
   }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return CategoryModel(
+    return CategoryRow(
       id: serializer.fromJson<String>(json['id']),
       name: serializer.fromJson<String>(json['name']),
       type: $CategoriesTable.$convertertype.fromJson(
         serializer.fromJson<String>(json['type']),
       ),
-      colorHex: serializer.fromJson<String>(json['colorHex']),
+      color: serializer.fromJson<int>(json['color']),
+      icon: serializer.fromJson<int>(json['icon']),
     );
   }
   @override
@@ -487,88 +511,100 @@ class CategoryModel extends DataClass implements Insertable<CategoryModel> {
       'type': serializer.toJson<String>(
         $CategoriesTable.$convertertype.toJson(type),
       ),
-      'colorHex': serializer.toJson<String>(colorHex),
+      'color': serializer.toJson<int>(color),
+      'icon': serializer.toJson<int>(icon),
     };
   }
 
-  CategoryModel copyWith({
+  CategoryRow copyWith({
     String? id,
     String? name,
     CategoryType? type,
-    String? colorHex,
-  }) => CategoryModel(
+    int? color,
+    int? icon,
+  }) => CategoryRow(
     id: id ?? this.id,
     name: name ?? this.name,
     type: type ?? this.type,
-    colorHex: colorHex ?? this.colorHex,
+    color: color ?? this.color,
+    icon: icon ?? this.icon,
   );
-  CategoryModel copyWithCompanion(CategoriesCompanion data) {
-    return CategoryModel(
+  CategoryRow copyWithCompanion(CategoriesCompanion data) {
+    return CategoryRow(
       id: data.id.present ? data.id.value : this.id,
       name: data.name.present ? data.name.value : this.name,
       type: data.type.present ? data.type.value : this.type,
-      colorHex: data.colorHex.present ? data.colorHex.value : this.colorHex,
+      color: data.color.present ? data.color.value : this.color,
+      icon: data.icon.present ? data.icon.value : this.icon,
     );
   }
 
   @override
   String toString() {
-    return (StringBuffer('CategoryModel(')
+    return (StringBuffer('CategoryRow(')
           ..write('id: $id, ')
           ..write('name: $name, ')
           ..write('type: $type, ')
-          ..write('colorHex: $colorHex')
+          ..write('color: $color, ')
+          ..write('icon: $icon')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, name, type, colorHex);
+  int get hashCode => Object.hash(id, name, type, color, icon);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is CategoryModel &&
+      (other is CategoryRow &&
           other.id == this.id &&
           other.name == this.name &&
           other.type == this.type &&
-          other.colorHex == this.colorHex);
+          other.color == this.color &&
+          other.icon == this.icon);
 }
 
-class CategoriesCompanion extends UpdateCompanion<CategoryModel> {
+class CategoriesCompanion extends UpdateCompanion<CategoryRow> {
   final Value<String> id;
   final Value<String> name;
   final Value<CategoryType> type;
-  final Value<String> colorHex;
+  final Value<int> color;
+  final Value<int> icon;
   final Value<int> rowid;
   const CategoriesCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
     this.type = const Value.absent(),
-    this.colorHex = const Value.absent(),
+    this.color = const Value.absent(),
+    this.icon = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   CategoriesCompanion.insert({
     required String id,
     required String name,
     required CategoryType type,
-    required String colorHex,
+    required int color,
+    required int icon,
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        name = Value(name),
        type = Value(type),
-       colorHex = Value(colorHex);
-  static Insertable<CategoryModel> custom({
+       color = Value(color),
+       icon = Value(icon);
+  static Insertable<CategoryRow> custom({
     Expression<String>? id,
     Expression<String>? name,
     Expression<String>? type,
-    Expression<String>? colorHex,
+    Expression<int>? color,
+    Expression<int>? icon,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (name != null) 'name': name,
       if (type != null) 'type': type,
-      if (colorHex != null) 'color_hex': colorHex,
+      if (color != null) 'color': color,
+      if (icon != null) 'icon': icon,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -577,14 +613,16 @@ class CategoriesCompanion extends UpdateCompanion<CategoryModel> {
     Value<String>? id,
     Value<String>? name,
     Value<CategoryType>? type,
-    Value<String>? colorHex,
+    Value<int>? color,
+    Value<int>? icon,
     Value<int>? rowid,
   }) {
     return CategoriesCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
       type: type ?? this.type,
-      colorHex: colorHex ?? this.colorHex,
+      color: color ?? this.color,
+      icon: icon ?? this.icon,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -603,8 +641,11 @@ class CategoriesCompanion extends UpdateCompanion<CategoryModel> {
         $CategoriesTable.$convertertype.toSql(type.value),
       );
     }
-    if (colorHex.present) {
-      map['color_hex'] = Variable<String>(colorHex.value);
+    if (color.present) {
+      map['color'] = Variable<int>(color.value);
+    }
+    if (icon.present) {
+      map['icon'] = Variable<int>(icon.value);
     }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
@@ -618,7 +659,8 @@ class CategoriesCompanion extends UpdateCompanion<CategoryModel> {
           ..write('id: $id, ')
           ..write('name: $name, ')
           ..write('type: $type, ')
-          ..write('colorHex: $colorHex, ')
+          ..write('color: $color, ')
+          ..write('icon: $icon, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -1603,7 +1645,8 @@ typedef $$CategoriesTableCreateCompanionBuilder =
       required String id,
       required String name,
       required CategoryType type,
-      required String colorHex,
+      required int color,
+      required int icon,
       Value<int> rowid,
     });
 typedef $$CategoriesTableUpdateCompanionBuilder =
@@ -1611,12 +1654,13 @@ typedef $$CategoriesTableUpdateCompanionBuilder =
       Value<String> id,
       Value<String> name,
       Value<CategoryType> type,
-      Value<String> colorHex,
+      Value<int> color,
+      Value<int> icon,
       Value<int> rowid,
     });
 
 final class $$CategoriesTableReferences
-    extends BaseReferences<_$Database, $CategoriesTable, CategoryModel> {
+    extends BaseReferences<_$Database, $CategoriesTable, CategoryRow> {
   $$CategoriesTableReferences(super.$_db, super.$_table, super.$_typedResult);
 
   static MultiTypedResultKey<$TransactionsTable, List<TransactionModel>>
@@ -1663,8 +1707,13 @@ class $$CategoriesTableFilterComposer
         builder: (column) => ColumnWithTypeConverterFilters(column),
       );
 
-  ColumnFilters<String> get colorHex => $composableBuilder(
-    column: $table.colorHex,
+  ColumnFilters<int> get color => $composableBuilder(
+    column: $table.color,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get icon => $composableBuilder(
+    column: $table.icon,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -1718,8 +1767,13 @@ class $$CategoriesTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get colorHex => $composableBuilder(
-    column: $table.colorHex,
+  ColumnOrderings<int> get color => $composableBuilder(
+    column: $table.color,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get icon => $composableBuilder(
+    column: $table.icon,
     builder: (column) => ColumnOrderings(column),
   );
 }
@@ -1742,8 +1796,11 @@ class $$CategoriesTableAnnotationComposer
   GeneratedColumnWithTypeConverter<CategoryType, String> get type =>
       $composableBuilder(column: $table.type, builder: (column) => column);
 
-  GeneratedColumn<String> get colorHex =>
-      $composableBuilder(column: $table.colorHex, builder: (column) => column);
+  GeneratedColumn<int> get color =>
+      $composableBuilder(column: $table.color, builder: (column) => column);
+
+  GeneratedColumn<int> get icon =>
+      $composableBuilder(column: $table.icon, builder: (column) => column);
 
   Expression<T> transactionsRefs<T extends Object>(
     Expression<T> Function($$TransactionsTableAnnotationComposer a) f,
@@ -1776,14 +1833,14 @@ class $$CategoriesTableTableManager
         RootTableManager<
           _$Database,
           $CategoriesTable,
-          CategoryModel,
+          CategoryRow,
           $$CategoriesTableFilterComposer,
           $$CategoriesTableOrderingComposer,
           $$CategoriesTableAnnotationComposer,
           $$CategoriesTableCreateCompanionBuilder,
           $$CategoriesTableUpdateCompanionBuilder,
-          (CategoryModel, $$CategoriesTableReferences),
-          CategoryModel,
+          (CategoryRow, $$CategoriesTableReferences),
+          CategoryRow,
           PrefetchHooks Function({bool transactionsRefs})
         > {
   $$CategoriesTableTableManager(_$Database db, $CategoriesTable table)
@@ -1802,13 +1859,15 @@ class $$CategoriesTableTableManager
                 Value<String> id = const Value.absent(),
                 Value<String> name = const Value.absent(),
                 Value<CategoryType> type = const Value.absent(),
-                Value<String> colorHex = const Value.absent(),
+                Value<int> color = const Value.absent(),
+                Value<int> icon = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => CategoriesCompanion(
                 id: id,
                 name: name,
                 type: type,
-                colorHex: colorHex,
+                color: color,
+                icon: icon,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -1816,13 +1875,15 @@ class $$CategoriesTableTableManager
                 required String id,
                 required String name,
                 required CategoryType type,
-                required String colorHex,
+                required int color,
+                required int icon,
                 Value<int> rowid = const Value.absent(),
               }) => CategoriesCompanion.insert(
                 id: id,
                 name: name,
                 type: type,
-                colorHex: colorHex,
+                color: color,
+                icon: icon,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
@@ -1842,7 +1903,7 @@ class $$CategoriesTableTableManager
                 return [
                   if (transactionsRefs)
                     await $_getPrefetchedData<
-                      CategoryModel,
+                      CategoryRow,
                       $CategoriesTable,
                       TransactionModel
                     >(
@@ -1871,14 +1932,14 @@ typedef $$CategoriesTableProcessedTableManager =
     ProcessedTableManager<
       _$Database,
       $CategoriesTable,
-      CategoryModel,
+      CategoryRow,
       $$CategoriesTableFilterComposer,
       $$CategoriesTableOrderingComposer,
       $$CategoriesTableAnnotationComposer,
       $$CategoriesTableCreateCompanionBuilder,
       $$CategoriesTableUpdateCompanionBuilder,
-      (CategoryModel, $$CategoriesTableReferences),
-      CategoryModel,
+      (CategoryRow, $$CategoriesTableReferences),
+      CategoryRow,
       PrefetchHooks Function({bool transactionsRefs})
     >;
 typedef $$TransactionsTableCreateCompanionBuilder =

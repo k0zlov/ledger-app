@@ -1,12 +1,8 @@
 import 'package:drift/drift.dart';
+import 'package:ledger_app/core/domain/entities/category.dart';
+export 'package:ledger_app/core/domain/entities/category.dart';
 
-enum CategoryType {
-  any,
-  expense,
-  income,
-}
-
-@DataClassName('CategoryModel')
+@DataClassName('CategoryRow')
 class Categories extends Table {
   TextColumn get id => text()();
 
@@ -14,7 +10,9 @@ class Categories extends Table {
 
   TextColumn get type => textEnum<CategoryType>()();
 
-  TextColumn get colorHex => text()();
+  IntColumn get color => integer()();
+
+  IntColumn get icon => integer()();
 
   @override
   Set<Column> get primaryKey => {id};

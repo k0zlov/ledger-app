@@ -17,42 +17,36 @@ class AccountsSetupScreen extends StatelessWidget {
   Future<void> _showAccountDialog(BuildContext context, [Account? account]) async {
     final l10n = context.l10n;
     final isEditing = account != null;
-    final result = await showCupertinoDialog<Map<String, dynamic>>(
+
+    final cubit = context.read<AccountsCubit>();
+
+    await showCupertinoDialog<void>(
       context: context,
       builder: (_) => AccountDialog(
         title: isEditing ? l10n.editAccountTitle : l10n.addAccountTitle,
         initialName: account?.name,
         initialType: account?.type,
         initialColor: account?.color,
+        onSave: (name, type, color) async {
+          if (isEditing) {
+            await cubit.updateAccount(
+              account.copyWith(
+                name: name,
+                type: type,
+                color: color,
+              ),
+            );
+          } else {
+            await cubit.addAccount(
+              name: name,
+              type: type,
+              color: color,
+            );
+          }
+        },
+        onDelete: isEditing ? () async => cubit.deleteAccount(account.id) : null,
       ),
     );
-
-    if (result != null && context.mounted) {
-      final action = result['action'] as String;
-
-      if (action == 'delete' && isEditing) {
-        await context.read<AccountsCubit>().deleteAccount(account.id);
-        return;
-      }
-
-      if (action == 'save') {
-        if (isEditing) {
-          await context.read<AccountsCubit>().updateAccount(
-            account.copyWith(
-              name: result['name'] as String,
-              type: result['type'] as AccountType,
-              color: result['color'] as int,
-            ),
-          );
-        } else {
-          await context.read<AccountsCubit>().addAccount(
-            name: result['name'] as String,
-            type: result['type'] as AccountType,
-            color: result['color'] as int,
-          );
-        }
-      }
-    }
   }
 
   @override

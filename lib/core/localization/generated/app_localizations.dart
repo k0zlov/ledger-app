@@ -297,6 +297,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Save'**
   String get saveButton;
+
+  /// No description provided for @categoriesSetupTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Categories Setup'**
+  String get categoriesSetupTitle;
+
+  /// No description provided for @addCategoryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Category'**
+  String get addCategoryTitle;
+
+  /// No description provided for @editCategoryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Category'**
+  String get editCategoryTitle;
+
+  /// No description provided for @noCategoriesYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No categories yet.'**
+  String get noCategoriesYet;
+
+  /// No description provided for @categoryNamePlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g., Groceries, Salary'**
+  String get categoryNamePlaceholder;
+
+  /// No description provided for @categoryTypeExpense.
+  ///
+  /// In en, this message translates to:
+  /// **'Expense'**
+  String get categoryTypeExpense;
+
+  /// No description provided for @categoryTypeIncome.
+  ///
+  /// In en, this message translates to:
+  /// **'Income'**
+  String get categoryTypeIncome;
+
+  /// No description provided for @categoryTypeAny.
+  ///
+  /// In en, this message translates to:
+  /// **'Any'**
+  String get categoryTypeAny;
 }
 
 class _AppLocalizationsDelegate

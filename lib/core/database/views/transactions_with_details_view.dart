@@ -20,7 +20,7 @@ abstract class TransactionsWithDetailsView extends View {
 
   Expression<int> get categoryColor => categories.color;
 
-  Expression<int> get categoryIcon => categories.icon;
+  Expression<String> get categoryIcon => categories.icon;
 
   Expression<String> get categoryType => categories.type;
 

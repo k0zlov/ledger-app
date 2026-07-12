@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ledger_app/core/domain/entities/category.dart';
-import 'package:ledger_app/core/localization/localization_build_context_x.dart';
+import 'package:ledger_app/core/view/extensions/localization_build_context_x.dart';
 import 'package:ledger_app/features/categories/view/cubit/categories_cubit.dart';
-import 'package:ledger_app/features/categories/view/widgets/category_dialog.dart';
-import 'package:ledger_app/features/categories/view/widgets/category_list_tile.dart';
+import 'package:ledger_app/features/categories/view/utils/show_category_dialog.dart';
+import 'package:ledger_app/features/categories/view/widgets/categories_list_view.dart';
 
 class CategoriesSetupScreen extends StatelessWidget {
   const CategoriesSetupScreen({
@@ -13,44 +13,6 @@ class CategoriesSetupScreen extends StatelessWidget {
   });
 
   final VoidCallback onSetupComplete;
-
-  Future<void> _showCategoryDialog(BuildContext context, [Category? category]) async {
-    final l10n = context.l10n;
-    final isEditing = category != null;
-
-    final cubit = context.read<CategoriesCubit>();
-
-    await showCupertinoDialog<void>(
-      context: context,
-      builder: (_) => CategoryDialog(
-        title: isEditing ? l10n.editCategoryTitle : l10n.addCategoryTitle,
-        initialName: category?.name,
-        initialType: category?.type,
-        initialColor: category?.color,
-        initialIcon: category?.icon,
-        onSave: (name, type, color, icon) async {
-          if (isEditing) {
-            await cubit.updateCategory(
-              category.copyWith(
-                name: name,
-                type: type,
-                color: color,
-                icon: icon,
-              ),
-            );
-          } else {
-            await cubit.addCategory(
-              name: name,
-              type: type,
-              color: color,
-              icon: icon,
-            );
-          }
-        },
-        onDelete: isEditing ? () async => cubit.deleteCategory(category.id) : null,
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +27,7 @@ class CategoriesSetupScreen extends StatelessWidget {
         middle: Text(l10n.categoriesSetupTitle),
         trailing: CupertinoButton(
           padding: EdgeInsets.zero,
-          onPressed: () => _showCategoryDialog(context),
+          onPressed: () => showCategoryDialog(context),
           child: const Icon(CupertinoIcons.add),
         ),
       ),
@@ -73,30 +35,11 @@ class CategoriesSetupScreen extends StatelessWidget {
         child: Column(
           children: [
             Expanded(
-              child: categories.isEmpty
-                  ? Center(child: Text(l10n.noCategoriesYet))
-                  : SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(20, 24, 20, 8),
-                            child: Text(
-                              l10n.categoriesSetupDescription,
-                              style: const TextStyle(color: CupertinoColors.systemGrey),
-                            ),
-                          ),
-                          CupertinoListSection.insetGrouped(
-                            children: categories.map((category) {
-                              return CategoryListTile(
-                                category: category,
-                                onTap: () => _showCategoryDialog(context, category),
-                              );
-                            }).toList(),
-                          ),
-                        ],
-                      ),
-                    ),
+              child: CategoriesListView(
+                categories: categories,
+                onCategoryTap: (category) => showCategoryDialog(context, category),
+                description: l10n.categoriesSetupDescription,
+              ),
             ),
             Padding(
               padding: const EdgeInsets.all(16),

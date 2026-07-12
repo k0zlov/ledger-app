@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:ledger_app/core/currencies/currencies.dart';
 import 'package:ledger_app/core/currencies/currency_format_info.dart';
-import 'package:ledger_app/core/localization/localization_build_context_x.dart';
 import 'package:ledger_app/core/navigation/navigation_service.dart';
+import 'package:ledger_app/core/view/extensions/localization_build_context_x.dart';
 
 class CurrencySelectionScreen extends StatefulWidget {
   const CurrencySelectionScreen({
@@ -53,7 +53,7 @@ class _CurrencySelectionScreenState extends State<CurrencySelectionScreen> {
 
     return CupertinoPageScaffold(
       backgroundColor: CupertinoColors.systemGroupedBackground,
-      navigationBar:  CupertinoNavigationBar(
+      navigationBar: CupertinoNavigationBar(
         middle: Text(l10n.selectCurrency),
         previousPageTitle: l10n.backButton,
       ),

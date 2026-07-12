@@ -1,4 +1,5 @@
 import 'package:fpdart/fpdart.dart';
+import 'package:ledger_app/core/database/tables/categories.dart';
 import 'package:ledger_app/core/domain/entities/category.dart';
 import 'package:ledger_app/core/domain/repositories/category_repository.dart';
 import 'package:ledger_app/core/failures/failures.dart';
@@ -15,7 +16,7 @@ class CreateCategoryParams {
 
   final String name;
   final int color;
-  final int icon;
+  final AppIcon icon;
   final CategoryType type;
 }
 

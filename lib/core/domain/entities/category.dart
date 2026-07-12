@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:ledger_app/core/domain/enums/app_icon.dart';
 
 enum CategoryType {
   any,
@@ -20,7 +21,7 @@ class Category {
   final String id;
   final String name;
   final int color;
-  final int icon;
+  final AppIcon icon;
   final CategoryType type;
   final bool isTechnical;
 
@@ -28,7 +29,7 @@ class Category {
     String? id,
     String? name,
     int? color,
-    int? icon,
+    AppIcon? icon,
     CategoryType? type,
     bool? isTechnical,
   }) {

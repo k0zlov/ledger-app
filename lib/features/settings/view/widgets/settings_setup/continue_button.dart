@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:ledger_app/core/localization/localization_build_context_x.dart';
+import 'package:ledger_app/core/view/extensions/localization_build_context_x.dart';
 
 class ContinueButton extends StatelessWidget {
   const ContinueButton({

@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:ledger_app/core/domain/entities/category.dart';
-import 'package:ledger_app/core/localization/localization_build_context_x.dart';
+import 'package:ledger_app/core/domain/enums/app_icon.dart';
 import 'package:ledger_app/core/navigation/navigation_service.dart';
+import 'package:ledger_app/core/view/extensions/app_icon_x.dart';
+import 'package:ledger_app/core/view/extensions/localization_build_context_x.dart';
 
 class CategoryDialog extends StatefulWidget {
   const CategoryDialog({
@@ -16,12 +18,12 @@ class CategoryDialog extends StatefulWidget {
   });
 
   final String title;
-  final void Function(String name, CategoryType type, int color, int icon) onSave;
+  final void Function(String name, CategoryType type, int color, AppIcon icon) onSave;
   final VoidCallback? onDelete;
   final String? initialName;
   final CategoryType? initialType;
   final int? initialColor;
-  final int? initialIcon;
+  final AppIcon? initialIcon;
 
   @override
   State<CategoryDialog> createState() => _CategoryDialogState();
@@ -31,7 +33,7 @@ class _CategoryDialogState extends State<CategoryDialog> {
   late final TextEditingController _nameController;
   late CategoryType _selectedType;
   late int _selectedColor;
-  late int _selectedIcon;
+  late AppIcon _selectedIcon;
 
   static const List<int> _colors = [
     0xFF007AFF,
@@ -42,13 +44,13 @@ class _CategoryDialogState extends State<CategoryDialog> {
     0xFF5856D6,
   ];
 
-  static const List<IconData> _icons = [
-    CupertinoIcons.cart_fill,
-    CupertinoIcons.house_fill,
-    CupertinoIcons.car_detailed,
-    CupertinoIcons.gift_fill,
-    CupertinoIcons.briefcase_fill,
-    CupertinoIcons.bolt_fill,
+  static const List<AppIcon> _icons = [
+    AppIcon.cart,
+    AppIcon.house,
+    AppIcon.car,
+    AppIcon.gift,
+    AppIcon.bag,
+    AppIcon.flame,
   ];
 
   @override
@@ -57,7 +59,7 @@ class _CategoryDialogState extends State<CategoryDialog> {
     _nameController = TextEditingController(text: widget.initialName);
     _selectedType = widget.initialType ?? CategoryType.expense;
     _selectedColor = widget.initialColor ?? _colors.first;
-    _selectedIcon = widget.initialIcon ?? _icons.first.codePoint;
+    _selectedIcon = widget.initialIcon ?? _icons.first;
   }
 
   @override
@@ -127,10 +129,10 @@ class _CategoryDialogState extends State<CategoryDialog> {
               spacing: 12,
               runSpacing: 12,
               alignment: WrapAlignment.center,
-              children: _icons.map((iconData) {
-                final isSelected = _selectedIcon == iconData.codePoint;
+              children: _icons.map((appIcon) {
+                final isSelected = _selectedIcon == appIcon;
                 return GestureDetector(
-                  onTap: () => setState(() => _selectedIcon = iconData.codePoint),
+                  onTap: () => setState(() => _selectedIcon = appIcon),
                   child: Container(
                     width: 32,
                     height: 32,
@@ -139,7 +141,7 @@ class _CategoryDialogState extends State<CategoryDialog> {
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Icon(
-                      iconData,
+                      appIcon.iconData,
                       color: isSelected ? CupertinoColors.activeBlue : CupertinoColors.systemGrey,
                       size: 20,
                     ),
@@ -160,7 +162,7 @@ class _CategoryDialogState extends State<CategoryDialog> {
             isDestructiveAction: true,
             onPressed: () {
               widget.onDelete?.call();
-              Navigator.pop(context);
+              context.navigator.pop();
             },
             child: Text(l10n.deleteButton),
           ),
@@ -170,7 +172,7 @@ class _CategoryDialogState extends State<CategoryDialog> {
             final name = _nameController.text.trim();
             if (name.length >= 2) {
               widget.onSave(name, _selectedType, _selectedColor, _selectedIcon);
-              Navigator.pop(context);
+              context.navigator.pop();
             }
           },
           child: Text(l10n.saveButton),

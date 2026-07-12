@@ -7,12 +7,16 @@ import 'package:ledger_app/core/database/database.dart';
 import 'package:ledger_app/core/domain/repositories/account_repository.dart';
 import 'package:ledger_app/core/domain/repositories/category_repository.dart';
 import 'package:ledger_app/core/domain/repositories/transaction_repository.dart';
+import 'package:ledger_app/core/domain/use_cases/create_transaction_use_case.dart';
+import 'package:ledger_app/core/domain/use_cases/delete_transaction_use_case.dart';
+import 'package:ledger_app/core/domain/use_cases/update_transaction_use_case.dart';
 import 'package:ledger_app/core/domain/use_cases/watch_accounts_use_case.dart';
 import 'package:ledger_app/core/domain/use_cases/watch_categories_use_case.dart';
 import 'package:ledger_app/core/domain/use_cases/watch_transactions_use_case.dart';
 import 'package:ledger_app/core/navigation/navigation_service.dart';
 import 'package:ledger_app/core/navigation/router.dart';
 import 'package:ledger_app/core/secure_storage/secure_storage.dart';
+import 'package:ledger_app/core/view/cubits/settings_cubit.dart';
 import 'package:ledger_app/features/accounts/data/providers/account_storage_provider.dart';
 import 'package:ledger_app/features/accounts/data/repositories/account_repository_impl.dart';
 import 'package:ledger_app/features/accounts/domain/use_cases/add_account_use_case.dart';
@@ -36,6 +40,7 @@ import 'package:ledger_app/features/categories/domain/use_cases/create_category_
 import 'package:ledger_app/features/categories/domain/use_cases/delete_category_use_case.dart';
 import 'package:ledger_app/features/categories/domain/use_cases/update_category_use_case.dart';
 import 'package:ledger_app/features/categories/view/cubit/categories_cubit.dart';
+import 'package:ledger_app/features/dashboard/view/cubit/dashboard_cubit.dart';
 import 'package:ledger_app/features/onboarding/data/providers/onboarding_storage_provider.dart';
 import 'package:ledger_app/features/onboarding/data/repositories/onboarding_repository_impl.dart';
 import 'package:ledger_app/features/onboarding/domain/repositories/onboarding_repository.dart';
@@ -48,12 +53,8 @@ import 'package:ledger_app/features/settings/data/repositories/settings_reposito
 import 'package:ledger_app/features/settings/domain/repositories/settings_repository.dart';
 import 'package:ledger_app/features/settings/domain/use_cases/get_app_settings_use_case.dart';
 import 'package:ledger_app/features/settings/domain/use_cases/save_app_settings_use_case.dart';
-import 'package:ledger_app/core/view/cubits/settings_cubit.dart';
 import 'package:ledger_app/features/transactions/data/providers/transaction_storage_provider.dart';
 import 'package:ledger_app/features/transactions/data/repositories/transaction_repository_impl.dart';
-import 'package:ledger_app/features/transactions/domain/use_cases/create_transaction_use_case.dart';
-import 'package:ledger_app/features/transactions/domain/use_cases/delete_transaction_use_case.dart';
-import 'package:ledger_app/features/transactions/domain/use_cases/update_transaction_use_case.dart';
 import 'package:ledger_app/features/transactions/view/cubit/transactions_cubit.dart';
 import 'package:local_auth/local_auth.dart';
 
@@ -203,6 +204,16 @@ void _cubits() {
         updateAccount: getIt(),
       ),
     )
+    ..registerFactory<DashboardCubit>(
+      () => DashboardCubit(
+        watchTransactions: getIt(),
+        watchAccounts: getIt(),
+        watchCategories: getIt(),
+        createTransaction: getIt(),
+        deleteTransaction: getIt(),
+        updateTransaction: getIt(),
+      ),
+    )
     ..registerFactory<CategoriesCubit>(
       () => CategoriesCubit(
         watchCategories: getIt(),
@@ -217,8 +228,6 @@ void _cubits() {
         watchAccounts: getIt(),
         watchCategories: getIt(),
         createTransaction: getIt(),
-        deleteTransaction: getIt(),
-        updateTransaction: getIt(),
       ),
     )
     ..registerFactory<OnboardingCubit>(

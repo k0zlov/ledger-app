@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter/cupertino.dart';
+import 'package:ledger_app/core/view/extensions/localization_build_context_x.dart';
 import 'package:ledger_app/features/auth/view/widgets/pin_entry/pin_pad.dart';
 import 'package:ledger_app/features/auth/view/widgets/pin_entry/pin_pad_dots.dart';
 
@@ -168,13 +169,15 @@ class _PinEntryScreenState extends State<PinEntryScreen> with SingleTickerProvid
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         automaticallyImplyLeading: false,
         leading: (_firstPin != null || widget.onBack != null)
             ? CupertinoNavigationBarBackButton(onPressed: _handleBack)
             : null,
-        middle: Text(_firstPin == null ? 'Enter PIN' : 'Repeat PIN'),
+        middle: Text(_firstPin == null ? l10n.enterPin : l10n.repeatPin),
       ),
       child: SafeArea(
         child: Center(

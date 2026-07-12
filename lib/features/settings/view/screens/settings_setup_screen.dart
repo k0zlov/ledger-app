@@ -1,24 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ledger_app/core/localization/localization_build_context_x.dart';
 import 'package:ledger_app/core/domain/entities/app_settings.dart';
 import 'package:ledger_app/core/view/cubits/settings_cubit.dart';
+import 'package:ledger_app/core/view/extensions/app_language_x.dart';
+import 'package:ledger_app/core/view/extensions/localization_build_context_x.dart';
 import 'package:ledger_app/features/settings/view/screens/currency_selection_screen.dart';
 import 'package:ledger_app/features/settings/view/widgets/settings_setup/continue_button.dart';
 import 'package:ledger_app/features/settings/view/widgets/settings_setup/settings_form.dart';
-
-extension AppLanguageX on AppLanguage {
-  String get displayName {
-    switch (this) {
-      case AppLanguage.en:
-        return 'EN - English';
-      case AppLanguage.ua:
-        return 'UA - Українська';
-      case AppLanguage.ru:
-        return 'RU - Русский';
-    }
-  }
-}
 
 class SettingsSetupScreen extends StatelessWidget {
   const SettingsSetupScreen({

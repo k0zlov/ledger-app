@@ -354,15 +354,15 @@ class $CategoriesTable extends Categories
     type: DriftSqlType.int,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _iconMeta = const VerificationMeta('icon');
   @override
-  late final GeneratedColumn<int> icon = GeneratedColumn<int>(
-    'icon',
-    aliasedName,
-    false,
-    type: DriftSqlType.int,
-    requiredDuringInsert: true,
-  );
+  late final GeneratedColumnWithTypeConverter<AppIcon, String> icon =
+      GeneratedColumn<String>(
+        'icon',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<AppIcon>($CategoriesTable.$convertericon);
   static const VerificationMeta _isTechnicalMeta = const VerificationMeta(
     'isTechnical',
   );
@@ -420,14 +420,6 @@ class $CategoriesTable extends Categories
     } else if (isInserting) {
       context.missing(_colorMeta);
     }
-    if (data.containsKey('icon')) {
-      context.handle(
-        _iconMeta,
-        icon.isAcceptableOrUnknown(data['icon']!, _iconMeta),
-      );
-    } else if (isInserting) {
-      context.missing(_iconMeta);
-    }
     if (data.containsKey('is_technical')) {
       context.handle(
         _isTechnicalMeta,
@@ -464,10 +456,12 @@ class $CategoriesTable extends Categories
         DriftSqlType.int,
         data['${effectivePrefix}color'],
       )!,
-      icon: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}icon'],
-      )!,
+      icon: $CategoriesTable.$convertericon.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}icon'],
+        )!,
+      ),
       isTechnical: attachedDatabase.typeMapping.read(
         DriftSqlType.bool,
         data['${effectivePrefix}is_technical'],
@@ -482,6 +476,8 @@ class $CategoriesTable extends Categories
 
   static JsonTypeConverter2<CategoryType, String, String> $convertertype =
       const EnumNameConverter<CategoryType>(CategoryType.values);
+  static JsonTypeConverter2<AppIcon, String, String> $convertericon =
+      const EnumNameConverter<AppIcon>(AppIcon.values);
 }
 
 class CategoryRow extends DataClass implements Insertable<CategoryRow> {
@@ -489,7 +485,7 @@ class CategoryRow extends DataClass implements Insertable<CategoryRow> {
   final String name;
   final CategoryType type;
   final int color;
-  final int icon;
+  final AppIcon icon;
   final bool isTechnical;
   const CategoryRow({
     required this.id,
@@ -510,7 +506,11 @@ class CategoryRow extends DataClass implements Insertable<CategoryRow> {
       );
     }
     map['color'] = Variable<int>(color);
-    map['icon'] = Variable<int>(icon);
+    {
+      map['icon'] = Variable<String>(
+        $CategoriesTable.$convertericon.toSql(icon),
+      );
+    }
     map['is_technical'] = Variable<bool>(isTechnical);
     return map;
   }
@@ -538,7 +538,9 @@ class CategoryRow extends DataClass implements Insertable<CategoryRow> {
         serializer.fromJson<String>(json['type']),
       ),
       color: serializer.fromJson<int>(json['color']),
-      icon: serializer.fromJson<int>(json['icon']),
+      icon: $CategoriesTable.$convertericon.fromJson(
+        serializer.fromJson<String>(json['icon']),
+      ),
       isTechnical: serializer.fromJson<bool>(json['isTechnical']),
     );
   }
@@ -552,7 +554,9 @@ class CategoryRow extends DataClass implements Insertable<CategoryRow> {
         $CategoriesTable.$convertertype.toJson(type),
       ),
       'color': serializer.toJson<int>(color),
-      'icon': serializer.toJson<int>(icon),
+      'icon': serializer.toJson<String>(
+        $CategoriesTable.$convertericon.toJson(icon),
+      ),
       'isTechnical': serializer.toJson<bool>(isTechnical),
     };
   }
@@ -562,7 +566,7 @@ class CategoryRow extends DataClass implements Insertable<CategoryRow> {
     String? name,
     CategoryType? type,
     int? color,
-    int? icon,
+    AppIcon? icon,
     bool? isTechnical,
   }) => CategoryRow(
     id: id ?? this.id,
@@ -617,7 +621,7 @@ class CategoriesCompanion extends UpdateCompanion<CategoryRow> {
   final Value<String> name;
   final Value<CategoryType> type;
   final Value<int> color;
-  final Value<int> icon;
+  final Value<AppIcon> icon;
   final Value<bool> isTechnical;
   final Value<int> rowid;
   const CategoriesCompanion({
@@ -634,7 +638,7 @@ class CategoriesCompanion extends UpdateCompanion<CategoryRow> {
     required String name,
     required CategoryType type,
     required int color,
-    required int icon,
+    required AppIcon icon,
     this.isTechnical = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
@@ -647,7 +651,7 @@ class CategoriesCompanion extends UpdateCompanion<CategoryRow> {
     Expression<String>? name,
     Expression<String>? type,
     Expression<int>? color,
-    Expression<int>? icon,
+    Expression<String>? icon,
     Expression<bool>? isTechnical,
     Expression<int>? rowid,
   }) {
@@ -667,7 +671,7 @@ class CategoriesCompanion extends UpdateCompanion<CategoryRow> {
     Value<String>? name,
     Value<CategoryType>? type,
     Value<int>? color,
-    Value<int>? icon,
+    Value<AppIcon>? icon,
     Value<bool>? isTechnical,
     Value<int>? rowid,
   }) {
@@ -700,7 +704,9 @@ class CategoriesCompanion extends UpdateCompanion<CategoryRow> {
       map['color'] = Variable<int>(color.value);
     }
     if (icon.present) {
-      map['icon'] = Variable<int>(icon.value);
+      map['icon'] = Variable<String>(
+        $CategoriesTable.$convertericon.toSql(icon.value),
+      );
     }
     if (isTechnical.present) {
       map['is_technical'] = Variable<bool>(isTechnical.value);
@@ -1342,7 +1348,7 @@ class TransactionsWithDetailsViewData extends DataClass {
   final AccountType accountType;
   final String categoryName;
   final int categoryColor;
-  final int categoryIcon;
+  final AppIcon categoryIcon;
   final CategoryType categoryType;
   final bool categoryIsTechnical;
   const TransactionsWithDetailsViewData({
@@ -1380,7 +1386,9 @@ class TransactionsWithDetailsViewData extends DataClass {
       ),
       categoryName: serializer.fromJson<String>(json['categoryName']),
       categoryColor: serializer.fromJson<int>(json['categoryColor']),
-      categoryIcon: serializer.fromJson<int>(json['categoryIcon']),
+      categoryIcon: $CategoriesTable.$convertericon.fromJson(
+        serializer.fromJson<String>(json['categoryIcon']),
+      ),
       categoryType: $CategoriesTable.$convertertype.fromJson(
         serializer.fromJson<String>(json['categoryType']),
       ),
@@ -1406,7 +1414,9 @@ class TransactionsWithDetailsViewData extends DataClass {
       ),
       'categoryName': serializer.toJson<String>(categoryName),
       'categoryColor': serializer.toJson<int>(categoryColor),
-      'categoryIcon': serializer.toJson<int>(categoryIcon),
+      'categoryIcon': serializer.toJson<String>(
+        $CategoriesTable.$convertericon.toJson(categoryIcon),
+      ),
       'categoryType': serializer.toJson<String>(
         $CategoriesTable.$convertertype.toJson(categoryType),
       ),
@@ -1426,7 +1436,7 @@ class TransactionsWithDetailsViewData extends DataClass {
     AccountType? accountType,
     String? categoryName,
     int? categoryColor,
-    int? categoryIcon,
+    AppIcon? categoryIcon,
     CategoryType? categoryType,
     bool? categoryIsTechnical,
   }) => TransactionsWithDetailsViewData(
@@ -1597,10 +1607,12 @@ class $TransactionsWithDetailsViewView
         DriftSqlType.int,
         data['${effectivePrefix}category_color'],
       )!,
-      categoryIcon: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}category_icon'],
-      )!,
+      categoryIcon: $CategoriesTable.$convertericon.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}category_icon'],
+        )!,
+      ),
       categoryType: $CategoriesTable.$convertertype.fromSql(
         attachedDatabase.typeMapping.read(
           DriftSqlType.string,
@@ -1692,13 +1704,14 @@ class $TransactionsWithDetailsViewView
     generatedAs: GeneratedAs(categories.color, false),
     type: DriftSqlType.int,
   );
-  late final GeneratedColumn<int> categoryIcon = GeneratedColumn<int>(
-    'category_icon',
-    aliasedName,
-    false,
-    generatedAs: GeneratedAs(categories.icon, false),
-    type: DriftSqlType.int,
-  );
+  late final GeneratedColumnWithTypeConverter<AppIcon, String> categoryIcon =
+      GeneratedColumn<String>(
+        'category_icon',
+        aliasedName,
+        false,
+        generatedAs: GeneratedAs(categories.icon, false),
+        type: DriftSqlType.string,
+      ).withConverter<AppIcon>($CategoriesTable.$convertericon);
   late final GeneratedColumnWithTypeConverter<CategoryType, String>
   categoryType = GeneratedColumn<String>(
     'category_type',
@@ -2057,7 +2070,7 @@ typedef $$CategoriesTableCreateCompanionBuilder =
       required String name,
       required CategoryType type,
       required int color,
-      required int icon,
+      required AppIcon icon,
       Value<bool> isTechnical,
       Value<int> rowid,
     });
@@ -2067,7 +2080,7 @@ typedef $$CategoriesTableUpdateCompanionBuilder =
       Value<String> name,
       Value<CategoryType> type,
       Value<int> color,
-      Value<int> icon,
+      Value<AppIcon> icon,
       Value<bool> isTechnical,
       Value<int> rowid,
     });
@@ -2125,10 +2138,11 @@ class $$CategoriesTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<int> get icon => $composableBuilder(
-    column: $table.icon,
-    builder: (column) => ColumnFilters(column),
-  );
+  ColumnWithTypeConverterFilters<AppIcon, AppIcon, String> get icon =>
+      $composableBuilder(
+        column: $table.icon,
+        builder: (column) => ColumnWithTypeConverterFilters(column),
+      );
 
   ColumnFilters<bool> get isTechnical => $composableBuilder(
     column: $table.isTechnical,
@@ -2190,7 +2204,7 @@ class $$CategoriesTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<int> get icon => $composableBuilder(
+  ColumnOrderings<String> get icon => $composableBuilder(
     column: $table.icon,
     builder: (column) => ColumnOrderings(column),
   );
@@ -2222,7 +2236,7 @@ class $$CategoriesTableAnnotationComposer
   GeneratedColumn<int> get color =>
       $composableBuilder(column: $table.color, builder: (column) => column);
 
-  GeneratedColumn<int> get icon =>
+  GeneratedColumnWithTypeConverter<AppIcon, String> get icon =>
       $composableBuilder(column: $table.icon, builder: (column) => column);
 
   GeneratedColumn<bool> get isTechnical => $composableBuilder(
@@ -2288,7 +2302,7 @@ class $$CategoriesTableTableManager
                 Value<String> name = const Value.absent(),
                 Value<CategoryType> type = const Value.absent(),
                 Value<int> color = const Value.absent(),
-                Value<int> icon = const Value.absent(),
+                Value<AppIcon> icon = const Value.absent(),
                 Value<bool> isTechnical = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => CategoriesCompanion(
@@ -2306,7 +2320,7 @@ class $$CategoriesTableTableManager
                 required String name,
                 required CategoryType type,
                 required int color,
-                required int icon,
+                required AppIcon icon,
                 Value<bool> isTechnical = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => CategoriesCompanion.insert(

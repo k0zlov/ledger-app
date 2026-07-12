@@ -1,6 +1,8 @@
 import 'package:drift/drift.dart';
 import 'package:ledger_app/core/database/database.dart';
 import 'package:ledger_app/core/domain/entities/category.dart';
+import 'package:ledger_app/core/domain/enums/app_icon.dart';
+
 import 'package:uuid/uuid.dart';
 
 List<CategoriesCompanion> getDefaultCategories() {
@@ -12,35 +14,35 @@ List<CategoriesCompanion> getDefaultCategories() {
       name: 'Groceries',
       type: CategoryType.expense,
       color: 0xFF34C759,
-      icon: 0xf3f2,
+      icon: AppIcon.cart,
     ),
     CategoriesCompanion.insert(
       id: uuid.v4(),
       name: 'Salary',
       type: CategoryType.income,
       color: 0xFF007AFF,
-      icon: 0xf3f0,
+      icon: AppIcon.money,
     ),
     CategoriesCompanion.insert(
       id: uuid.v4(),
       name: 'Rent',
       type: CategoryType.expense,
       color: 0xFFFF9500,
-      icon: 0xf447,
+      icon: AppIcon.house,
     ),
     CategoriesCompanion.insert(
       id: uuid.v4(),
       name: 'Transportation',
       type: CategoryType.expense,
       color: 0xFF5856D6,
-      icon: 0xf3d2,
+      icon: AppIcon.car,
     ),
     CategoriesCompanion.insert(
       id: uuid.v4(),
       name: 'Initial Balance',
       type: CategoryType.any,
       color: 0xFF8E8E93,
-      icon: 0xf3e5,
+      icon: AppIcon.creditCard,
       isTechnical: const Value(true),
     ),
     CategoriesCompanion.insert(
@@ -48,7 +50,7 @@ List<CategoriesCompanion> getDefaultCategories() {
       name: 'Adjustment',
       type: CategoryType.any,
       color: 0xFF8E8E93,
-      icon: 0xf4c1,
+      icon: AppIcon.wrench,
       isTechnical: const Value(true),
     ),
   ];

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:ledger_app/core/database/tables/categories.dart';
 import 'package:ledger_app/core/domain/entities/category.dart';
 import 'package:ledger_app/core/domain/use_cases/watch_categories_use_case.dart';
 import 'package:ledger_app/core/use_case/use_case.dart';
@@ -39,7 +40,7 @@ class CategoriesCubit extends Cubit<CategoriesState> {
   Future<void> addCategory({
     required String name,
     required int color,
-    required int icon,
+    required AppIcon icon,
     required CategoryType type,
   }) async {
     final result = await _createCategory(

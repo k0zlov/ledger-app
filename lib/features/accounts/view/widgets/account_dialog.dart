@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:ledger_app/core/domain/entities/account.dart';
-import 'package:ledger_app/core/localization/localization_build_context_x.dart';
+import 'package:ledger_app/core/view/extensions/localization_build_context_x.dart';
 import 'package:ledger_app/core/navigation/navigation_service.dart';
 
 class AccountDialog extends StatefulWidget {

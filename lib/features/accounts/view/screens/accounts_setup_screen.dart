@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ledger_app/core/domain/entities/account.dart';
-import 'package:ledger_app/core/localization/localization_build_context_x.dart';
+import 'package:ledger_app/core/view/extensions/localization_build_context_x.dart';
 import 'package:ledger_app/features/accounts/view/cubit/accounts_cubit.dart';
-import 'package:ledger_app/features/accounts/view/widgets/account_dialog.dart';
-import 'package:ledger_app/features/accounts/view/widgets/account_list_tile.dart';
+import 'package:ledger_app/features/accounts/view/utils/show_account_dialog.dart';
+import 'package:ledger_app/features/accounts/view/widgets/accounts_list_view.dart';
 
 class AccountsSetupScreen extends StatelessWidget {
   const AccountsSetupScreen({
@@ -13,41 +13,6 @@ class AccountsSetupScreen extends StatelessWidget {
   });
 
   final VoidCallback onSetupComplete;
-
-  Future<void> _showAccountDialog(BuildContext context, [Account? account]) async {
-    final l10n = context.l10n;
-    final isEditing = account != null;
-
-    final cubit = context.read<AccountsCubit>();
-
-    await showCupertinoDialog<void>(
-      context: context,
-      builder: (_) => AccountDialog(
-        title: isEditing ? l10n.editAccountTitle : l10n.addAccountTitle,
-        initialName: account?.name,
-        initialType: account?.type,
-        initialColor: account?.color,
-        onSave: (name, type, color) async {
-          if (isEditing) {
-            await cubit.updateAccount(
-              account.copyWith(
-                name: name,
-                type: type,
-                color: color,
-              ),
-            );
-          } else {
-            await cubit.addAccount(
-              name: name,
-              type: type,
-              color: color,
-            );
-          }
-        },
-        onDelete: isEditing ? () async => cubit.deleteAccount(account.id) : null,
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +25,7 @@ class AccountsSetupScreen extends StatelessWidget {
         middle: Text(l10n.accountsSetupTitle),
         trailing: CupertinoButton(
           padding: EdgeInsets.zero,
-          onPressed: () => _showAccountDialog(context),
+          onPressed: () => showAccountDialog(context),
           child: const Icon(CupertinoIcons.add),
         ),
       ),
@@ -68,30 +33,11 @@ class AccountsSetupScreen extends StatelessWidget {
         child: Column(
           children: [
             Expanded(
-              child: accounts.isEmpty
-                  ? Center(child: Text(l10n.noAccountsYet))
-                  : SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(20, 24, 20, 8),
-                            child: Text(
-                              l10n.accountsSetupDescription,
-                              style: const TextStyle(color: CupertinoColors.systemGrey),
-                            ),
-                          ),
-                          CupertinoListSection.insetGrouped(
-                            children: accounts.map((account) {
-                              return AccountListTile(
-                                account: account,
-                                onTap: () => _showAccountDialog(context, account),
-                              );
-                            }).toList(),
-                          ),
-                        ],
-                      ),
-                    ),
+              child: AccountsListView(
+                accounts: accounts,
+                onAccountTap: (account) => showAccountDialog(context, account),
+                description: l10n.accountsSetupDescription,
+              ),
             ),
             Padding(
               padding: const EdgeInsets.all(16),

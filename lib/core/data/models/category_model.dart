@@ -1,6 +1,7 @@
 import 'package:drift/drift.dart';
 import 'package:ledger_app/core/database/database.dart';
 import 'package:ledger_app/core/domain/entities/category.dart';
+import 'package:ledger_app/core/domain/enums/app_icon.dart';
 
 class CategoryModel {
   const CategoryModel({
@@ -26,7 +27,7 @@ class CategoryModel {
   final String id;
   final String name;
   final int color;
-  final int icon;
+  final AppIcon icon;
   final CategoryType type;
   final bool isTechnical;
 

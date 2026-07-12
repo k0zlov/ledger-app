@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:ledger_app/core/domain/entities/category.dart';
-import 'package:ledger_app/core/localization/localization_build_context_x.dart';
+import 'package:ledger_app/core/view/extensions/app_icon_x.dart';
+import 'package:ledger_app/core/view/extensions/localization_build_context_x.dart';
 
 class CategoryListTile extends StatelessWidget {
   const CategoryListTile({
@@ -36,13 +37,7 @@ class CategoryListTile extends StatelessWidget {
           borderRadius: BorderRadius.circular(8),
         ),
         child: Icon(
-          IconData(
-            // TODO(k0zlov): Resolve this issue
-            // ignore: non_const_argument_for_const_parameter
-            category.icon,
-            fontFamily: CupertinoIcons.iconFont,
-            fontPackage: CupertinoIcons.iconFontPackage,
-          ),
+          category.icon.iconData,
           color: Color(category.color),
           size: 20,
         ),

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
-import 'package:ledger_app/core/localization/localization_build_context_x.dart';
 import 'package:ledger_app/core/domain/entities/app_settings.dart';
-import 'package:ledger_app/features/settings/view/screens/settings_setup_screen.dart';
+import 'package:ledger_app/core/view/extensions/app_language_x.dart';
+import 'package:ledger_app/core/view/extensions/localization_build_context_x.dart';
 
 class SettingsForm extends StatelessWidget {
   const SettingsForm({

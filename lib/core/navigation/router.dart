@@ -5,13 +5,14 @@ import 'package:ledger_app/core/contracts/onboarding_status_contract.dart';
 import 'package:ledger_app/core/navigation/navigation_refresh_stream.dart';
 import 'package:ledger_app/core/navigation/navigation_routes.dart';
 import 'package:ledger_app/core/navigation/screen_factory.dart';
+import 'package:ledger_app/core/view/widgets/animated_branch_container.dart';
 
 GoRouter createRouter({
   required AuthStatusContract authStatus,
   required OnboardingStatusContract onboardingStatus,
 }) {
   return GoRouter(
-    initialLocation: '/',
+    initialLocation: RouteDefinition.dashboard.path,
     refreshListenable: Listenable.merge([
       NavigationRefreshStream(stream: authStatus.lockStateStream),
       NavigationRefreshStream(stream: onboardingStatus.completeStream),
@@ -87,30 +88,61 @@ GoRouter createRouter({
         ],
       ),
 
-      StatefulShellRoute.indexedStack(
+      StatefulShellRoute(
         builder: (context, state, navigationShell) => ScreenFactory.renderNavigationWrapper(navigationShell),
+        navigatorContainerBuilder: (context, navigationShell, children) {
+          return AnimatedBranchContainer(
+            currentIndex: navigationShell.currentIndex,
+            children: children,
+          );
+        },
         branches: [
           StatefulShellBranch(
             routes: [
               GoRoute(
-                name: RouteDefinition.dashboard.name,
-                path: RouteDefinition.dashboard.path,
-                builder: (context, state) => ScreenFactory.renderDashboardScreen(),
+                name: RouteDefinition.settings.name,
+                path: RouteDefinition.settings.path,
+                builder: (context, state) => ScreenFactory.renderSettingsScreen(),
                 routes: [
+                  GoRoute(
+                    name: RouteDefinition.currencySelection.name,
+                    path: RouteDefinition.currencySelection.path,
+                    builder: (context, state) {
+                      final selectedCurrency = state.extra is Map<String, dynamic>
+                          ? (state.extra! as Map<String, dynamic>)['selectedCurrency'] as String?
+                          : null;
+                      return ScreenFactory.renderCurrencySelectionScreen(selectedCurrency);
+                    },
+                  ),
+                  GoRoute(
+                    name: RouteDefinition.themeSelection.name,
+                    path: RouteDefinition.themeSelection.path,
+                    builder: (context, state) => ScreenFactory.renderThemeSelectionScreen(),
+                  ),
+                  GoRoute(
+                    name: RouteDefinition.languageSelection.name,
+                    path: RouteDefinition.languageSelection.path,
+                    builder: (context, state) => ScreenFactory.renderLanguageSelectionScreen(),
+                  ),
+                  GoRoute(
+                    name: RouteDefinition.appInfo.name,
+                    path: RouteDefinition.appInfo.path,
+                    builder: (context, state) => ScreenFactory.renderAppInfoScreen(),
+                  ),
+                  GoRoute(
+                    name: RouteDefinition.helpAndSupport.name,
+                    path: RouteDefinition.helpAndSupport.path,
+                    builder: (context, state) => ScreenFactory.renderHelpAndSupportScreen(),
+                  ),
                   GoRoute(
                     name: RouteDefinition.accounts.name,
                     path: RouteDefinition.accounts.path,
                     builder: (context, state) => ScreenFactory.renderAccountsScreen(),
                   ),
                   GoRoute(
-                    name: RouteDefinition.transactions.name,
-                    path: RouteDefinition.transactions.path,
-                    builder: (context, state) => ScreenFactory.renderTransactionsScreen(),
-                  ),
-                  GoRoute(
-                    name: RouteDefinition.analytics.name,
-                    path: RouteDefinition.analytics.path,
-                    builder: (context, state) => ScreenFactory.renderAnalyticsScreen(),
+                    name: RouteDefinition.categories.name,
+                    path: RouteDefinition.categories.path,
+                    builder: (context, state) => ScreenFactory.renderCategoriesScreen(),
                   ),
                 ],
               ),
@@ -119,9 +151,18 @@ GoRouter createRouter({
           StatefulShellBranch(
             routes: [
               GoRoute(
-                name: RouteDefinition.settings.name,
-                path: RouteDefinition.settings.path,
-                builder: (context, state) => ScreenFactory.renderSettingsScreen(),
+                name: RouteDefinition.dashboard.name,
+                path: RouteDefinition.dashboard.path,
+                builder: (context, state) => ScreenFactory.renderDashboardScreen(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                name: RouteDefinition.analytics.name,
+                path: RouteDefinition.analytics.path,
+                builder: (context, state) => ScreenFactory.renderAnalyticsScreen(),
               ),
             ],
           ),

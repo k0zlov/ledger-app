@@ -9,8 +9,14 @@ enum RouteDefinition {
   dashboard('/dashboard'),
   settings('/settings'),
   transactions('transactions'),
-  analytics('analytics'),
-  accounts('accounts');
+  analytics('/analytics'),
+  accounts('accounts'),
+  categories('categories'),
+  currencySelection('currency-selection'),
+  themeSelection('theme-selection'),
+  languageSelection('language-selection'),
+  appInfo('app-info'),
+  helpAndSupport('help-and-support');
 
   const RouteDefinition(this.path);
 
@@ -27,6 +33,26 @@ sealed class NavigationRoute {
   Map<String, dynamic> get queryParameters => {};
 
   Map<String, dynamic> get extra => {};
+}
+
+class AccountsRoute extends NavigationRoute {
+  @override
+  RouteDefinition get definition => RouteDefinition.accounts;
+}
+
+class CategoriesRoute extends NavigationRoute {
+  @override
+  RouteDefinition get definition => RouteDefinition.categories;
+}
+
+class AppInfoRoute extends NavigationRoute {
+  @override
+  RouteDefinition get definition => RouteDefinition.appInfo;
+}
+
+class HelpAndSupportRoute extends NavigationRoute {
+  @override
+  RouteDefinition get definition => RouteDefinition.helpAndSupport;
 }
 
 class OnboardingRoute extends NavigationRoute {
@@ -57,4 +83,33 @@ class CategoriesSetupRoute extends NavigationRoute {
 class TransactionsSetupRoute extends NavigationRoute {
   @override
   RouteDefinition get definition => RouteDefinition.transactionsSetup;
+}
+
+class SettingsScreenRoute extends NavigationRoute {
+  @override
+  RouteDefinition get definition => RouteDefinition.settings;
+}
+
+class CurrencySelectionRoute extends NavigationRoute {
+  const CurrencySelectionRoute({this.selectedCurrency});
+
+  final String? selectedCurrency;
+
+  @override
+  RouteDefinition get definition => RouteDefinition.currencySelection;
+
+  @override
+  Map<String, dynamic> get extra => {
+    if (selectedCurrency != null) 'selectedCurrency': selectedCurrency,
+  };
+}
+
+class ThemeSelectionRoute extends NavigationRoute {
+  @override
+  RouteDefinition get definition => RouteDefinition.themeSelection;
+}
+
+class LanguageSelectionRoute extends NavigationRoute {
+  @override
+  RouteDefinition get definition => RouteDefinition.languageSelection;
 }

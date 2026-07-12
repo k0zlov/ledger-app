@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ledger_app/core/localization/generated/app_localizations.dart';
 import 'package:ledger_app/core/domain/entities/app_settings.dart';
+import 'package:ledger_app/core/localization/generated/app_localizations.dart';
 import 'package:ledger_app/core/view/cubits/settings_cubit.dart';
 
 class Application extends StatelessWidget {

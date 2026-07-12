@@ -1,6 +1,9 @@
 import 'package:drift/drift.dart';
 import 'package:ledger_app/core/domain/entities/category.dart';
+import 'package:ledger_app/core/domain/enums/app_icon.dart';
 export 'package:ledger_app/core/domain/entities/category.dart';
+
+export 'package:ledger_app/core/domain/enums/app_icon.dart';
 
 @DataClassName('CategoryRow')
 class Categories extends Table {
@@ -12,7 +15,7 @@ class Categories extends Table {
 
   IntColumn get color => integer()();
 
-  IntColumn get icon => integer()();
+  TextColumn get icon => textEnum<AppIcon>()();
 
   BoolColumn get isTechnical => boolean().withDefault(const Constant(false))();
 

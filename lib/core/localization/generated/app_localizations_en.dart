@@ -151,4 +151,154 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get categoriesSetupDescription =>
       'Create categories for your expenses and income to help organize and analyze your transactions.';
+
+  @override
+  String get enterPin => 'Enter PIN';
+
+  @override
+  String get repeatPin => 'Repeat PIN';
+
+  @override
+  String get settings => 'Settings';
+
+  @override
+  String get accountSection => 'Account';
+
+  @override
+  String get generalSection => 'General';
+
+  @override
+  String get managementSection => 'Management';
+
+  @override
+  String get aboutSection => 'About';
+
+  @override
+  String get authSecurity => 'Authentication & Security';
+
+  @override
+  String get appearance => 'Appearance';
+
+  @override
+  String get accounts => 'Accounts';
+
+  @override
+  String get categories => 'Categories';
+
+  @override
+  String get notifications => 'Notifications';
+
+  @override
+  String get dataSync => 'Data & Sync';
+
+  @override
+  String get helpSupport => 'Help & Support';
+
+  @override
+  String get appInfo => 'App Info';
+
+  @override
+  String get theme => 'Theme';
+
+  @override
+  String get version => 'Version';
+
+  @override
+  String get build => 'Build';
+
+  @override
+  String get developer => 'Developer';
+
+  @override
+  String get selectDateRange => 'Select Date Range';
+
+  @override
+  String get quickOptions => 'QUICK OPTIONS';
+
+  @override
+  String get today => 'Today';
+
+  @override
+  String get thisMonth => 'This Month';
+
+  @override
+  String get lastMonth => 'Last Month';
+
+  @override
+  String get thisYear => 'This Year';
+
+  @override
+  String get allTime => 'All Time';
+
+  @override
+  String get customRange => 'CUSTOM RANGE';
+
+  @override
+  String get startDate => 'Start Date';
+
+  @override
+  String get endDate => 'End Date';
+
+  @override
+  String get notSet => 'Not set';
+
+  @override
+  String get doneButton => 'Done';
+
+  @override
+  String get balance => 'Balance';
+
+  @override
+  String get type => 'Type';
+
+  @override
+  String get date => 'Date';
+
+  @override
+  String get category => 'Category';
+
+  @override
+  String get note => 'Note';
+
+  @override
+  String get addNote => 'Add note';
+
+  @override
+  String get recentTransactions => 'Recent Transactions';
+
+  @override
+  String get noTransactionsYet => 'No transactions yet';
+
+  @override
+  String get unknown => 'Unknown';
+
+  @override
+  String get allAccounts => 'All Accounts';
+
+  @override
+  String get dashboard => 'Dashboard';
+
+  @override
+  String get analytics => 'Analytics';
+
+  @override
+  String get themeLight => 'Light';
+
+  @override
+  String get themeDark => 'Dark';
+
+  @override
+  String get themeSystem => 'System';
+
+  @override
+  String get newTransaction => 'New Transaction';
+
+  @override
+  String get addButton => 'Add';
+
+  @override
+  String get selectAccount => 'Select Account';
+
+  @override
+  String get selectCategory => 'Select Category';
 }

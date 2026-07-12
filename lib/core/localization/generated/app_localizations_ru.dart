@@ -151,4 +151,154 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get categoriesSetupDescription =>
       'Создайте категории для ваших расходов и доходов, чтобы упорядочить и анализировать свои транзакции.';
+
+  @override
+  String get enterPin => 'Введите PIN';
+
+  @override
+  String get repeatPin => 'Повторите PIN';
+
+  @override
+  String get settings => 'Настройки';
+
+  @override
+  String get accountSection => 'Счет';
+
+  @override
+  String get generalSection => 'Общие';
+
+  @override
+  String get managementSection => 'Управление';
+
+  @override
+  String get aboutSection => 'О приложении';
+
+  @override
+  String get authSecurity => 'Аутентификация и безопасность';
+
+  @override
+  String get appearance => 'Внешний вид';
+
+  @override
+  String get accounts => 'Счета';
+
+  @override
+  String get categories => 'Категории';
+
+  @override
+  String get notifications => 'Уведомления';
+
+  @override
+  String get dataSync => 'Данные и синхронизация';
+
+  @override
+  String get helpSupport => 'Помощь и поддержка';
+
+  @override
+  String get appInfo => 'О приложении';
+
+  @override
+  String get theme => 'Тема';
+
+  @override
+  String get version => 'Версия';
+
+  @override
+  String get build => 'Сборка';
+
+  @override
+  String get developer => 'Разработчик';
+
+  @override
+  String get selectDateRange => 'Выбрать период';
+
+  @override
+  String get quickOptions => 'БЫСТРЫЕ ВАРИАНТЫ';
+
+  @override
+  String get today => 'Сегодня';
+
+  @override
+  String get thisMonth => 'Этот месяц';
+
+  @override
+  String get lastMonth => 'Прошлый месяц';
+
+  @override
+  String get thisYear => 'Этот год';
+
+  @override
+  String get allTime => 'Всё время';
+
+  @override
+  String get customRange => 'СВОЙ ПЕРИОД';
+
+  @override
+  String get startDate => 'Дата начала';
+
+  @override
+  String get endDate => 'Дата окончания';
+
+  @override
+  String get notSet => 'Не установлено';
+
+  @override
+  String get doneButton => 'Готово';
+
+  @override
+  String get balance => 'Баланс';
+
+  @override
+  String get type => 'Тип';
+
+  @override
+  String get date => 'Дата';
+
+  @override
+  String get category => 'Категория';
+
+  @override
+  String get note => 'Заметка';
+
+  @override
+  String get addNote => 'Добавить заметку';
+
+  @override
+  String get recentTransactions => 'Последние транзакции';
+
+  @override
+  String get noTransactionsYet => 'Пока нет транзакций';
+
+  @override
+  String get unknown => 'Неизвестно';
+
+  @override
+  String get allAccounts => 'Все счета';
+
+  @override
+  String get dashboard => 'Главная';
+
+  @override
+  String get analytics => 'Аналитика';
+
+  @override
+  String get themeLight => 'Светлая';
+
+  @override
+  String get themeDark => 'Тёмная';
+
+  @override
+  String get themeSystem => 'Системная';
+
+  @override
+  String get newTransaction => 'Новая транзакция';
+
+  @override
+  String get addButton => 'Добавить';
+
+  @override
+  String get selectAccount => 'Выбрать счет';
+
+  @override
+  String get selectCategory => 'Выбрать категорию';
 }

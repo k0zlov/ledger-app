@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ledger_app/core/currencies/currencies.dart';
 import 'package:ledger_app/core/domain/entities/account.dart';
 import 'package:ledger_app/core/domain/entities/category.dart';
-import 'package:ledger_app/core/localization/localization_build_context_x.dart';
+import 'package:ledger_app/core/view/extensions/localization_build_context_x.dart';
 import 'package:ledger_app/core/view/cubits/settings_cubit.dart';
 import 'package:ledger_app/core/view/extensions/account_type_x.dart';
 import 'package:ledger_app/features/transactions/view/cubit/transactions_cubit.dart';

@@ -111,7 +111,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get saveButton => 'Зберегти';
 
   @override
-  String get categoriesSetupTitle => 'Налаштування категорий';
+  String get categoriesSetupTitle => 'Налаштування категорій';
 
   @override
   String get addCategoryTitle => 'Додати категорію';
@@ -151,4 +151,154 @@ class AppLocalizationsUk extends AppLocalizations {
   @override
   String get categoriesSetupDescription =>
       'Створіть категорії для ваших витрат і доходів, щоб впорядкувати та аналізувати свої транзакції.';
+
+  @override
+  String get enterPin => 'Введіть PIN';
+
+  @override
+  String get repeatPin => 'Повторіть PIN';
+
+  @override
+  String get settings => 'Налаштування';
+
+  @override
+  String get accountSection => 'Рахунок';
+
+  @override
+  String get generalSection => 'Загальні';
+
+  @override
+  String get managementSection => 'Управління';
+
+  @override
+  String get aboutSection => 'Про додаток';
+
+  @override
+  String get authSecurity => 'Автентифікація та безпека';
+
+  @override
+  String get appearance => 'Зовнішній вигляд';
+
+  @override
+  String get accounts => 'Рахунки';
+
+  @override
+  String get categories => 'Категорії';
+
+  @override
+  String get notifications => 'Сповіщення';
+
+  @override
+  String get dataSync => 'Дані та синхронізація';
+
+  @override
+  String get helpSupport => 'Допомога та підтримка';
+
+  @override
+  String get appInfo => 'Про додаток';
+
+  @override
+  String get theme => 'Тема';
+
+  @override
+  String get version => 'Версія';
+
+  @override
+  String get build => 'Збірка';
+
+  @override
+  String get developer => 'Розробник';
+
+  @override
+  String get selectDateRange => 'Вибрати період';
+
+  @override
+  String get quickOptions => 'ШВИДКІ ВАРІАНТИ';
+
+  @override
+  String get today => 'Сьогодні';
+
+  @override
+  String get thisMonth => 'Цей місяць';
+
+  @override
+  String get lastMonth => 'Минулий місяць';
+
+  @override
+  String get thisYear => 'Цей рік';
+
+  @override
+  String get allTime => 'Весь час';
+
+  @override
+  String get customRange => 'ВЛАСНИЙ ПЕРІОД';
+
+  @override
+  String get startDate => 'Дата початку';
+
+  @override
+  String get endDate => 'Дата закінчення';
+
+  @override
+  String get notSet => 'Не встановлено';
+
+  @override
+  String get doneButton => 'Готово';
+
+  @override
+  String get balance => 'Баланс';
+
+  @override
+  String get type => 'Тип';
+
+  @override
+  String get date => 'Дата';
+
+  @override
+  String get category => 'Категорія';
+
+  @override
+  String get note => 'Примітка';
+
+  @override
+  String get addNote => 'Додати примітку';
+
+  @override
+  String get recentTransactions => 'Останні транзакції';
+
+  @override
+  String get noTransactionsYet => 'Поки немає транзакцій';
+
+  @override
+  String get unknown => 'Невідомо';
+
+  @override
+  String get allAccounts => 'Всі рахунки';
+
+  @override
+  String get dashboard => 'Головна';
+
+  @override
+  String get analytics => 'Аналітика';
+
+  @override
+  String get themeLight => 'Світла';
+
+  @override
+  String get themeDark => 'Темна';
+
+  @override
+  String get themeSystem => 'Системна';
+
+  @override
+  String get newTransaction => 'Нова транзакція';
+
+  @override
+  String get addButton => 'Додати';
+
+  @override
+  String get selectAccount => 'Вибрати рахунок';
+
+  @override
+  String get selectCategory => 'Вибрати категорію';
 }

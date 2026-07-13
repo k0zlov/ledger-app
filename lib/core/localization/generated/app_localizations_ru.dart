@@ -301,4 +301,42 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get selectCategory => 'Выбрать категорию';
+
+  @override
+  String get changePin => 'Change PIN';
+
+  @override
+  String get biometrics => 'Biometrics';
+
+  @override
+  String get enabled => 'Enabled';
+
+  @override
+  String get disabled => 'Disabled';
+
+  @override
+  String get verifyIdentityToEnableBiometrics =>
+      'Verify your identity to enable biometric login';
+
+  @override
+  String get setPin => 'Set PIN';
+
+  @override
+  String get pinRequired => 'PIN Required';
+
+  @override
+  String get pinRequiredForBiometrics =>
+      'You need to set up a PIN code first to enable biometrics.';
+
+  @override
+  String get ok => 'OK';
+
+  @override
+  String get disablePin => 'Disable PIN';
+
+  @override
+  String get transactionDetails => 'Transaction Details';
+
+  @override
+  String get editButton => 'Edit';
 }

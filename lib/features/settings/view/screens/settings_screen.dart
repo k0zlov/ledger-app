@@ -46,6 +46,10 @@ class SettingsScreen extends StatelessWidget {
     await context.navigator.push(HelpAndSupportRoute());
   }
 
+  Future<void> _onAuthSettingsTap(BuildContext context) async {
+    await context.navigator.push(AuthSettingsRoute());
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
@@ -62,13 +66,13 @@ class SettingsScreen extends StatelessWidget {
             child: Column(
               children: [
                 ListSection(
-                  title: l10n.accounts,
+                  title: l10n.accountSection,
                   children: [
                     SettingsItem(
                       title: l10n.authSecurity,
                       icon: CupertinoIcons.person_solid,
                       iconBackgroundColor: CupertinoColors.activeBlue,
-                      onTap: () {},
+                      onTap: () => _onAuthSettingsTap(context),
                     ),
                   ],
                 ),
@@ -194,7 +198,9 @@ class SettingsItem extends StatelessWidget {
         ),
       ),
       trailing: const CupertinoListTileChevron(),
-      onTap: onTap,
+      onTap: () {
+        WidgetsBinding.instance.addPostFrameCallback((_) => onTap());
+      },
     );
   }
 }

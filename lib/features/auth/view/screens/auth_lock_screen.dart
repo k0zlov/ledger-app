@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc_presentation/bloc_presentation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ledger_app/features/auth/domain/entities/security_settings.dart';
 import 'package:ledger_app/features/auth/view/cubit/auth_cubit.dart';
 import 'package:ledger_app/features/auth/view/cubit/auth_effect.dart';
 import 'package:ledger_app/features/auth/view/screens/pin_entry_screen.dart';
@@ -52,11 +53,16 @@ class _AuthLockScreenState extends State<AuthLockScreen> {
             }
         }
       },
-      child: PinEntryScreen(
-        repeatCode: false,
-        autoTriggerBiometrics: true,
-        onBiometrics: _handleBiometrics,
-        onSubmit: _handlePinSubmit,
+      child: BlocSelector<AuthCubit, AuthState, SecuritySettings>(
+        selector: (state) => state.securitySettings,
+        builder: (context, state) {
+          return PinEntryScreen(
+            repeatCode: false,
+            autoTriggerBiometrics: true,
+            onBiometrics: state.isBiometricsEnabled ? _handleBiometrics : null,
+            onSubmit: _handlePinSubmit,
+          );
+        },
       ),
     );
   }

@@ -35,6 +35,8 @@ class _PinEntryScreenState extends State<PinEntryScreen> with SingleTickerProvid
   bool _isError = false;
   bool _isSuccess = false;
 
+  bool _hasAttemptedAutoBiometrics = false;
+
   @override
   void initState() {
     super.initState();
@@ -44,8 +46,20 @@ class _PinEntryScreenState extends State<PinEntryScreen> with SingleTickerProvid
     );
     _shakeAnimation = Tween<double>(begin: 0, end: 1).animate(_shakeController);
 
-    if (widget.autoTriggerBiometrics && widget.onBiometrics != null) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+    _checkAndTriggerBiometrics();
+  }
+
+  @override
+  void didUpdateWidget(PinEntryScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _checkAndTriggerBiometrics();
+  }
+
+  void _checkAndTriggerBiometrics() {
+    if (widget.autoTriggerBiometrics && widget.onBiometrics != null && !_hasAttemptedAutoBiometrics) {
+      _hasAttemptedAutoBiometrics = true;
+
+      Future.delayed(const Duration(milliseconds: 350), () {
         if (mounted) {
           unawaited(_handleBiometrics());
         }

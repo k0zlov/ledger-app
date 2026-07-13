@@ -94,5 +94,17 @@
   "newTransaction": "New Transaction",
   "addButton": "Add",
   "selectAccount": "Select Account",
-  "selectCategory": "Select Category"
+  "selectCategory": "Select Category",
+  "changePin": "Change PIN",
+  "biometrics": "Biometrics",
+  "enabled": "Enabled",
+  "disabled": "Disabled",
+  "verifyIdentityToEnableBiometrics": "Verify your identity to enable biometric login",
+  "setPin": "Set PIN",
+  "pinRequired": "PIN Required",
+  "pinRequiredForBiometrics": "You need to set up a PIN code first to enable biometrics.",
+  "ok": "OK",
+  "disablePin": "Disable PIN",
+  "transactionDetails": "Transaction Details",
+  "editButton": "Edit"
 }

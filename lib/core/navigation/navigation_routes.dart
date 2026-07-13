@@ -16,6 +16,7 @@ enum RouteDefinition {
   themeSelection('theme-selection'),
   languageSelection('language-selection'),
   appInfo('app-info'),
+  authSettings('auth-settings'),
   helpAndSupport('help-and-support');
 
   const RouteDefinition(this.path);
@@ -112,4 +113,9 @@ class ThemeSelectionRoute extends NavigationRoute {
 class LanguageSelectionRoute extends NavigationRoute {
   @override
   RouteDefinition get definition => RouteDefinition.languageSelection;
+}
+
+class AuthSettingsRoute extends NavigationRoute {
+  @override
+  RouteDefinition get definition => RouteDefinition.authSettings;
 }

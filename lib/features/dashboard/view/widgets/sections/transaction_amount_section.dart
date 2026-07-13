@@ -62,7 +62,7 @@ class _TransactionAmountSectionState extends State<TransactionAmountSection> {
   void _syncSignFromController() {
     final text = widget.controller.text;
     setState(() {
-      _isNegative = text.startsWith('-') || widget.amount < 0;
+      _isNegative = text.startsWith('-') || widget.amount < 0 || widget.categoryType == .expense;
     });
   }
 

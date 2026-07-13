@@ -12,4 +12,8 @@ abstract interface class AuthRepository {
   Future<bool> checkBiometricsAvailability();
 
   Future<bool> authenticateWithBiometrics(String reason);
+
+  Future<bool> checkPin(String pin);
+
+  Future<void> deletePinCode();
 }

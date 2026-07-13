@@ -675,6 +675,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Select Category'**
   String get selectCategory;
+
+  /// No description provided for @changePin.
+  ///
+  /// In en, this message translates to:
+  /// **'Change PIN'**
+  String get changePin;
+
+  /// No description provided for @biometrics.
+  ///
+  /// In en, this message translates to:
+  /// **'Biometrics'**
+  String get biometrics;
+
+  /// No description provided for @enabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Enabled'**
+  String get enabled;
+
+  /// No description provided for @disabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Disabled'**
+  String get disabled;
+
+  /// No description provided for @verifyIdentityToEnableBiometrics.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify your identity to enable biometric login'**
+  String get verifyIdentityToEnableBiometrics;
+
+  /// No description provided for @setPin.
+  ///
+  /// In en, this message translates to:
+  /// **'Set PIN'**
+  String get setPin;
+
+  /// No description provided for @pinRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'PIN Required'**
+  String get pinRequired;
+
+  /// No description provided for @pinRequiredForBiometrics.
+  ///
+  /// In en, this message translates to:
+  /// **'You need to set up a PIN code first to enable biometrics.'**
+  String get pinRequiredForBiometrics;
+
+  /// No description provided for @ok.
+  ///
+  /// In en, this message translates to:
+  /// **'OK'**
+  String get ok;
+
+  /// No description provided for @disablePin.
+  ///
+  /// In en, this message translates to:
+  /// **'Disable PIN'**
+  String get disablePin;
+
+  /// No description provided for @transactionDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Transaction Details'**
+  String get transactionDetails;
+
+  /// No description provided for @editButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get editButton;
 }
 
 class _AppLocalizationsDelegate

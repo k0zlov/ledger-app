@@ -18,7 +18,7 @@ class AccountsScreen extends StatelessWidget {
       backgroundColor: CupertinoColors.systemGroupedBackground,
       navigationBar: CupertinoNavigationBar(
         middle: Text(l10n.accounts),
-        previousPageTitle: l10n.settings,
+        previousPageTitle: l10n.backButton,
         trailing: CupertinoButton(
           padding: EdgeInsets.zero,
           onPressed: () => showAccountDialog(context),

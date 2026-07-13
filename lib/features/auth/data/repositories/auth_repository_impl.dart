@@ -28,7 +28,8 @@ class AuthRepositoryImpl implements AuthRepository, AuthStatusContract {
     final SecuritySettingsModel model = await _storageProvider.getSettings();
     final SecuritySettings entity = model.toEntity();
 
-    _setLocked(entity.isSecurityEnabled);
+    isLocked = entity.isSecurityEnabled;
+    _lockStateController.add(isLocked);
   }
 
   void _setLocked(bool value) {
@@ -85,5 +86,16 @@ class AuthRepositoryImpl implements AuthRepository, AuthStatusContract {
   Future<SecuritySettings> getSecuritySettings() async {
     final SecuritySettingsModel model = await _storageProvider.getSettings();
     return model.toEntity();
+  }
+
+  @override
+  Future<bool> checkPin(String pin) async {
+    final String? storedPin = await _storageProvider.getPin();
+    return storedPin == pin;
+  }
+
+  @override
+  Future<void> deletePinCode() async {
+    await _storageProvider.deletePin();
   }
 }

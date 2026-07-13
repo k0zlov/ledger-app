@@ -20,7 +20,7 @@ class CategoriesScreen extends StatelessWidget {
       backgroundColor: CupertinoColors.systemGroupedBackground,
       navigationBar: CupertinoNavigationBar(
         middle: Text(l10n.categories),
-        previousPageTitle: l10n.settings,
+        previousPageTitle: l10n.backButton,
         trailing: CupertinoButton(
           padding: EdgeInsets.zero,
           onPressed: () => showCategoryDialog(context),

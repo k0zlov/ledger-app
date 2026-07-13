@@ -8,7 +8,7 @@ class SecuritySettingsModel {
 
   factory SecuritySettingsModel.fromEntity(SecuritySettings entity) {
     return SecuritySettingsModel(
-      isSecurityEnabled: entity.isBiometricsEnabled.toString(),
+      isSecurityEnabled: entity.isSecurityEnabled.toString(),
       isBiometricsEnabled: entity.isBiometricsEnabled.toString(),
     );
   }

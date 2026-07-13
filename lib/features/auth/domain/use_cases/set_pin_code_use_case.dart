@@ -14,13 +14,13 @@ class SetPinCodeParams {
   final SecuritySettings currentSettings;
 }
 
-class SetPinCodeUseCase implements UseCase<SecuritySettings?, SetPinCodeParams> {
+class SetPinCodeUseCase implements UseCase<SecuritySettings, SetPinCodeParams> {
   const SetPinCodeUseCase({required this._repository});
 
   final AuthRepository _repository;
 
   @override
-  Future<Either<Failure, SecuritySettings?>> call(SetPinCodeParams params) async {
+  Future<Either<Failure, SecuritySettings>> call(SetPinCodeParams params) async {
     if (params.pin.length != 4) {
       return const Left(
         CacheFailure(errorMessage: 'PIN must be exactly 4 digits long'),
@@ -30,15 +30,13 @@ class SetPinCodeUseCase implements UseCase<SecuritySettings?, SetPinCodeParams> 
     try {
       await _repository.setPinCode(params.pin);
 
-      if (!params.currentSettings.isBiometricsEnabled) {
-        final SecuritySettings updatedSettings = params.currentSettings.copyWith(isSecurityEnabled: true);
+      final SecuritySettings updatedSettings = params.currentSettings.copyWith(
+        isSecurityEnabled: true,
+      );
 
-        await _repository.updateSecuritySettings(updatedSettings);
+      await _repository.updateSecuritySettings(updatedSettings);
 
-        return Right(updatedSettings);
-      }
-
-      return const Right(null);
+      return Right(updatedSettings);
     } catch (e) {
       return Left(
         CacheFailure(errorMessage: 'Failed to securely save PIN: $e'),

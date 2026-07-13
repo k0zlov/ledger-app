@@ -9,6 +9,8 @@ import 'package:ledger_app/features/auth/domain/entities/security_settings.dart'
 import 'package:ledger_app/features/auth/domain/use_cases/authenticate_with_biometrics_use_case.dart';
 import 'package:ledger_app/features/auth/domain/use_cases/authenticate_with_pin_use_case.dart';
 import 'package:ledger_app/features/auth/domain/use_cases/check_biometric_availability_use_case.dart';
+import 'package:ledger_app/features/auth/domain/use_cases/check_pin_use_case.dart';
+import 'package:ledger_app/features/auth/domain/use_cases/disable_pin_use_case.dart';
 import 'package:ledger_app/features/auth/domain/use_cases/get_security_settings_use_case.dart';
 import 'package:ledger_app/features/auth/domain/use_cases/set_pin_code_use_case.dart';
 import 'package:ledger_app/features/auth/domain/use_cases/toggle_biometrics_use_case.dart';
@@ -18,6 +20,8 @@ part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> with BlocPresentationMixin<AuthState, AuthEffect> {
   AuthCubit({
+    required this._disablePinUseCase,
+    required this._checkPinUseCase,
     required this._authenticateWithBiometrics,
     required this._authenticateWithPin,
     required this._setPinCode,
@@ -32,6 +36,8 @@ class AuthCubit extends Cubit<AuthState> with BlocPresentationMixin<AuthState, A
   final CheckBiometricAvailabilityUseCase _checkBiometricAvailability;
   final AuthenticateWithBiometricsUseCase _authenticateWithBiometrics;
   final AuthenticateWithPinUseCase _authenticateWithPin;
+  final CheckPinUseCase _checkPinUseCase;
+  final DisablePinUseCase _disablePinUseCase;
 
   Future<void> initialize() async {
     final List<dynamic> results = await Future.wait([
@@ -54,7 +60,7 @@ class AuthCubit extends Cubit<AuthState> with BlocPresentationMixin<AuthState, A
   }
 
   Future<void> setupPin(String pin) async {
-    final Either<Failure, SecuritySettings?> result = await _setPinCode(
+    final Either<Failure, SecuritySettings> result = await _setPinCode(
       SetPinCodeParams(
         pin: pin,
         currentSettings: state.securitySettings,
@@ -67,7 +73,6 @@ class AuthCubit extends Cubit<AuthState> with BlocPresentationMixin<AuthState, A
       },
       (settings) {
         emit(state.copyWith(securitySettings: settings));
-
         emitPresentation(PinSucceeded());
       },
     );
@@ -114,6 +119,42 @@ class AuthCubit extends Cubit<AuthState> with BlocPresentationMixin<AuthState, A
       },
       (success) {
         emitPresentation(success ? BiometricSucceeded() : BiometricFailed());
+      },
+    );
+  }
+
+  Future<void> checkPin(String pin) async {
+    final result = await _checkPinUseCase(pin);
+
+    result.fold(
+      (failure) {
+        emitPresentation(PinFailed());
+      },
+      (success) {
+        emitPresentation(success ? PinSucceeded() : PinFailed());
+      },
+    );
+  }
+
+  Future<void> disablePin(String pin) async {
+    final result = await _disablePinUseCase(
+      DisablePinParams(
+        pin: pin,
+        currentSettings: state.securitySettings,
+      ),
+    );
+
+    result.fold(
+      (failure) {
+        emitPresentation(PinFailed());
+      },
+      (settings) {
+        if (settings != null) {
+          emit(state.copyWith(securitySettings: settings));
+          emitPresentation(PinSucceeded());
+        } else {
+          emitPresentation(PinFailed());
+        }
       },
     );
   }

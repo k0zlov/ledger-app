@@ -30,7 +30,7 @@ class HelpAndSupportScreen extends StatelessWidget {
       backgroundColor: CupertinoColors.systemGroupedBackground,
       navigationBar: CupertinoNavigationBar(
         middle: Text(l10n.helpSupport),
-        previousPageTitle: l10n.settings,
+        previousPageTitle: l10n.backButton,
       ),
       child: SafeArea(
         child: ListView(

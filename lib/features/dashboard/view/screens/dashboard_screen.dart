@@ -143,13 +143,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
     }
 
     final filteredTransactions = state.transactions.where((tx) {
+      if (tx.category?.isTechnical ?? false) return false;
+
       if (_selectedAccountId != null && tx.accountId != _selectedAccountId) {
         return false;
       }
       return _isTransactionInTimeFrame(tx);
     }).toList();
 
-    final totalBalance = filteredTransactions.fold<int>(0, (sum, tx) {
+    final totalBalance = state.transactions.fold<int>(0, (sum, tx) {
       final category = getCategory(tx.categoryId);
       if (category?.type == CategoryType.expense) {
         return sum - tx.amount;

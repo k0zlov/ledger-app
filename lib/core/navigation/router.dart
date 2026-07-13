@@ -144,6 +144,11 @@ GoRouter createRouter({
                     path: RouteDefinition.categories.path,
                     builder: (context, state) => ScreenFactory.renderCategoriesScreen(),
                   ),
+                  GoRoute(
+                    name: RouteDefinition.authSettings.name,
+                    path: RouteDefinition.authSettings.path,
+                    builder: (context, state) => ScreenFactory.renderAuthSettingsScreen(),
+                  ),
                 ],
               ),
             ],

@@ -19,7 +19,7 @@ class ThemeSettingsScreen extends StatelessWidget {
       backgroundColor: CupertinoColors.systemGroupedBackground,
       navigationBar: CupertinoNavigationBar(
         middle: Text(l10n.theme),
-        previousPageTitle: l10n.settings,
+        previousPageTitle: l10n.backButton,
       ),
       child: SafeArea(
         child: ListSection(

@@ -7,6 +7,7 @@ import 'package:ledger_app/core/domain/entities/transaction.dart';
 import 'package:ledger_app/core/navigation/navigation_service.dart';
 import 'package:ledger_app/core/view/extensions/account_type_x.dart';
 import 'package:ledger_app/core/view/extensions/app_icon_x.dart';
+import 'package:ledger_app/core/view/extensions/localization_build_context_x.dart';
 import 'package:ledger_app/features/dashboard/view/widgets/navigation_bar/modal_navigation_bar.dart';
 import 'package:ledger_app/features/dashboard/view/widgets/sections/transaction_amount_section.dart';
 import 'package:ledger_app/features/dashboard/view/widgets/sections/transaction_info_section.dart';
@@ -192,6 +193,8 @@ class _TransactionDetailsSheetState extends State<TransactionDetailsSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
     final currentCategory = widget.categories.firstWhere(
       (c) => c.id == _currentTransaction.categoryId,
       orElse: () => widget.categories.first,
@@ -212,9 +215,9 @@ class _TransactionDetailsSheetState extends State<TransactionDetailsSheet> {
         child: Column(
           children: [
             ModalNavigationBar(
-              title: 'Transaction Details',
-              leftText: _isEditing ? 'Cancel' : 'Edit',
-              rightText: _isEditing ? 'Save' : 'Done',
+              title: l10n.transactionDetails,
+              leftText: _isEditing ? l10n.cancelButton : l10n.editButton,
+              rightText: _isEditing ? l10n.saveButton : l10n.doneButton,
               onLeftTap: _handleLeftTap,
               onRightTap: _handleRightTap,
             ),

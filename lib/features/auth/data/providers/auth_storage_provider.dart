@@ -11,6 +11,8 @@ abstract interface class AuthStorageProvider {
   Future<SecuritySettingsModel> getSettings();
 
   Future<void> saveSettings(SecuritySettingsModel settings);
+
+  Future<void> deletePin();
 }
 
 class AuthStorageProviderImpl implements AuthStorageProvider {
@@ -45,5 +47,10 @@ class AuthStorageProviderImpl implements AuthStorageProvider {
   Future<void> saveSettings(SecuritySettingsModel settings) async {
     final String jsonString = jsonEncode(settings.toJson());
     await _secureStorage.write(SecureStorageKey.securitySettings, value: jsonString);
+  }
+
+  @override
+  Future<void> deletePin() async {
+    await _secureStorage.delete(SecureStorageKey.securityPinCode);
   }
 }

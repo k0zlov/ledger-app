@@ -16,7 +16,7 @@ class Transaction {
   });
 
   final String id;
-  final int amount;
+  final double amount;
   final DateTime date;
   final String accountId;
   final String categoryId;
@@ -26,7 +26,7 @@ class Transaction {
 
   Transaction copyWith({
     String? id,
-    int? amount,
+    double? amount,
     DateTime? date,
     String? accountId,
     String? categoryId,

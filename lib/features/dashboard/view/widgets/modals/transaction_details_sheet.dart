@@ -173,9 +173,9 @@ class _TransactionDetailsSheetState extends State<TransactionDetailsSheet> {
 
   void _handleRightTap() {
     if (_isEditing) {
-      final parsedAmount = int.tryParse(_amountController.text.trim()) ?? _currentTransaction.amount;
+      final parsedAmount = double.tryParse(_amountController.text.trim()) ?? _currentTransaction.amount;
       _currentTransaction = _currentTransaction.copyWith(
-        amount: parsedAmount.abs(),
+        amount: parsedAmount,
         note: _noteController.text.trim(),
       );
       widget.onSave(_currentTransaction);
@@ -206,9 +206,9 @@ class _TransactionDetailsSheetState extends State<TransactionDetailsSheet> {
 
     return Container(
       height: MediaQuery.of(context).size.height * 0.9,
-      decoration: const BoxDecoration(
-        color: CupertinoColors.systemGroupedBackground,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
+      decoration: BoxDecoration(
+        color: CupertinoColors.systemGroupedBackground.resolveFrom(context),
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
       ),
       child: SafeArea(
         top: false,

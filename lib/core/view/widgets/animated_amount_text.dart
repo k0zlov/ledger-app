@@ -10,7 +10,7 @@ class AnimatedAmountText extends StatelessWidget {
     super.key,
   });
 
-  final int amount;
+  final double amount;
   final bool showSign;
   final TextStyle? style;
   final Duration duration;
@@ -18,12 +18,12 @@ class AnimatedAmountText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TweenAnimationBuilder<double>(
-      tween: Tween<double>(end: amount.toDouble()),
+      tween: Tween<double>(end: amount),
       duration: duration,
       curve: Curves.easeOutCubic,
       builder: (context, value, child) {
         return AmountText(
-          amount: value.round(),
+          amount: value,
           showSign: showSign,
           style: style,
         );

@@ -61,11 +61,13 @@ class PinDot extends StatelessWidget {
   Widget build(BuildContext context) {
     final Color color;
     if (isError) {
-      color = CupertinoColors.destructiveRed;
+      color = CupertinoColors.destructiveRed.resolveFrom(context);
     } else if (isSuccess) {
-      color = CupertinoColors.activeGreen;
+      color = CupertinoColors.activeGreen.resolveFrom(context);
     } else {
-      color = isFilled ? CupertinoColors.activeBlue : CupertinoColors.systemGrey5;
+      color = isFilled
+          ? CupertinoColors.activeBlue.resolveFrom(context)
+          : CupertinoColors.systemGrey5.resolveFrom(context);
     }
 
     return Container(
@@ -75,11 +77,10 @@ class PinDot extends StatelessWidget {
         shape: BoxShape.circle,
         color: color,
         border: Border.all(
-          color: isFilled || isError || isSuccess ? color : CupertinoColors.activeBlue,
+          color: isFilled || isError || isSuccess ? color : CupertinoColors.activeBlue.resolveFrom(context),
           width: 2,
         ),
       ),
     );
   }
 }
-

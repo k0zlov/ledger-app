@@ -186,12 +186,19 @@ class _PinEntryScreenState extends State<PinEntryScreen> with SingleTickerProvid
     final l10n = context.l10n;
 
     return CupertinoPageScaffold(
+      backgroundColor: CupertinoColors.systemBackground.resolveFrom(context),
       navigationBar: CupertinoNavigationBar(
         automaticallyImplyLeading: false,
+        backgroundColor: CupertinoColors.systemBackground.resolveFrom(context),
         leading: (_firstPin != null || widget.onBack != null)
             ? CupertinoNavigationBarBackButton(onPressed: _handleBack)
             : null,
-        middle: Text(_firstPin == null ? l10n.enterPin : l10n.repeatPin),
+        middle: Text(
+          _firstPin == null ? l10n.enterPin : l10n.repeatPin,
+          style: TextStyle(
+            color: CupertinoColors.label.resolveFrom(context),
+          ),
+        ),
       ),
       child: SafeArea(
         child: Center(

@@ -18,7 +18,7 @@ class TransactionAmountSection extends StatefulWidget {
 
   final bool isEditing;
   final CategoryType categoryType;
-  final int amount;
+  final double amount;
   final TextEditingController controller;
   final bool allowSignToggle;
 
@@ -130,7 +130,7 @@ class _TransactionAmountSectionState extends State<TransactionAmountSection> {
       );
     }
 
-    int displayAmount = widget.amount;
+    double displayAmount = widget.amount;
     if (widget.categoryType == CategoryType.expense) {
       displayAmount = -widget.amount.abs();
     } else if (widget.categoryType == CategoryType.income) {
@@ -182,8 +182,10 @@ class _EditableAmountField extends StatelessWidget {
             IntrinsicWidth(
               child: CupertinoTextField(
                 controller: controller,
-                keyboardType: TextInputType.number,
-                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp('[0-9.,]')),
+                ],
                 textAlign: TextAlign.center,
                 padding: EdgeInsetsGeometry.zero,
                 clearButtonMode: OverlayVisibilityMode.editing,

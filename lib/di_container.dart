@@ -83,7 +83,7 @@ Future<void> registerDependencies() async {
 }
 
 void _database() {
-  getIt.registerLazySingleton<Database>(Database.new);
+  getIt.registerSingleton<Database>(Database());
 }
 
 void _secureStorage() {

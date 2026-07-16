@@ -59,9 +59,9 @@ class _DateRangePickerSheetState extends State<DateRangePickerSheet> {
       context: context,
       builder: (ctx) => Container(
         height: 280,
-        decoration: const BoxDecoration(
-          color: CupertinoColors.systemGroupedBackground,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
+        decoration: BoxDecoration(
+          color: CupertinoColors.systemGroupedBackground.resolveFrom(context),
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
         ),
         child: SafeArea(
           top: false,

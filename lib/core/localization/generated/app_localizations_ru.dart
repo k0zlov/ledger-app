@@ -303,40 +303,65 @@ class AppLocalizationsRu extends AppLocalizations {
   String get selectCategory => 'Выбрать категорию';
 
   @override
-  String get changePin => 'Change PIN';
+  String get changePin => 'Изменить PIN-код';
 
   @override
-  String get biometrics => 'Biometrics';
+  String get biometrics => 'Биометрия';
 
   @override
-  String get enabled => 'Enabled';
+  String get enabled => 'Включено';
 
   @override
-  String get disabled => 'Disabled';
+  String get disabled => 'Отключено';
 
   @override
   String get verifyIdentityToEnableBiometrics =>
-      'Verify your identity to enable biometric login';
+      'Подтвердите личность для включения биометрического входа';
 
   @override
-  String get setPin => 'Set PIN';
+  String get setPin => 'Установить PIN-код';
 
   @override
-  String get pinRequired => 'PIN Required';
+  String get pinRequired => 'Требуется PIN-код';
 
   @override
   String get pinRequiredForBiometrics =>
-      'You need to set up a PIN code first to enable biometrics.';
+      'Сначала вам нужно установить PIN-код, чтобы включить биометрию.';
 
   @override
-  String get ok => 'OK';
+  String get ok => 'ОК';
 
   @override
-  String get disablePin => 'Disable PIN';
+  String get disablePin => 'Отключить PIN-код';
 
   @override
-  String get transactionDetails => 'Transaction Details';
+  String get transactionDetails => 'Детали транзакции';
 
   @override
-  String get editButton => 'Edit';
+  String get editButton => 'Редактировать';
+
+  @override
+  String get analyticsAndForecast => 'Аналитика и Прогноз';
+
+  @override
+  String get noDataAvailable => 'Нет доступных данных.';
+
+  @override
+  String get incomeTitle => 'Доходы';
+
+  @override
+  String get expensesTitle => 'Расходы';
+
+  @override
+  String get spent => 'Потрачено';
+
+  @override
+  String get prediction => 'Прогноз';
+
+  @override
+  String get noCategoryData => 'Нет данных по категориям.';
+
+  @override
+  String get predictionWarning =>
+      'Прогнозы могут быть неточными при недостаточном количестве исторических данных.';
 }

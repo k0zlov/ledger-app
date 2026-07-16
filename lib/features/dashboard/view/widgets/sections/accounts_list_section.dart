@@ -13,7 +13,7 @@ class AccountsListSection extends StatelessWidget {
   });
 
   final List<Account> accounts;
-  final int Function(Account account) getAccountBalance;
+  final double Function(Account account) getAccountBalance;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +38,7 @@ class _AccountListTile extends StatelessWidget {
   });
 
   final Account account;
-  final int Function(Account account) getAccountBalance;
+  final double Function(Account account) getAccountBalance;
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +49,6 @@ class _AccountListTile extends StatelessWidget {
         amount: getAccountBalance(account),
         style: const TextStyle(
           fontWeight: FontWeight.w600,
-          color: CupertinoColors.label,
         ),
       ),
     );

@@ -90,7 +90,7 @@ class CategoryTile extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     AmountText(
-                      amount: data.currentSpent.round(),
+                      amount: data.currentSpent,
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         color: CupertinoColors.label.resolveFrom(context),
@@ -104,7 +104,7 @@ class CategoryTile extends StatelessWidget {
                       ),
                     ),
                     AmountText(
-                      amount: data.predictedSpend!.round(),
+                      amount: data.predictedSpend!,
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         color: CupertinoColors.label.resolveFrom(context),
@@ -114,7 +114,7 @@ class CategoryTile extends StatelessWidget {
                 )
               else
                 AmountText(
-                  amount: data.currentSpent.round(),
+                  amount: data.currentSpent,
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     color: CupertinoColors.label.resolveFrom(context),

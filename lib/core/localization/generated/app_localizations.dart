@@ -747,6 +747,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Edit'**
   String get editButton;
+
+  /// No description provided for @analyticsAndForecast.
+  ///
+  /// In en, this message translates to:
+  /// **'Analytics & Forecast'**
+  String get analyticsAndForecast;
+
+  /// No description provided for @noDataAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No data available.'**
+  String get noDataAvailable;
+
+  /// No description provided for @incomeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Income'**
+  String get incomeTitle;
+
+  /// No description provided for @expensesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Expenses'**
+  String get expensesTitle;
+
+  /// No description provided for @spent.
+  ///
+  /// In en, this message translates to:
+  /// **'Spent'**
+  String get spent;
+
+  /// No description provided for @prediction.
+  ///
+  /// In en, this message translates to:
+  /// **'Prediction'**
+  String get prediction;
+
+  /// No description provided for @noCategoryData.
+  ///
+  /// In en, this message translates to:
+  /// **'No category data.'**
+  String get noCategoryData;
+
+  /// No description provided for @predictionWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'Predictions may be inaccurate when there is not enough historical data.'**
+  String get predictionWarning;
 }
 
 class _AppLocalizationsDelegate

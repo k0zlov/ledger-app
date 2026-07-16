@@ -106,5 +106,13 @@
   "ok": "OK",
   "disablePin": "Disable PIN",
   "transactionDetails": "Transaction Details",
-  "editButton": "Edit"
+  "editButton": "Edit",
+  "analyticsAndForecast": "Analytics & Forecast",
+  "noDataAvailable": "No data available.",
+  "incomeTitle": "Income",
+  "expensesTitle": "Expenses",
+  "spent": "Spent",
+  "prediction": "Prediction",
+  "noCategoryData": "No category data.",
+  "predictionWarning": "Predictions may be inaccurate when there is not enough historical data."
 }

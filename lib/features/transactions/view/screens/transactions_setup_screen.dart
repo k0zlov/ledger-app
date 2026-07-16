@@ -4,9 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ledger_app/core/currencies/currencies.dart';
 import 'package:ledger_app/core/domain/entities/account.dart';
 import 'package:ledger_app/core/domain/entities/category.dart';
-import 'package:ledger_app/core/view/extensions/localization_build_context_x.dart';
 import 'package:ledger_app/core/view/cubits/settings_cubit.dart';
 import 'package:ledger_app/core/view/extensions/account_type_x.dart';
+import 'package:ledger_app/core/view/extensions/localization_build_context_x.dart';
 import 'package:ledger_app/features/transactions/view/cubit/transactions_cubit.dart';
 
 class TransactionsSetupScreen extends StatefulWidget {
@@ -62,7 +62,7 @@ class _TransactionsSetupScreenState extends State<TransactionsSetupScreen> {
 
     for (final account in accounts) {
       final text = _balanceControllers[account.id]?.text ?? '';
-      final amount = int.tryParse(text) ?? 0;
+      final amount = double.tryParse(text) ?? 0;
 
       if (amount > 0) {
         await cubit.addTransaction(

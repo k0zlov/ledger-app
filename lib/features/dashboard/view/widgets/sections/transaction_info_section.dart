@@ -54,10 +54,7 @@ class TransactionInfoSection extends StatelessWidget {
       children: [
         CupertinoListTile(
           title: Text(l10n.type),
-          additionalInfo: Text(
-            _typeText(l10n),
-            style: const TextStyle(color: CupertinoColors.label),
-          ),
+          additionalInfo: Text(_typeText(l10n)),
         ),
         CupertinoListTile(
           title: Text(l10n.date),

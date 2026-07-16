@@ -14,7 +14,7 @@ class CreateTransactionParams {
     this.note,
   });
 
-  final int amount;
+  final double amount;
   final DateTime date;
   final String accountId;
   final String categoryId;

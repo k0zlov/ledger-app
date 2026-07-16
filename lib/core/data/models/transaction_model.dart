@@ -19,7 +19,7 @@ class TransactionModel {
   factory TransactionModel.fromEntity(Transaction entity) {
     return TransactionModel(
       id: entity.id,
-      amount: entity.amount,
+      amount: (entity.amount * 100).round(),
       date: entity.date,
       accountId: entity.accountId,
       categoryId: entity.categoryId,
@@ -41,7 +41,7 @@ class TransactionModel {
   Transaction toEntity() {
     return Transaction(
       id: id,
-      amount: amount,
+      amount: amount / 100,
       date: date,
       accountId: accountId,
       categoryId: categoryId,

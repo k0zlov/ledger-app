@@ -64,7 +64,7 @@ class DashboardCubit extends Cubit<DashboardState> {
   }
 
   Future<void> addTransaction({
-    required int amount,
+    required double amount,
     required DateTime date,
     required String accountId,
     required String categoryId,
@@ -82,7 +82,7 @@ class DashboardCubit extends Cubit<DashboardState> {
   }
 
   Future<void> createTransaction({
-    required int amount,
+    required double amount,
     required DateTime date,
     required String accountId,
     required String categoryId,

@@ -132,8 +132,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
       );
     }
 
-    int getAccountBalance(Account account) {
-      return state.transactions.where((tx) => tx.accountId == account.id && _isTransactionInTimeFrame(tx)).fold<int>(
+    double getAccountBalance(Account account) {
+      return state.transactions.where((tx) => tx.accountId == account.id && _isTransactionInTimeFrame(tx)).fold<double>(
         0,
         (sum, tx) {
           final cat = getCategory(tx.categoryId);
@@ -151,13 +151,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
       return _isTransactionInTimeFrame(tx);
     }).toList();
 
-    final totalBalance = state.transactions.fold<int>(0, (sum, tx) {
-      final category = getCategory(tx.categoryId);
-      if (category?.type == CategoryType.expense) {
-        return sum - tx.amount;
-      }
-      return sum + tx.amount;
-    });
+    final accountBalance = state.transactions
+        .where((tx) {
+          if (_selectedAccountId != null && tx.accountId != _selectedAccountId) {
+            return false;
+          }
+          return true;
+        })
+        .fold<double>(0, (sum, tx) {
+          final category = getCategory(tx.categoryId);
+          if (category?.type == CategoryType.expense) {
+            return sum - tx.amount;
+          }
+          return sum + tx.amount;
+        });
 
     final dateRangeLabel = (_startDate != null && _endDate != null)
         ? '${_formatDateString(_startDate!)} - ${_formatDateString(_endDate!)}'
@@ -177,7 +184,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
           SliverToBoxAdapter(
             child: DashboardBalanceSection(
-              totalBalance: totalBalance,
+              totalBalance: accountBalance,
               dateRangeLabel: dateRangeLabel,
               onDateRangeTap: _handleDateRangeSelection,
             ),
@@ -193,7 +200,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           if (state.accounts.isNotEmpty && _selectedAccountId == null)
             SliverToBoxAdapter(
               child: AccountsListSection(
-                accounts: state.accounts.take(3).toList(),
+                accounts: state.accounts,
                 getAccountBalance: getAccountBalance,
               ),
             ),

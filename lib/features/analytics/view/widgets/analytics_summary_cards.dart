@@ -9,9 +9,9 @@ class AnalyticsSummaryCards extends StatelessWidget {
     super.key,
   });
 
-  final int income;
-  final int outcome;
-  final int? predicted;
+  final double income;
+  final double outcome;
+  final double? predicted;
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +56,7 @@ class SummaryCard extends StatelessWidget {
   });
 
   final String title;
-  final int amount;
+  final double amount;
   final Color color;
 
   @override

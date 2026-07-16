@@ -339,4 +339,29 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get editButton => 'Edit';
+
+  @override
+  String get analyticsAndForecast => 'Analytics & Forecast';
+
+  @override
+  String get noDataAvailable => 'No data available.';
+
+  @override
+  String get incomeTitle => 'Income';
+
+  @override
+  String get expensesTitle => 'Expenses';
+
+  @override
+  String get spent => 'Spent';
+
+  @override
+  String get prediction => 'Prediction';
+
+  @override
+  String get noCategoryData => 'No category data.';
+
+  @override
+  String get predictionWarning =>
+      'Predictions may be inaccurate when there is not enough historical data.';
 }

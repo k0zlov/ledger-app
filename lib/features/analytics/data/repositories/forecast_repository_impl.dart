@@ -1,3 +1,4 @@
+import 'package:ledger_app/core/domain/entities/category.dart';
 import 'package:ledger_app/features/analytics/data/providers/forecast_provider.dart';
 import 'package:ledger_app/features/analytics/domain/entities/category_forecast.dart';
 import 'package:ledger_app/features/analytics/domain/repositories/forecast_repository.dart';
@@ -14,7 +15,12 @@ class ForecastRepositoryImpl implements ForecastRepository {
 
   @override
   Future<List<CategoryForecast>> getCategoryForecasts({String? accountId}) async {
-    final categories = (await _categoryProvider.getAllCategories()).where((category) => !category.isTechnical).toList();
+    final categories = (await _categoryProvider.getAllCategories())
+        .where(
+          (category) =>
+              !category.isTechnical && category.type != CategoryType.any && category.type != CategoryType.income,
+        )
+        .toList();
     final now = DateTime.now();
 
     final forecasts = <CategoryForecast>[];

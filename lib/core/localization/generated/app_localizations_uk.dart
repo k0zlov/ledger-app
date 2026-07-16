@@ -81,7 +81,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get addAccountTitle => 'Додати рахунок';
 
   @override
-  String get editAccountTitle => 'Редагувати рахунок';
+  String get editAccountTitle => 'Редактировать рахунок';
 
   @override
   String get noAccountsYet => 'Поки немає рахунків.';
@@ -213,7 +213,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get selectDateRange => 'Вибрати період';
 
   @override
-  String get quickOptions => 'ШВИДКІ ВАРІАНТИ';
+  String get quickOptions => 'ШВИДКІ ВАРІАНТЫ';
 
   @override
   String get today => 'Сьогодні';
@@ -303,40 +303,65 @@ class AppLocalizationsUk extends AppLocalizations {
   String get selectCategory => 'Вибрати категорію';
 
   @override
-  String get changePin => 'Change PIN';
+  String get changePin => 'Змінити PIN-код';
 
   @override
-  String get biometrics => 'Biometrics';
+  String get biometrics => 'Біометрія';
 
   @override
-  String get enabled => 'Enabled';
+  String get enabled => 'Увімкнено';
 
   @override
-  String get disabled => 'Disabled';
+  String get disabled => 'Вимкнено';
 
   @override
   String get verifyIdentityToEnableBiometrics =>
-      'Verify your identity to enable biometric login';
+      'Підтвердіть особу для ввімкнення біометричного входу';
 
   @override
-  String get setPin => 'Set PIN';
+  String get setPin => 'Встановити PIN-код';
 
   @override
-  String get pinRequired => 'PIN Required';
+  String get pinRequired => 'Потрібен PIN-код';
 
   @override
   String get pinRequiredForBiometrics =>
-      'You need to set up a PIN code first to enable biometrics.';
+      'Спочатку вам потрібно встановити PIN-код, щоб увімкнути біометрію.';
 
   @override
-  String get ok => 'OK';
+  String get ok => 'ОК';
 
   @override
-  String get disablePin => 'Disable PIN';
+  String get disablePin => 'Вимкнути PIN-код';
 
   @override
-  String get transactionDetails => 'Transaction Details';
+  String get transactionDetails => 'Деталі транзакції';
 
   @override
-  String get editButton => 'Edit';
+  String get editButton => 'Редагувати';
+
+  @override
+  String get analyticsAndForecast => 'Аналітика та Прогноз';
+
+  @override
+  String get noDataAvailable => 'Немає доступних даних.';
+
+  @override
+  String get incomeTitle => 'Доходи';
+
+  @override
+  String get expensesTitle => 'Витрати';
+
+  @override
+  String get spent => 'Витрачено';
+
+  @override
+  String get prediction => 'Прогноз';
+
+  @override
+  String get noCategoryData => 'Немає даних за категоріями.';
+
+  @override
+  String get predictionWarning =>
+      'Прогнози можуть бути неточними, якщо недостатньо історичних даних.';
 }

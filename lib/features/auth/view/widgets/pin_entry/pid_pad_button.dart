@@ -18,14 +18,14 @@ class PinPadButton extends StatelessWidget {
       child: CupertinoButton(
         padding: EdgeInsets.zero,
         borderRadius: BorderRadius.circular(36),
-        color: CupertinoColors.systemGrey5,
+        color: CupertinoColors.systemGrey5.resolveFrom(context),
         onPressed: onPressed,
         child: Text(
           text,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 28,
             fontWeight: FontWeight.w500,
-            color: CupertinoColors.label,
+            color: CupertinoColors.label.resolveFrom(context),
           ),
         ),
       ),

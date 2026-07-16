@@ -3,9 +3,10 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ledger_app/core/domain/entities/category.dart';
+import 'package:ledger_app/core/view/extensions/localization_build_context_x.dart';
 import 'package:ledger_app/core/view/widgets/account_filter_chips.dart';
 import 'package:ledger_app/features/analytics/view/cubit/analytics_cubit.dart';
-import 'package:ledger_app/features/analytics/view/widgets/analytics_pie_chart_placeholder.dart';
+import 'package:ledger_app/features/analytics/view/widgets/analytics_pie_chart.dart';
 import 'package:ledger_app/features/analytics/view/widgets/analytics_summary_cards.dart';
 import 'package:ledger_app/features/analytics/view/widgets/category_list.dart';
 import 'package:ledger_app/features/analytics/view/widgets/month_year_selector.dart';
@@ -53,13 +54,14 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final now = DateTime.now();
     final isCurrentMonth = _selectedDate.year == now.year && _selectedDate.month == now.month;
     final displayPredictions = isCurrentMonth && _showPredictions;
 
     return CupertinoPageScaffold(
-      navigationBar: const CupertinoNavigationBar(
-        middle: Text('Analytics & Forecast'),
+      navigationBar: CupertinoNavigationBar(
+        middle: Text(l10n.analyticsAndForecast),
       ),
       child: SafeArea(
         child: BlocBuilder<AnalyticsCubit, AnalyticsState>(
@@ -85,7 +87,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                       onNext: _onNextMonth,
                     ),
                   ),
-                  const Expanded(child: Center(child: Text('No data available.'))),
+                  Expanded(child: Center(child: Text(l10n.noDataAvailable))),
                 ],
               );
             }
@@ -93,9 +95,9 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
             final incomeRows = <CategoryRowData>[];
             final expenseRows = <CategoryRowData>[];
 
-            int totalIncome = 0;
-            int totalOutcome = 0;
-            int totalPredicted = 0;
+            double totalIncome = 0;
+            double totalOutcome = 0;
+            double totalPredicted = 0;
 
             final incomeTotals = <String, double>{};
             for (final t in monthTransactions) {
@@ -212,10 +214,35 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                         ),
                       ),
                     ),
-                    const SliverToBoxAdapter(
+                    if (displayPredictions)
+                      SliverToBoxAdapter(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
+                          child: Row(
+                            children: [
+                              const Icon(
+                                CupertinoIcons.info_circle,
+                                size: 16,
+                                color: CupertinoColors.systemGrey,
+                              ),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Text(
+                                  l10n.predictionWarning,
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: CupertinoColors.secondaryLabel.resolveFrom(context),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    SliverToBoxAdapter(
                       child: Padding(
-                        padding: EdgeInsets.all(24),
-                        child: AnalyticsPieChartPlaceholder(),
+                        padding: const EdgeInsets.all(24),
+                        child: AnalyticsPieChart(data: expenseRows),
                       ),
                     ),
                     if (expenseRows.isNotEmpty) ...[
@@ -225,15 +252,15 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Text(
-                                'Expenses',
-                                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                              Text(
+                                l10n.expensesTitle,
+                                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                               ),
                               if (isCurrentMonth)
                                 Row(
                                   children: [
                                     Text(
-                                      'Prediction',
+                                      l10n.prediction,
                                       style: TextStyle(
                                         fontSize: 14,
                                         color: CupertinoColors.secondaryLabel.resolveFrom(context),
@@ -262,12 +289,12 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                       const SliverToBoxAdapter(child: SizedBox(height: 16)),
                     ],
                     if (incomeRows.isNotEmpty) ...[
-                      const SliverToBoxAdapter(
+                      SliverToBoxAdapter(
                         child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                           child: Text(
-                            'Income',
-                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                            l10n.incomeTitle,
+                            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                           ),
                         ),
                       ),
@@ -282,10 +309,10 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                       ),
                     ],
                     if (expenseRows.isEmpty && incomeRows.isEmpty)
-                      const SliverToBoxAdapter(
+                      SliverToBoxAdapter(
                         child: Padding(
-                          padding: EdgeInsets.all(16),
-                          child: Center(child: Text('No category data.')),
+                          padding: const EdgeInsets.all(16),
+                          child: Center(child: Text(l10n.noCategoryData)),
                         ),
                       ),
                     const SliverToBoxAdapter(child: SizedBox(height: 100)),

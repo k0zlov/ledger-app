@@ -11,7 +11,7 @@ class AmountText extends StatelessWidget {
     super.key,
   });
 
-  final int amount;
+  final double amount;
   final bool showSign;
   final TextStyle? style;
 
@@ -21,7 +21,12 @@ class AmountText extends StatelessWidget {
     final currencyInfo = currencies[currencyCode] ?? currencies['USD']!;
 
     final symbol = currencyInfo.symbol;
-    final value = amount.abs().toString();
+
+    String value = amount.abs().toStringAsFixed(2);
+    if (value.endsWith('.00')) {
+      value = value.substring(0, value.length - 3);
+    }
+
     final spacing = currencyInfo.spaceBetweenAmountAndSymbol ? ' ' : '';
 
     final formattedValue = currencyInfo.symbolOnLeft ? '$symbol$spacing$value' : '$value$spacing$symbol';
@@ -35,8 +40,8 @@ class AmountText extends StatelessWidget {
     }
 
     Color? getTextColor() {
-      if (amount < 0) return CupertinoColors.systemRed;
-      if (amount > 0 && showSign) return CupertinoColors.systemGreen;
+      if (amount < 0) return CupertinoColors.systemRed.resolveFrom(context);
+      if (amount > 0 && showSign) return CupertinoColors.systemGreen.resolveFrom(context);
       return style?.color;
     }
 

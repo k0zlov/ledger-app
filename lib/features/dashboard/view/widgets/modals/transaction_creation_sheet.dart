@@ -84,7 +84,7 @@ class _TransactionCreationSheetState extends State<TransactionCreationSheet> {
       builder: (context) {
         return Container(
           height: 250,
-          color: CupertinoColors.systemBackground,
+          color: CupertinoColors.systemBackground.resolveFrom(context),
           child: SafeArea(
             top: false,
             child: CupertinoPicker(
@@ -189,7 +189,8 @@ class _TransactionCreationSheetState extends State<TransactionCreationSheet> {
   }
 
   void _handleSaveTap() {
-    final parsedAmount = int.tryParse(_amountController.text.trim()) ?? 0;
+    final rawAmount = _amountController.text.trim().replaceAll(',', '.');
+    final parsedAmount = double.tryParse(rawAmount) ?? 0;
 
     if (parsedAmount == 0 || _accountId == null || _categoryId == null) {
       return;
@@ -197,7 +198,7 @@ class _TransactionCreationSheetState extends State<TransactionCreationSheet> {
 
     final newTransaction = Transaction(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
-      amount: parsedAmount.abs(),
+      amount: parsedAmount,
       date: _date,
       accountId: _accountId!,
       categoryId: _categoryId!,
@@ -211,7 +212,8 @@ class _TransactionCreationSheetState extends State<TransactionCreationSheet> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final parsedAmount = int.tryParse(_amountController.text.trim()) ?? 0;
+    final rawAmount = _amountController.text.trim().replaceAll(',', '.');
+    final parsedAmount = double.tryParse(rawAmount) ?? 0;
 
     final isFormValid = parsedAmount != 0 && _accountId != null && _categoryId != null;
 
@@ -227,9 +229,9 @@ class _TransactionCreationSheetState extends State<TransactionCreationSheet> {
 
     return Container(
       height: MediaQuery.of(context).size.height * 0.9,
-      decoration: const BoxDecoration(
-        color: CupertinoColors.systemGroupedBackground,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
+      decoration: BoxDecoration(
+        color: CupertinoColors.systemGroupedBackground.resolveFrom(context),
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
       ),
       child: SafeArea(
         top: false,

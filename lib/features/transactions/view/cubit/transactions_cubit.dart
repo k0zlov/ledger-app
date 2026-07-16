@@ -51,7 +51,7 @@ class TransactionsCubit extends Cubit<TransactionsState> {
   }
 
   Future<void> addTransaction({
-    required int amount,
+    required double amount,
     required DateTime date,
     required String accountId,
     required String categoryId,

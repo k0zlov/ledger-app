@@ -10,7 +10,7 @@ class DashboardBalanceSection extends StatelessWidget {
     super.key,
   });
 
-  final int totalBalance;
+  final double totalBalance;
   final String dateRangeLabel;
   final VoidCallback onDateRangeTap;
 
@@ -64,7 +64,6 @@ class DashboardBalanceSection extends StatelessWidget {
               fontSize: 40,
               fontWeight: FontWeight.bold,
               letterSpacing: -1,
-              color: CupertinoColors.label,
             ),
           ),
         ],

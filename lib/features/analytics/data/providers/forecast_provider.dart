@@ -18,8 +18,8 @@ abstract interface class ForecastProvider {
 
 class ForecastProviderImpl implements ForecastProvider {
   const ForecastProviderImpl({
-    required this._forecastService,
     required this._db,
+    required this._forecastService,
   });
 
   final Database _db;
@@ -109,6 +109,6 @@ class ForecastProviderImpl implements ForecastProvider {
 
     final results = await query.get();
 
-    return results.fold<double>(0, (sum, row) => sum + row.amount.toDouble());
+    return results.fold<double>(0, (sum, row) => sum + (row.amount / 100));
   }
 }

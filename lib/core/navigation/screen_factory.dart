@@ -11,6 +11,8 @@ import 'package:ledger_app/di_container.dart';
 import 'package:ledger_app/features/accounts/view/cubit/accounts_cubit.dart';
 import 'package:ledger_app/features/accounts/view/screens/accounts_screen.dart';
 import 'package:ledger_app/features/accounts/view/screens/accounts_setup_screen.dart';
+import 'package:ledger_app/features/analytics/view/cubit/analytics_cubit.dart';
+import 'package:ledger_app/features/analytics/view/screens/analytics_screen.dart';
 import 'package:ledger_app/features/auth/view/cubit/auth_cubit.dart';
 import 'package:ledger_app/features/auth/view/screens/auth_lock_screen.dart';
 import 'package:ledger_app/features/auth/view/screens/auth_settings_screen.dart';
@@ -194,10 +196,6 @@ abstract class ScreenFactory {
     );
   }
 
-  static Widget renderAnalyticsScreen() {
-    return const Placeholder();
-  }
-
   static Widget renderAccountsScreen() {
     return BlocProvider(
       lazy: false,
@@ -229,6 +227,17 @@ abstract class ScreenFactory {
         return cubit;
       },
       child: const AuthSettingsScreen(),
+    );
+  }
+
+  static Widget renderAnalyticsScreen() {
+    return BlocProvider(
+      create: (context) {
+        final AnalyticsCubit cubit = getIt();
+        unawaited(cubit.initialize());
+        return cubit;
+      },
+      child: const AnalyticsScreen(),
     );
   }
 }

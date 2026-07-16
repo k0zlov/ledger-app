@@ -1,3 +1,4 @@
+import 'package:flutter_litert/flutter_litert.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
@@ -13,6 +14,7 @@ import 'package:ledger_app/core/domain/use_cases/update_transaction_use_case.dar
 import 'package:ledger_app/core/domain/use_cases/watch_accounts_use_case.dart';
 import 'package:ledger_app/core/domain/use_cases/watch_categories_use_case.dart';
 import 'package:ledger_app/core/domain/use_cases/watch_transactions_use_case.dart';
+import 'package:ledger_app/core/forecast/forecast_service.dart';
 import 'package:ledger_app/core/navigation/navigation_service.dart';
 import 'package:ledger_app/core/navigation/router.dart';
 import 'package:ledger_app/core/secure_storage/secure_storage.dart';
@@ -23,6 +25,11 @@ import 'package:ledger_app/features/accounts/domain/use_cases/add_account_use_ca
 import 'package:ledger_app/features/accounts/domain/use_cases/delete_account_use_case.dart';
 import 'package:ledger_app/features/accounts/domain/use_cases/update_account_use_case.dart';
 import 'package:ledger_app/features/accounts/view/cubit/accounts_cubit.dart';
+import 'package:ledger_app/features/analytics/data/providers/forecast_provider.dart';
+import 'package:ledger_app/features/analytics/data/repositories/forecast_repository_impl.dart';
+import 'package:ledger_app/features/analytics/domain/repositories/forecast_repository.dart';
+import 'package:ledger_app/features/analytics/domain/use_cases/get_categories_forecast.dart';
+import 'package:ledger_app/features/analytics/view/cubit/analytics_cubit.dart';
 import 'package:ledger_app/features/auth/data/providers/auth_biometric_provider.dart';
 import 'package:ledger_app/features/auth/data/providers/auth_storage_provider.dart';
 import 'package:ledger_app/features/auth/data/repositories/auth_repository_impl.dart';
@@ -66,6 +73,7 @@ Future<void> registerDependencies() async {
   _database();
   _secureStorage();
   _localAuth();
+  _forecast();
   _providers();
   _repositories();
   _useCases();
@@ -101,6 +109,14 @@ void _localAuth() {
   getIt.registerLazySingleton<LocalAuthentication>(LocalAuthentication.new);
 }
 
+void _forecast() {
+  getIt.registerSingletonAsync<ForecastService>(() async {
+    final Interpreter interpreter = await Interpreter.fromAsset('assets/tflite/expense_predictor.tflite');
+
+    return ForecastServiceMl(interpreter: interpreter);
+  });
+}
+
 void _providers() {
   getIt
     ..registerLazySingleton<AuthStorageProvider>(
@@ -120,6 +136,9 @@ void _providers() {
     )
     ..registerLazySingleton<TransactionStorageProvider>(
       () => TransactionStorageProviderImpl(db: getIt()),
+    )
+    ..registerLazySingleton<ForecastProvider>(
+      () => ForecastProviderImpl(db: getIt(), forecastService: getIt()),
     )
     ..registerLazySingleton<OnboardingStorageProvider>(
       () => OnboardingStorageProviderImpl(secureStorage: getIt()),
@@ -150,6 +169,9 @@ void _repositories() {
     ..registerLazySingleton<AccountRepository>(() => AccountRepositoryImpl(storageProvider: getIt()))
     ..registerLazySingleton<CategoryRepository>(() => CategoryRepositoryImpl(storageProvider: getIt()))
     ..registerLazySingleton<TransactionRepository>(() => TransactionRepositoryImpl(storageProvider: getIt()))
+    ..registerLazySingleton<ForecastRepository>(
+      () => ForecastRepositoryImpl(forecastProvider: getIt(), categoryProvider: getIt()),
+    )
     ..registerLazySingleton<OnboardingStatusContract>(getIt.call<OnboardingRepositoryImpl>);
 }
 
@@ -179,6 +201,7 @@ void _useCases() {
     ..registerLazySingleton(() => AuthenticateWithBiometricsUseCase(repository: getIt()))
     ..registerLazySingleton(() => CheckPinUseCase(repository: getIt()))
     ..registerLazySingleton(() => DisablePinUseCase(repository: getIt()))
+    ..registerLazySingleton(() => GetCategoryForecasts(repository: getIt()))
     ..registerLazySingleton(() => CompleteOnboardingUseCase(repository: getIt()));
 }
 
@@ -234,6 +257,14 @@ void _cubits() {
         watchAccounts: getIt(),
         watchCategories: getIt(),
         createTransaction: getIt(),
+      ),
+    )
+    ..registerFactory<AnalyticsCubit>(
+      () => AnalyticsCubit(
+        watchTransactions: getIt(),
+        watchAccounts: getIt(),
+        watchCategories: getIt(),
+        getCategoryForecasts: getIt(),
       ),
     )
     ..registerFactory<OnboardingCubit>(

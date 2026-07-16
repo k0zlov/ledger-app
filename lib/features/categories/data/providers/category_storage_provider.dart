@@ -1,3 +1,4 @@
+import 'package:drift/drift.dart';
 import 'package:ledger_app/core/data/models/category_model.dart';
 import 'package:ledger_app/core/database/database.dart';
 
@@ -11,12 +12,25 @@ abstract interface class CategoryStorageProvider {
   Future<void> updateCategory(CategoryModel category);
 
   Future<void> deleteCategory(String id);
+
+  Future<List<CategoryModel>> getAllCategories();
 }
 
 class CategoryStorageProviderImpl implements CategoryStorageProvider {
   const CategoryStorageProviderImpl({required this._db});
 
   final Database _db;
+
+  CategoryModel _mapCategory(CategoryRow row) {
+    return CategoryModel(
+      id: row.id,
+      name: row.name,
+      color: row.color,
+      icon: row.icon,
+      type: row.type,
+      isTechnical: row.isTechnical,
+    );
+  }
 
   @override
   Future<void> createCategory(CategoryModel category) async {
@@ -26,18 +40,7 @@ class CategoryStorageProviderImpl implements CategoryStorageProvider {
   @override
   Stream<List<CategoryModel>> watchCategories() {
     return _db.select(_db.categories).watch().map((rows) {
-      return rows
-          .map(
-            (row) => CategoryModel(
-              id: row.id,
-              name: row.name,
-              color: row.color,
-              icon: row.icon,
-              type: row.type,
-              isTechnical: row.isTechnical,
-            ),
-          )
-          .toList();
+      return rows.map(_mapCategory).toList();
     });
   }
 
@@ -65,5 +68,12 @@ class CategoryStorageProviderImpl implements CategoryStorageProvider {
   @override
   Future<void> deleteCategory(String id) async {
     await (_db.delete(_db.categories)..where((tbl) => tbl.id.equals(id))).go();
+  }
+
+  @override
+  Future<List<CategoryModel>> getAllCategories() async {
+    final rows = await _db.categories.select().get();
+
+    return rows.map(_mapCategory).toList();
   }
 }

@@ -8,7 +8,7 @@ import 'package:ledger_app/core/domain/entities/transaction.dart';
 import 'package:ledger_app/core/navigation/navigation_service.dart';
 import 'package:ledger_app/core/view/extensions/localization_build_context_x.dart';
 import 'package:ledger_app/features/dashboard/view/cubit/dashboard_cubit.dart';
-import 'package:ledger_app/features/dashboard/view/widgets/buttons/account_filter_chips.dart';
+import 'package:ledger_app/core/view/widgets/account_filter_chips.dart';
 import 'package:ledger_app/features/dashboard/view/widgets/modals/date_range_picker_sheet.dart';
 import 'package:ledger_app/features/dashboard/view/widgets/modals/transaction_creation_sheet.dart';
 import 'package:ledger_app/features/dashboard/view/widgets/modals/transaction_details_sheet.dart';

@@ -17,6 +17,7 @@ your financial habits through predictive analytics, all secured behind local aut
   financial data.
 * **Offline-First Storage:** All transactions, accounts, and categories are stored locally on the device for maximum
   privacy.
+* **Multi-Language Support:** Fully localized in English (EN), Ukrainian (UK), and Russian (RU).
 * **Multi-Currency Support:** Dynamically formats diverse currencies with locale-aware precision.
 * **Native iOS Aesthetics:** Built entirely with Cupertino widgets, offering a seamless Apple-like user experience with
   full Light and Dark mode support.

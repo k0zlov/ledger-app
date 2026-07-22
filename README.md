@@ -5,9 +5,9 @@ your financial habits through predictive analytics, all secured behind local aut
 
 ## Demo
 
-<video src="assets/mp4/demo.mp4" width="100%" controls autoplay loop></video>
+[![Ledger App Demo](https://img.youtube.com/vi/urRTWaSsys8/0.jpg)](https://youtube.com/shorts/urRTWaSsys8)
 
-*(If the video does not render natively in your viewer, [click here to download or view it](assets/mp4/demo.mp4))*
+*(Click the image above to watch the demo on YouTube)*
 
 ## Features
 
@@ -23,7 +23,7 @@ your financial habits through predictive analytics, all secured behind local aut
 
 ## Architecture & Tech Stack
 
-The codebase is structured around Clean Architecture and Domain-Driven Design (DDD) principles, ensuring clear
+The codebase is structured around **Clean Architecture** and **Domain-Driven Design (DDD)** principles, ensuring clear
 separation of concerns, scalability, and robust boundary enforcement.
 
 * **Framework:** Flutter / Dart
@@ -33,7 +33,29 @@ separation of concerns, scalability, and robust boundary enforcement.
 
 ## Getting Started
 
-1. **Clone the repository:**
-   ```bash
-   git clone [https://github.com/k0zlov/ledger-app.git](https://github.com/k0zlov/ledger-app.git)
-   cd ledger-app
+Follow these steps to set up and run the project locally.
+
+### Prerequisites
+
+Ensure you have the [Flutter SDK](https://docs.flutter.dev/get-started/install) installed on your machine.
+
+### Installation
+
+**1. Clone the repository**
+
+```bash
+git clone [https://github.com/k0zlov/ledger-app.git](https://github.com/k0zlov/ledger-app.git)
+cd ledger-app
+```
+
+**2. Install dependencies**
+
+```bash
+flutter pub get
+```
+
+**3. Run the app**
+
+```bash
+flutter run
+```

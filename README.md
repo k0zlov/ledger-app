@@ -44,7 +44,7 @@ Ensure you have the [Flutter SDK](https://docs.flutter.dev/get-started/install) 
 **1. Clone the repository**
 
 ```bash
-git clone [https://github.com/k0zlov/ledger-app.git](https://github.com/k0zlov/ledger-app.git)
+git clone https://github.com/k0zlov/ledger-app.git
 cd ledger-app
 ```
 
